@@ -3,173 +3,161 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mohammed Musharaf · Electronics & Communication Engineer & Creative Developer</title>
-    <meta name="description" content="Portfolio of Mohammed Musharaf (m7sh) - Electronics & Communication Engineer (VTU Belagavi), IEEE Member, Omarchy Linux rice artisan, and open-source craftsman." />
-    <meta name="keywords" content="Mohammed Musharaf, m7sh, Electronics Engineer, Omarchy, Hyprland, Linux Rice, Python, QML, VTU Belagavi, IEEE" />
+    <title>Mohammed Musharaf (m7sh) · Linux Rice Artisan & Creative Developer</title>
+    <meta name="description" content="Portfolio of Mohammed Musharaf (m7sh) - Electronics & Communication Engineer, Omarchy Linux rice artisan, and open-source Wayland developer." />
+    <meta name="keywords" content="Mohammed Musharaf, m7sh, Omarchy, Hyprland, Linux Rice, QML, Quickshell, Rust, Python, Wayland" />
     <meta name="author" content="Mohammed Musharaf" />
-    <meta property="og:title" content="Mohammed Musharaf · ECE & Creative Developer Portfolio" />
-    <meta property="og:description" content="Crafting high-speed code, minimal tooling, and fluid Linux desktop experiences." />
+    <meta property="og:title" content="Mohammed Musharaf (m7sh) · Linux Rice Artisan & Developer" />
+    <meta property="og:description" content="Crafting fluid Wayland desktop experiences, declarative QML status-bar plugins, and minimal CLI tools." />
     <meta property="og:url" content="https://m7sh.github.io/m7sh/" />
     <meta property="og:type" content="website" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%238b5cf6'/><text x='16' y='21' font-family='monospace' font-weight='bold' font-size='14' fill='white' text-anchor='middle'>M7</text></svg>" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2310b981'/><text x='16' y='21' font-family='monospace' font-weight='bold' font-size='13' fill='%2307090e' text-anchor='middle'>&gt;_</text></svg>" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: JetBrains Mono & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Lenis Smooth Inertia Scroll -->
-    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-
-    <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="src/styles.css" />
 </head>
 <body>
 
-    <!-- Custom Morphing Fluid Cursor -->
-    <div class="custom-cursor-dot"></div>
-    <div class="custom-cursor-outline"></div>
-
-    <!-- Interactive Fluid Background Canvas -->
-    <canvas id="fluid-canvas"></canvas>
-
-    <!-- Fullscreen Matrix Digital Rain Simulation (Toggleable via CLI/Palette) -->
-    <canvas id="matrix-canvas"></canvas>
-
-    <!-- Ambient Mesh Glows -->
-    <div class="ambient-lights">
-        <div class="ambient-glow one"></div>
-        <div class="ambient-glow two"></div>
-        <div class="ambient-glow three"></div>
+    <!-- Subtle Ambient Terminal Grid Background -->
+    <div class="terminal-bg-grid" aria-hidden="true"></div>
+    <div class="ambient-glows" aria-hidden="true">
+        <div class="ambient-glow glow-1"></div>
+        <div class="ambient-glow glow-2"></div>
     </div>
+
+    <!-- Fullscreen Matrix Canvas (Toggleable via CLI: 'matrix' or palette) -->
+    <canvas id="matrix-canvas" aria-hidden="true"></canvas>
 
     <!-- SITE WRAPPER -->
     <div class="site-wrapper">
 
-        <!-- FLOATING DOCK NAVBAR -->
+        <!-- STICKY TERMINAL NAVBAR -->
         <nav class="navbar-dock" id="navbar">
-            <a href="#hero" class="nav-brand">
-                <span class="brand-logo">M7</span>
-                <span>Musharaf</span>
-                <span class="brand-status-dot" title="Available for projects & collaboration"></span>
-            </a>
-
-            <ul class="nav-menu">
-                <li><a href="#bento" class="nav-link"><i data-lucide="cpu" style="width:15px; height:15px;"></i> Stack</a></li>
-                <li><a href="#repos" class="nav-link"><i data-lucide="git-branch" style="width:15px; height:15px;"></i> Repos</a></li>
-                <li><a href="#terminal" class="nav-link"><i data-lucide="terminal" style="width:15px; height:15px;"></i> Terminal</a></li>
-                <li><a href="#timeline" class="nav-link"><i data-lucide="milestone" style="width:15px; height:15px;"></i> Journey</a></li>
-                <li><a href="#contact" class="nav-link"><i data-lucide="send" style="width:15px; height:15px;"></i> Contact</a></li>
-            </ul>
-
-            <div class="nav-actions">
-                <button class="nav-btn" id="open-palette-btn" title="Open Command Palette (Ctrl+K)">
-                    <i data-lucide="search" style="width:14px; height:14px;"></i>
-                    <span class="kbd-shortcut">⌘K</span>
-                </button>
-
-                <button class="nav-btn" id="sound-toggle-btn" title="Toggle Sound FX">
-                    <i data-lucide="volume-x" style="width:14px; height:14px;"></i>
-                    <span>SFX OFF</span>
-                </button>
-
-                <button class="nav-btn" id="theme-toggle-btn" title="Cycle Color Theme">
-                    <i data-lucide="palette" style="width:14px; height:14px;"></i>
-                    <span id="theme-btn-label">Obsidian</span>
-                </button>
-
-                <a href="https://github.com/m7sh" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-icon" title="View GitHub Profile">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+            <div class="nav-container">
+                <!-- Window Controls Brand -->
+                <a href="#hero" class="nav-brand">
+                    <div class="nav-window-dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="brand-prompt">mush@omarchy:~</span>
+                    <span class="brand-status-dot" title="Active session · Open for collaboration"></span>
                 </a>
+
+                <!-- Nav Links -->
+                <ul class="nav-menu">
+                    <li><a href="#hero" class="nav-link"><span class="nav-num">01.</span> About</a></li>
+                    <li><a href="#projects" class="nav-link"><span class="nav-num">02.</span> Projects</a></li>
+                    <li><a href="#terminal" class="nav-link"><span class="nav-num">03.</span> Terminal</a></li>
+                    <li><a href="#stack" class="nav-link"><span class="nav-num">04.</span> Stack</a></li>
+                    <li><a href="#connect" class="nav-link"><span class="nav-num">05.</span> Connect</a></li>
+                </ul>
+
+                <!-- Utility Actions -->
+                <div class="nav-actions">
+                    <button class="nav-btn" id="open-palette-btn" title="Open Command Palette (Ctrl+K or ⌘K)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <span class="kbd-badge">⌘K</span>
+                    </button>
+
+                    <button class="nav-btn" id="sound-toggle-btn" title="Toggle Terminal Audio Synthesizer">
+                        <span id="sound-indicator" class="sound-off">SFX: OFF</span>
+                    </button>
+
+                    <button class="nav-btn theme-cycle-btn" id="theme-toggle-btn" title="Switch Terminal Color Palette">
+                        <span class="theme-swatch"></span>
+                        <span id="theme-btn-label">Obsidian</span>
+                    </button>
+
+                    <a href="https://github.com/m7sh" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-icon" title="GitHub Profile">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    </a>
+                </div>
             </div>
         </nav>
 
-        <!-- HERO SECTION -->
+        <!-- HERO SECTION: TERMINAL WORKSTATION -->
         <header class="hero-section" id="hero">
             <div class="container">
                 <div class="hero-grid">
 
-                    <!-- Left: Kinetic Hero Typography & Call-to-actions -->
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <i data-lucide="briefcase" style="width:14px; height:14px;"></i>
-                            <span>ANALYST @ INSURANCE FIRM · BANGALORE</span>
+                    <!-- Left: Terminal Bio & Actions -->
+                    <div class="hero-left">
+                        <div class="terminal-pill">
+                            <span class="pill-dot"></span>
+                            <span>mush@omarchy:~$ whoami</span>
                         </div>
 
-                        <h1 class="hero-title">
-                            Crafting <span class="shimmer-text">High-Speed Code,</span> Minimal Tooling & Fluid Experiences.
+                        <h1 class="hero-name">
+                            Mohammed <span class="accent-text">Musharaf</span>
                         </h1>
 
-                        <p class="hero-description">
-                            I'm <strong>Mohammed Musharaf</strong> — an Electronics & Communication Engineer and corporate <strong>Analyst at an Insurance firm in Bangalore</strong>. By day, I analyze enterprise data systems; by night, I build minimal Linux environments (Omarchy / Hyprland) and fluid open-source tools.
+                        <p class="hero-subhead">
+                            Linux Rice Artisan & Creative Developer
+                        </p>
+
+                        <p class="hero-bio">
+                            Crafting minimal Wayland environments, fluid declarative QML status-bar architecture, and keyboard-centric open-source tools. Passionate about Omarchy Linux, Hyprland ricing, and minimal software design.
                         </p>
 
                         <div class="hero-actions">
-                            <a href="#repos" class="btn-primary">
-                                <i data-lucide="folder-git-2" style="width:18px; height:18px;"></i>
-                                <span>Explore Projects</span>
+                            <a href="#projects" class="term-btn term-btn-primary">
+                                <span>❯ ls ~/projects/</span>
                             </a>
-                            <a href="#terminal" class="btn-secondary">
-                                <i data-lucide="terminal" style="width:18px; height:18px;"></i>
-                                <span>Launch CLI</span>
+                            <a href="#terminal" class="term-btn term-btn-secondary">
+                                <span>❯ launch terminal</span>
                             </a>
-                            <button class="btn-secondary copy-email-trigger">
-                                <i data-lucide="copy" style="width:16px; height:16px;"></i>
-                                <span>Copy Email</span>
+                            <button class="term-btn term-btn-ghost copy-email-btn" data-email="mdmusharaf720@gmail.com">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <span>copy email</span>
                             </button>
                         </div>
 
-                        <div class="hero-quick-tags">
-                            <span class="quick-tag"><i data-lucide="terminal" style="width:13px; height:13px;"></i> Omarchy</span>
-                            <span class="quick-tag"><i data-lucide="layout" style="width:13px; height:13px;"></i> Hyprland</span>
-                            <span class="quick-tag"><i data-lucide="code-2" style="width:13px; height:13px;"></i> Python</span>
-                            <span class="quick-tag"><i data-lucide="cpu" style="width:13px; height:13px;"></i> Embedded C</span>
-                            <span class="quick-tag"><i data-lucide="layers" style="width:13px; height:13px;"></i> QML</span>
-                            <span class="quick-tag"><i data-lucide="award" style="width:13px; height:13px;"></i> Member @ IEEE</span>
+                        <div class="hero-tags">
+                            <span class="hero-tag">#omarchy</span>
+                            <span class="hero-tag">#hyprland</span>
+                            <span class="hero-tag">#qml</span>
+                            <span class="hero-tag">#rust</span>
+                            <span class="hero-tag">#python</span>
+                            <span class="hero-tag">#wayland</span>
+                            <span class="hero-tag">#neovim</span>
                         </div>
                     </div>
 
-                    <!-- Right: 3D Holographic Perspective Tilt Card -->
-                    <div class="hero-card-perspective">
-                        <div class="hero-3d-card">
-                            <div class="card-avatar-wrapper">
-                                <div class="card-avatar-ring"></div>
-                                <img src="https://avatars.githubusercontent.com/u/71885326?v=4" alt="Mohammed Musharaf" class="card-avatar-img" />
+                    <!-- Right: Fastfetch Neofetch Terminal Window -->
+                    <div class="hero-right">
+                        <div class="terminal-card">
+                            <div class="card-header">
+                                <div class="nav-window-dots">
+                                    <span class="dot red"></span>
+                                    <span class="dot yellow"></span>
+                                    <span class="dot green"></span>
+                                </div>
+                                <span class="card-title">fastfetch --config profile</span>
+                                <span class="card-tag">active</span>
                             </div>
-
-                            <div class="card-user-info">
-                                <h2 class="card-user-name">Mohammed Musharaf</h2>
-                                <p class="card-user-handle">@m7sh · M7ßh</p>
-                            </div>
-
-                            <div class="card-system-pills">
-                                <div class="sys-pill">
-                                    <span class="sys-pill-label">Current Role</span>
-                                    <span class="sys-pill-value" style="color: var(--primary); font-size: 0.82rem;">Analyst @ Insurance</span>
-                                </div>
-                                <div class="sys-pill">
-                                    <span class="sys-pill-label">Location</span>
-                                    <span class="sys-pill-value" style="font-size: 0.82rem;">Bangalore, India</span>
-                                </div>
-                                <div class="sys-pill">
-                                    <span class="sys-pill-label">Prior Experience</span>
-                                    <span class="sys-pill-value" style="font-size: 0.82rem;">Planning Eng. (Saudi)</span>
-                                </div>
-                                <div class="sys-pill">
-                                    <span class="sys-pill-label">Education</span>
-                                    <span class="sys-pill-value" style="font-size: 0.82rem;">B.E. ECE (2019-2023)</span>
-                                </div>
-                            </div>
-
-                            <div class="card-pulse-bar">
-                                <span class="pulse-led">Analyst · Insurance (Bangalore)</span>
-                                <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-subtle);">Active & Ricing</span>
+                            <div class="card-body">
+<pre class="fastfetch-output">
+<span class="art-green">   __  __  ______   _____  _    _  </span> 
+<span class="art-green">  |  \/  ||____  | /  ___|| |  | | </span> <span class="dim">┌─────────────────────────── Telemetry ───────────────────────────┐</span>
+<span class="art-green">  | .  . |    / /  \ `--. | |__| | </span> │ <span class="accent-cyan"> User</span>        : <span class="val-white">Mohammed Musharaf</span> (m7sh / mush)         │
+<span class="art-green">  | |\/| |   / /    `--. \|  __  | </span> │ <span class="accent-cyan"> OS</span>          : <span class="val-white">Omarchy Linux 4.0</span> (Arch-based)          │
+<span class="art-green">  | |  | |  / /    /\__/ /| |  | | </span> │ <span class="accent-cyan"> Compositor</span>  : <span class="val-white">Hyprland (Wayland)</span>                      │
+<span class="art-green">  \_|  |_/ /_/     \____/ \_|  |_/ </span> │ <span class="accent-cyan">󰸌 Theme</span>       : <span class="val-white">Velvet Dusk</span> • Gruvbox • Everpuccin      │
+                                    │ <span class="accent-cyan"> Terminals</span>   : <span class="val-white">Foot</span> • Ghostty • Alacritty              │
+                                    │ <span class="accent-cyan">🐚 Shell</span>      : <span class="val-white">Zsh</span> & Fish                              │
+                                    │ <span class="accent-cyan">󰅩 Focus</span>       : <span class="val-white">Quickshell Bar Plugins, QML, TUI Tools</span>  │
+                                    │ <span class="accent-cyan">🎓 Education</span>   : <span class="val-white">Electronics & Communication (VTU)</span>      │
+                                    │ <span class="accent-cyan">🌐 GitHub</span>      : <span class="val-white">https://github.com/m7sh</span>                 │
+                                    │ <span class="accent-cyan">⚡ Status</span>      : <span class="accent-green">● Ready to pair &amp; build Wayland tools</span>    │
+                                    <span class="dim">└─────────────────────────────────────────────────────────────────┘</span>
+</pre>
                             </div>
                         </div>
                     </div>
@@ -178,408 +166,534 @@
             </div>
         </header>
 
-        <!-- BENTO GRID SECTION -->
-        <section class="bento-section" id="bento">
+        <!-- PROJECTS HUB SECTION -->
+        <section class="projects-section" id="projects">
             <div class="container">
-                <div class="section-header">
-                    <span class="section-label">01 // Engineering Spectrum</span>
-                    <h2 class="section-title scramble-hover">Hardware, Linux Customization & Clean Architecture</h2>
-                    <p class="section-subtitle">A balanced fusion of rigorous electronics engineering foundations and modern software craft.</p>
+                <div class="section-titlebar">
+                    <span class="titlebar-path">~/projects/</span>
+                    <h2 class="titlebar-heading">Featured Repositories & Work</h2>
+                    <span class="titlebar-cmd">ls -la --group-directories-first</span>
                 </div>
 
-                <div class="bento-grid">
-
-                    <!-- Card 1: ECE & Signal Processing (Span 8) -->
-                    <div class="bento-card bento-col-8">
-                        <div class="bento-icon-badge">
-                            <i data-lucide="activity" style="width:22px; height:22px;"></i>
-                        </div>
-                        <h3 class="bento-title">Electronics & Communication Engineering</h3>
-                        <p class="bento-desc">
-                            Graduated from <strong>Visveswaraya Technological University (VTU) Belagavi</strong> in ECE and active member of <strong>IEEE</strong>. Experienced in digital signal processing, microcontroller firmware, embedded systems, circuit design, and MATLAB simulations.
-                        </p>
-                        <!-- Live Interactive Oscilloscope -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.78rem; color: var(--text-subtle); font-family: 'JetBrains Mono', monospace;">
-                            <span>LIVE OSCILLOSCOPE HARMONIC SIMULATOR</span>
-                            <span>HOVER TO MODULATE FREQUENCY</span>
-                        </div>
-                        <canvas id="oscilloscope-canvas"></canvas>
+                <!-- Category Filters -->
+                <div class="filter-toolbar">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">
+                            <span>*</span> All (<span id="count-all">12</span>)
+                        </button>
+                        <button class="filter-tab" data-filter="plugin">
+                            <span>🧩</span> Bar Plugins (<span id="count-plugin">4</span>)
+                        </button>
+                        <button class="filter-tab" data-filter="theme">
+                            <span>🎨</span> Desktop Themes (<span id="count-theme">6</span>)
+                        </button>
+                        <button class="filter-tab" data-filter="tool">
+                            <span>📟</span> CLI / TUI (<span id="count-tool">2</span>)
+                        </button>
                     </div>
 
-                    <!-- Card 2: Linux Rice & Omarchy Theming (Span 4) -->
-                    <div class="bento-card bento-col-4">
-                        <div class="bento-icon-badge">
-                            <i data-lucide="palette" style="width:22px; height:22px;"></i>
-                        </div>
-                        <h3 class="bento-title">Omarchy & Hyprland Rice Artisan</h3>
-                        <p class="bento-desc">
-                            Author of <strong>everpuccin-m7sh</strong> and <strong>mush-omarchy-cricket</strong>. Blending Catppuccin, Everforest, and Wayland animations for the ultimate developer desktop aesthetic.
-                        </p>
-                        <div style="font-size: 0.78rem; color: var(--text-subtle); margin-top: auto; font-family: 'JetBrains Mono', monospace;">
-                            CLICK SWATCH TO LIVE SWITCH THEME:
-                        </div>
-                        <div class="rice-swatches">
-                            <div class="swatch-pill" data-theme-choice="obsidian" style="background: #8b5cf6;" title="Obsidian Cyber">Obsidian</div>
-                            <div class="swatch-pill" data-theme-choice="everpuccin" style="background: #a7c080;" title="Everpuccin">Forest</div>
-                            <div class="swatch-pill" data-theme-choice="matrix" style="background: #00ff66;" title="Matrix Emerald">Matrix</div>
-                            <div class="swatch-pill" data-theme-choice="cyberpunk" style="background: #ff007f;" title="Cyberpunk Neon">Cyber</div>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Interactive Physics Stack Pills (Span 6) -->
-                    <div class="bento-card bento-col-6">
-                        <div class="bento-icon-badge">
-                            <i data-lucide="layers" style="width:22px; height:22px;"></i>
-                        </div>
-                        <h3 class="bento-title">Interactive Tech & Tooling Arsenal</h3>
-                        <p class="bento-desc">
-                            A curated suite of programming languages, frameworks, and system tools utilized in daily engineering workflows.
-                        </p>
-                        <div class="physics-pills-container">
-                            <span class="interactive-pill">🐍 Python</span>
-                            <span class="interactive-pill">⚡ C Programming</span>
-                            <span class="interactive-pill">☕ Java</span>
-                            <span class="interactive-pill">🌐 JavaScript</span>
-                            <span class="interactive-pill">🎨 QML (Qt)</span>
-                            <span class="interactive-pill">📊 MATLAB</span>
-                            <span class="interactive-pill">💻 Bash / Zsh</span>
-                            <span class="interactive-pill">🐧 Arch / Omarchy</span>
-                            <span class="interactive-pill">🪟 Hyprland</span>
-                            <span class="interactive-pill">📡 Embedded C</span>
-                            <span class="interactive-pill">🐙 Git & GitHub</span>
-                            <span class="interactive-pill">⌨️ Neovim</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Intelligent Voice & Desktop Tools (Span 6) -->
-                    <div class="bento-card bento-col-6">
-                        <div class="bento-icon-badge">
-                            <i data-lucide="mic" style="width:22px; height:22px;"></i>
-                        </div>
-                        <h3 class="bento-title">Voice AI & Automation Tooling</h3>
-                        <p class="bento-desc">
-                            Built <strong>Desktop-Voice-Assistant</strong>, an autonomous Python-based system designed for hands-free workflow automation, voice query processing, application control, and seamless OS management.
-                        </p>
-                        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-top: auto;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; font-family:'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--secondary); margin-bottom: 6px;">
-                                <span>VOICE ASSISTANT ENGINE</span>
-                                <span>STATUS: READY</span>
-                            </div>
-                            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
-                                "Execute voice commands, launch apps, fetch live internet data & control audio hands-free."
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- GITHUB TELEMETRY & REPOSITORIES SECTION -->
-        <section class="github-section" id="repos">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-label">02 // Open Source Repository Hub</span>
-                    <h2 class="section-title scramble-hover">Public Repositories & Real-Time Telemetry</h2>
-                    <p class="section-subtitle">Direct live telemetry synchronized with the GitHub API for @m7sh, featuring open source tools, themes, and engineering prototypes.</p>
-                </div>
-
-                <!-- Telemetry Counters Bar -->
-                <div class="github-telemetry-bar">
-                    <div class="telemetry-card">
-                        <i data-lucide="git-pull-request" class="telemetry-icon" style="width:28px; height:28px;"></i>
-                        <span class="telemetry-val" id="telemetry-repos-count">6</span>
-                        <span class="telemetry-label">Public Repositories</span>
-                    </div>
-                    <div class="telemetry-card">
-                        <i data-lucide="star" class="telemetry-icon" style="width:28px; height:28px;"></i>
-                        <span class="telemetry-val" id="telemetry-stars-count">4</span>
-                        <span class="telemetry-label">GitHub Stars</span>
-                    </div>
-                    <div class="telemetry-card">
-                        <i data-lucide="code" class="telemetry-icon" style="width:28px; height:28px;"></i>
-                        <span class="telemetry-val" id="telemetry-languages-count">6</span>
-                        <span class="telemetry-label">Primary Languages</span>
-                    </div>
-                    <div class="telemetry-card">
-                        <i data-lucide="clock" class="telemetry-icon" style="width:28px; height:28px;"></i>
-                        <span class="telemetry-val" style="font-size: 1.4rem;" id="telemetry-last-commit">Consistent</span>
-                        <span class="telemetry-label">Commit Activity</span>
-                    </div>
-                </div>
-
-                <!-- Filter Chips Bar -->
-                <div class="repos-filter-bar">
-                    <div class="filter-chips">
-                        <button class="filter-chip active" data-filter="all">All Projects</button>
-                        <button class="filter-chip" data-filter="linux">Linux & Desktop Rice</button>
-                        <button class="filter-chip" data-filter="python">Python & Tools</button>
-                        <button class="filter-chip" data-filter="web">Web & Minimalist</button>
-                    </div>
-
-                    <a href="https://github.com/m7sh?tab=repositories" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding: 7px 16px; font-size: 0.85rem;">
-                        <span>View on GitHub</span>
-                        <i data-lucide="external-link" style="width:14px; height:14px;"></i>
+                    <a href="https://github.com/m7sh?tab=repositories" target="_blank" rel="noopener noreferrer" class="term-link-btn">
+                        <span>github.com/m7sh ↗</span>
                     </a>
                 </div>
 
-                <!-- Dynamic Repositories Grid Container -->
-                <div class="repos-grid" id="repos-container">
-                    <!-- Populated dynamically via JavaScript with skeleton fallback -->
-                    <div class="repo-card skeleton" style="height: 240px;"></div>
-                    <div class="repo-card skeleton" style="height: 240px;"></div>
-                    <div class="repo-card skeleton" style="height: 240px;"></div>
-                </div>
+                <!-- Static High-Reliability Project Grid -->
+                <div class="projects-grid" id="projects-grid">
 
+                    <!-- mush.workspace -->
+                    <div class="project-card" data-category="plugin">
+                        <div class="project-card-header">
+                            <span class="file-icon">🧩</span>
+                            <a href="https://github.com/m7sh/mush.workspace" target="_blank" rel="noopener noreferrer" class="project-name">mush.workspace.qml</a>
+                            <span class="project-badge badge-featured">FEATURED</span>
+                        </div>
+                        <p class="project-desc">
+                            Ubuntu & GNOME-inspired dynamic pill-and-dots workspace indicator for Omarchy status bar. Features live window lifecycle reactivity, multi-monitor display synchronization, cubic bezier transitions, and hide-empty workspace mode.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">QML</span>
+                            <span class="tag">Quickshell</span>
+                            <span class="tag">Hyprland</span>
+                            <span class="tag">Wayland</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/mush.workspace" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <button class="card-copy-cmd" data-copy="omarchy plugin add https://github.com/m7sh/mush.workspace.git --enable" title="Copy Omarchy Install Command">
+                                <code>omarchy plugin add mush.workspace</code>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- omarchy-media -->
+                    <div class="project-card" data-category="plugin">
+                        <div class="project-card-header">
+                            <span class="file-icon">🎵</span>
+                            <a href="https://github.com/m7sh/omarchy-media" target="_blank" rel="noopener noreferrer" class="project-name">omarchy-media.qml</a>
+                            <span class="project-badge">WIDGET</span>
+                        </div>
+                        <p class="project-desc">
+                            Minimal, aesthetic, and lightweight MPRIS media playback widget for Omarchy Linux. Synchronizes track titles, artists, album art, and audio playback controls seamlessly via D-Bus.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">QML</span>
+                            <span class="tag">MPRIS</span>
+                            <span class="tag">D-Bus</span>
+                            <span class="tag">Spotify</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/omarchy-media" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <button class="card-copy-cmd" data-copy="omarchy plugin add https://github.com/m7sh/omarchy-media.git --enable" title="Copy Omarchy Install Command">
+                                <code>omarchy plugin add omarchy-media</code>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- omarchy-f1 -->
+                    <div class="project-card" data-category="plugin">
+                        <div class="project-card-header">
+                            <span class="file-icon">🏎️</span>
+                            <a href="https://github.com/m7sh/omarchy-f1" target="_blank" rel="noopener noreferrer" class="project-name">omarchy-f1.qml</a>
+                            <span class="project-badge">SPORTS</span>
+                        </div>
+                        <p class="project-desc">
+                            Live Formula 1 telemetry, race countdowns, constructor/driver championship standings, and Grand Prix session alerts rendered directly inside the Omarchy status bar.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">QML</span>
+                            <span class="tag">F1 API</span>
+                            <span class="tag">Quickshell</span>
+                            <span class="tag">Wayland</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/omarchy-f1" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <button class="card-copy-cmd" data-copy="omarchy plugin add https://github.com/m7sh/omarchy-f1.git --enable" title="Copy Omarchy Install Command">
+                                <code>omarchy plugin add omarchy-f1</code>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- mush-omarchy-cricket -->
+                    <div class="project-card" data-category="plugin">
+                        <div class="project-card-header">
+                            <span class="file-icon">🏏</span>
+                            <a href="https://github.com/m7sh/mush-omarchy-cricket" target="_blank" rel="noopener noreferrer" class="project-name">mush-cricket.qml</a>
+                            <span class="project-badge">LIVE</span>
+                        </div>
+                        <p class="project-desc">
+                            Real-time live cricket score updates, ball-by-ball telemetry, and international tournament alerts rendered smoothly on your status bar with zero background battery drain.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">QML</span>
+                            <span class="tag">Cricket API</span>
+                            <span class="tag">Omarchy</span>
+                            <span class="tag">Widgets</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/mush-omarchy-cricket" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <button class="card-copy-cmd" data-copy="omarchy plugin add https://github.com/m7sh/mush-omarchy-cricket.git --enable" title="Copy Omarchy Install Command">
+                                <code>omarchy plugin add mush-cricket</code>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- velvet-dusk-theme -->
+                    <div class="project-card" data-category="theme">
+                        <div class="project-card-header">
+                            <span class="file-icon">🌆</span>
+                            <a href="https://github.com/m7sh/velvet-dusk-theme" target="_blank" rel="noopener noreferrer" class="project-name">velvet-dusk.theme</a>
+                            <span class="project-badge badge-active-rice">ACTIVE RICE</span>
+                        </div>
+                        <p class="project-desc">
+                            Aesthetic Omarchy & Hyprland theme with pastel lavender and dusty rose gradient borders, matching GTK styling, Walker launcher, Foot terminal colors, and custom wall art.
+                        </p>
+                        <div class="color-chips">
+                            <span class="chip" style="background:#1E1B2E;" title="#1E1B2E"></span>
+                            <span class="chip" style="background:#C4B5FD;" title="#C4B5FD"></span>
+                            <span class="chip" style="background:#FDA4AF;" title="#FDA4AF"></span>
+                            <span class="chip-label">Lavender & Rose</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/velvet-dusk-theme" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <span class="card-info">Omarchy Rice</span>
+                        </div>
+                    </div>
+
+                    <!-- gruvbox-aesthetic -->
+                    <div class="project-card" data-category="theme">
+                        <div class="project-card-header">
+                            <span class="file-icon">🍂</span>
+                            <a href="https://github.com/m7sh/gruvbox-aesthetic" target="_blank" rel="noopener noreferrer" class="project-name">gruvbox-aesthetic.theme</a>
+                            <span class="project-badge">THEME</span>
+                        </div>
+                        <p class="project-desc">
+                            Refined, dense smoky and golden autumn dark overhaul of the classic Gruvbox palette for Omarchy and Hyprland. High contrast, warm amber glow, and comfortable contrast.
+                        </p>
+                        <div class="color-chips">
+                            <span class="chip" style="background:#282828;" title="#282828"></span>
+                            <span class="chip" style="background:#D79921;" title="#D79921"></span>
+                            <span class="chip" style="background:#EBDBB2;" title="#EBDBB2"></span>
+                            <span class="chip-label">Smoky Autumn</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/gruvbox-aesthetic" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <span class="card-info">Omarchy Rice</span>
+                        </div>
+                    </div>
+
+                    <!-- god-of-war-theme -->
+                    <div class="project-card" data-category="theme">
+                        <div class="project-card-header">
+                            <span class="file-icon">⚔️</span>
+                            <a href="https://github.com/m7sh/god-of-war-theme" target="_blank" rel="noopener noreferrer" class="project-name">god-of-war.theme</a>
+                            <span class="project-badge">THEME</span>
+                        </div>
+                        <p class="project-desc">
+                            Aesthetic God of War dark theme for Omarchy with Spartan Crimson borders, obsidian slate styling, custom backgrounds, and Vesktop / Discord client theme support.
+                        </p>
+                        <div class="color-chips">
+                            <span class="chip" style="background:#121214;" title="#121214"></span>
+                            <span class="chip" style="background:#DC2626;" title="#DC2626"></span>
+                            <span class="chip" style="background:#9CA3AF;" title="#9CA3AF"></span>
+                            <span class="chip-label">Spartan Crimson</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/god-of-war-theme" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <span class="card-info">Omarchy Rice</span>
+                        </div>
+                    </div>
+
+                    <!-- everpuccin-m7sh -->
+                    <div class="project-card" data-category="theme">
+                        <div class="project-card-header">
+                            <span class="file-icon">🌲</span>
+                            <a href="https://github.com/m7sh/everpuccin-m7sh" target="_blank" rel="noopener noreferrer" class="project-name">everpuccin.theme</a>
+                            <span class="project-badge">THEME</span>
+                        </div>
+                        <p class="project-desc">
+                            An Omarchy theme blending Catppuccin Mocha with tranquil Forest Green hues. Gentle on the eyes for marathon coding sessions.
+                        </p>
+                        <div class="color-chips">
+                            <span class="chip" style="background:#1e1e2e;" title="#1e1e2e"></span>
+                            <span class="chip" style="background:#a6e3a1;" title="#a6e3a1"></span>
+                            <span class="chip" style="background:#94e2d5;" title="#94e2d5"></span>
+                            <span class="chip-label">Catppuccin + Forest</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/everpuccin-m7sh" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <span class="card-info">Omarchy Rice</span>
+                        </div>
+                    </div>
+
+                    <!-- hogwarts-night -->
+                    <div class="project-card" data-category="theme">
+                        <div class="project-card-header">
+                            <span class="file-icon">🦉</span>
+                            <a href="https://github.com/m7sh/hogwarts-night" target="_blank" rel="noopener noreferrer" class="project-name">hogwarts-night.theme</a>
+                            <span class="project-badge">THEME</span>
+                        </div>
+                        <p class="project-desc">
+                            Dark arcane aesthetic theme for Omarchy with candlelit parchment gold accents, midnight slate, and magical atmospheric wallpapers.
+                        </p>
+                        <div class="color-chips">
+                            <span class="chip" style="background:#0f141c;" title="#0f141c"></span>
+                            <span class="chip" style="background:#d4af37;" title="#d4af37"></span>
+                            <span class="chip" style="background:#e6d5b8;" title="#e6d5b8"></span>
+                            <span class="chip-label">Arcane Gold</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/hogwarts-night" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <span class="card-info">Omarchy Rice</span>
+                        </div>
+                    </div>
+
+                    <!-- omarchy-waffle-cat-theme -->
+                    <div class="project-card" data-category="theme">
+                        <div class="project-card-header">
+                            <span class="file-icon">🧇</span>
+                            <a href="https://github.com/m7sh/omarchy-waffle-cat-theme" target="_blank" rel="noopener noreferrer" class="project-name">waffle-cat.theme</a>
+                            <span class="project-badge">FORK</span>
+                        </div>
+                        <p class="project-desc">
+                            The official Waffle-Cat colorscheme theme tailored for Omarchy Linux. Warm amber coffee, crisp maple waffle accents, and cozy aesthetics.
+                        </p>
+                        <div class="color-chips">
+                            <span class="chip" style="background:#2b201a;" title="#2b201a"></span>
+                            <span class="chip" style="background:#d97706;" title="#d97706"></span>
+                            <span class="chip" style="background:#fef3c7;" title="#fef3c7"></span>
+                            <span class="chip-label">Amber & Cream</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/omarchy-waffle-cat-theme" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <span class="card-info">Omarchy Rice</span>
+                        </div>
+                    </div>
+
+                    <!-- MovieBox-Tui -->
+                    <div class="project-card" data-category="tool">
+                        <div class="project-card-header">
+                            <span class="file-icon">🦀</span>
+                            <a href="https://github.com/m7sh/MovieBox-Tui" target="_blank" rel="noopener noreferrer" class="project-name">MovieBox-Tui.rs</a>
+                            <span class="project-badge">RUST TUI</span>
+                        </div>
+                        <p class="project-desc">
+                            High-speed terminal user interface written in Rust to find, stream, and download movies, TV shows, and live channels through lightweight local media players.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Rust</span>
+                            <span class="tag">Ratatui</span>
+                            <span class="tag">TUI</span>
+                            <span class="tag">CLI</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/MovieBox-Tui" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <span class="card-info">Terminal App</span>
+                        </div>
+                    </div>
+
+                    <!-- Desktop-Voice-Assistant -->
+                    <div class="project-card" data-category="tool">
+                        <div class="project-card-header">
+                            <span class="file-icon">🎙️</span>
+                            <a href="https://github.com/m7sh/Desktop-Voice-Assistant" target="_blank" rel="noopener noreferrer" class="project-name">voice_assistant.py</a>
+                            <span class="project-badge">PYTHON</span>
+                        </div>
+                        <p class="project-desc">
+                            Hands-free voice automation assistant for Linux desktops. Handles speech recognition, application launching, system queries, and audio commands.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Speech</span>
+                            <span class="tag">Automation</span>
+                            <span class="tag">CLI</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/m7sh/Desktop-Voice-Assistant" target="_blank" rel="noopener noreferrer" class="card-btn">Repository ↗</a>
+                            <span class="card-info">Automation</span>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </section>
 
-        <!-- INTERACTIVE NEOFETCH TERMINAL SECTION -->
+        <!-- INTERACTIVE VIRTUAL TERMINAL SECTION -->
         <section class="terminal-section" id="terminal">
             <div class="container">
-                <div class="section-header">
-                    <span class="section-label">03 // Interactive Command Shell</span>
-                    <h2 class="section-title scramble-hover">musharaf@omarchy:~$ Terminal CLI</h2>
-                    <p class="section-subtitle">A fully functioning interactive virtual terminal. Type commands directly or click the quick badges to inspect system information.</p>
+                <div class="section-titlebar">
+                    <span class="titlebar-path">~/bin/</span>
+                    <h2 class="titlebar-heading">Interactive Command Shell</h2>
+                    <span class="titlebar-cmd">quickshell --run interactive-cli</span>
                 </div>
 
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <div class="terminal-dots">
-                            <span class="dot red" title="Close"></span>
-                            <span class="dot yellow" title="Minimize"></span>
-                            <span class="dot green" title="Maximize"></span>
+                <div class="interactive-terminal-window">
+                    <!-- Titlebar -->
+                    <div class="term-win-header">
+                        <div class="nav-window-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
                         </div>
-                        <span class="terminal-title">musharaf@omarchy: ~ (zsh / wayland)</span>
-                        <div class="terminal-controls">
-                            <button class="term-btn cmd-badge" data-cmd="clear">clear</button>
-                            <button class="term-btn cmd-badge" data-cmd="help">help</button>
-                        </div>
-                    </div>
-
-                    <div class="terminal-body">
-                        <div class="terminal-history" id="terminal-history-box">
-                            <!-- Commands history dynamically appended here -->
-                        </div>
-
-                        <div class="terminal-input-row">
-                            <span class="term-prompt">musharaf@omarchy:~$</span>
-                            <input type="text" id="terminal-cli-input" class="terminal-input" placeholder="type 'help', 'neofetch', 'theme everpuccin', 'repos'..." autocomplete="off" spellcheck="false" />
-                            <span class="term-cursor-blink"></span>
+                        <span class="term-win-title">mush@omarchy:~ (zsh / wayland)</span>
+                        <div class="term-win-tools">
+                            <button class="term-mini-btn" id="term-clear-btn" title="Clear screen">clear</button>
+                            <button class="term-mini-btn" id="term-help-btn" title="Show commands">help</button>
                         </div>
                     </div>
 
-                    <div class="terminal-quick-cmds">
-                        <span>Quick Shortcuts:</span>
-                        <button class="cmd-badge" data-cmd="neofetch">neofetch</button>
-                        <button class="cmd-badge" data-cmd="whoami">whoami</button>
-                        <button class="cmd-badge" data-cmd="repos">repos</button>
-                        <button class="cmd-badge" data-cmd="skills">skills</button>
-                        <button class="cmd-badge" data-cmd="matrix">matrix</button>
-                        <button class="cmd-badge" data-cmd="theme everpuccin">theme everpuccin</button>
-                        <button class="cmd-badge" data-cmd="sound">sound toggle</button>
-                        <button class="cmd-badge" data-cmd="contact">contact</button>
+                    <!-- Terminal Scroll Body -->
+                    <div class="term-win-body" id="term-output-container">
+                        <div class="term-welcome-msg">
+                            <span class="term-dim">Omarchy Linux 4.0.4-1 (x86_64) — Hyprland / Quickshell</span><br/>
+                            <span class="term-cyan">Type <b>help</b> for available commands, or click the quick shortcuts below.</span>
+                        </div>
+                        <div id="term-history-log"></div>
+
+                        <!-- Active Input Row -->
+                        <div class="term-prompt-row">
+                            <span class="term-prompt-label">mush@omarchy:~$</span>
+                            <input type="text" id="term-input" class="term-real-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="type 'help', 'whoami', 'fastfetch', 'theme velvet-dusk'..." />
+                        </div>
+                    </div>
+
+                    <!-- Clickable Quick Command Chips -->
+                    <div class="term-chips-bar">
+                        <span class="chips-label">Shortcuts:</span>
+                        <button class="term-chip" data-cmd="help">help</button>
+                        <button class="term-chip" data-cmd="whoami">whoami</button>
+                        <button class="term-chip" data-cmd="fastfetch">fastfetch</button>
+                        <button class="term-chip" data-cmd="projects">projects</button>
+                        <button class="term-chip" data-cmd="themes">themes</button>
+                        <button class="term-chip" data-cmd="skills">skills</button>
+                        <button class="term-chip" data-cmd="theme velvet-dusk">theme velvet-dusk</button>
+                        <button class="term-chip" data-cmd="theme gruvbox">theme gruvbox</button>
+                        <button class="term-chip" data-cmd="matrix">matrix</button>
+                        <button class="term-chip" data-cmd="clear">clear</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SYSTEM STACK & ARSENAL SECTION -->
+        <section class="stack-section" id="stack">
+            <div class="container">
+                <div class="section-titlebar">
+                    <span class="titlebar-path">/etc/environment/</span>
+                    <h2 class="titlebar-heading">Technical Arsenal & Stack</h2>
+                    <span class="titlebar-cmd">cat /etc/environment/stack.json</span>
+                </div>
+
+                <!-- Btop Skill Resource Gauge -->
+                <div class="btop-box">
+                    <div class="btop-header">
+                        <span class="btop-title">BTOP v1.3.2 — Core Skills &amp; Proficiency Allocation</span>
+                        <span class="btop-metrics">Tasks: 88 thr | Mem: 4.8G / 8G | Mode: Performance</span>
+                    </div>
+                    <div class="btop-body">
+                        <div class="btop-bar-row">
+                            <span class="btop-label">QML / Qt Quick (Wayland)</span>
+                            <div class="btop-track"><div class="btop-fill" style="width: 88%;"></div></div>
+                            <span class="btop-pct">88%</span>
+                        </div>
+                        <div class="btop-bar-row">
+                            <span class="btop-label">Linux Desktop Ricing (Hyprland)</span>
+                            <div class="btop-track"><div class="btop-fill" style="width: 98%;"></div></div>
+                            <span class="btop-pct">98%</span>
+                        </div>
+                        <div class="btop-bar-row">
+                            <span class="btop-label">Shell Scripting (Bash / Zsh)</span>
+                            <div class="btop-track"><div class="btop-fill" style="width: 90%;"></div></div>
+                            <span class="btop-pct">90%</span>
+                        </div>
+                        <div class="btop-bar-row">
+                            <span class="btop-label">Python &amp; Automation</span>
+                            <div class="btop-track"><div class="btop-fill" style="width: 78%;"></div></div>
+                            <span class="btop-pct">78%</span>
+                        </div>
+                        <div class="btop-bar-row">
+                            <span class="btop-label">Rust &amp; TUI Development</span>
+                            <div class="btop-track"><div class="btop-fill" style="width: 65%;"></div></div>
+                            <span class="btop-pct">65%</span>
+                        </div>
+                        <div class="btop-bar-row">
+                            <span class="btop-label">Web UI / CSS3 / JavaScript</span>
+                            <div class="btop-track"><div class="btop-fill" style="width: 82%;"></div></div>
+                            <span class="btop-pct">82%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stack Cards Grid -->
+                <div class="stack-grid">
+                    <div class="stack-card">
+                        <div class="stack-card-title">
+                            <span class="stack-icon">⚡</span>
+                            <span>Core Languages</span>
+                        </div>
+                        <ul class="stack-list">
+                            <li><code>QML / QtQuick</code> <span>Status bar UI &amp; bindings</span></li>
+                            <li><code>Rust</code> <span>High-speed terminal TUI</span></li>
+                            <li><code>Python</code> <span>Automation &amp; voice tools</span></li>
+                            <li><code>Lua</code> <span>Hyprland 0.45+ &amp; Neovim</span></li>
+                            <li><code>Bash / Zsh / Fish</code> <span>System hooks &amp; IPC</span></li>
+                            <li><code>CSS3 / HTML5 / JS</code> <span>Responsive minimal web</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="stack-card">
+                        <div class="stack-card-title">
+                            <span class="stack-icon">🐧</span>
+                            <span>Wayland &amp; System</span>
+                        </div>
+                        <ul class="stack-list">
+                            <li><code>Omarchy Linux</code> <span>Custom Arch distribution</span></li>
+                            <li><code>Hyprland</code> <span>Dynamic tiling compositor</span></li>
+                            <li><code>Quickshell</code> <span>Declarative Wayland shell</span></li>
+                            <li><code>PipeWire</code> <span>Low-latency audio daemon</span></li>
+                            <li><code>Waybar / Walker</code> <span>Panels, docks &amp; launchers</span></li>
+                            <li><code>Foot / Ghostty</code> <span>Fast Wayland terminals</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="stack-card">
+                        <div class="stack-card-title">
+                            <span class="stack-icon">🛠️</span>
+                            <span>Workflow &amp; Tools</span>
+                        </div>
+                        <ul class="stack-list">
+                            <li><code>Neovim</code> <span>Modal code editor &amp; IDE</span></li>
+                            <li><code>Git &amp; GitHub</code> <span>Version control &amp; actions</span></li>
+                            <li><code>Btop</code> <span>System resource monitor</span></li>
+                            <li><code>Fastfetch</code> <span>System telemetry generator</span></li>
+                            <li><code>JetBrains Mono</code> <span>Monospace code typeface</span></li>
+                            <li><code>D-Bus / MPRIS</code> <span>Linux desktop IPC protocols</span></li>
+                        </ul>
                     </div>
                 </div>
 
             </div>
         </section>
 
-        <!-- EXPERIENCE & ROADMAP TIMELINE SECTION -->
-        <section class="timeline-section" id="timeline">
+        <!-- CONNECT & VIM STATUSLINE FOOTER -->
+        <footer class="connect-section" id="connect">
             <div class="container">
-                <div class="section-header">
-                    <span class="section-label">04 // Trajectory & Milestones</span>
-                    <h2 class="section-title scramble-hover">Engineering Journey & Milestones</h2>
-                    <p class="section-subtitle">Academic accomplishments, open source projects, and technical evolutions.</p>
+                <div class="section-titlebar">
+                    <span class="titlebar-path">./connect.sh</span>
+                    <h2 class="titlebar-heading">Open Communication Channels</h2>
+                    <span class="titlebar-cmd">./connect.sh --list-endpoints</span>
                 </div>
 
-                <div class="timeline-track">
-                    <div class="timeline-line"></div>
+                <div class="connect-card">
+                    <div class="connect-grid">
+                        <div class="connect-col">
+                            <span class="connect-label">EMAIL ENDPOINT</span>
+                            <div class="connect-val-row">
+                                <a href="mailto:mdmusharaf720@gmail.com" class="connect-link">mdmusharaf720@gmail.com</a>
+                                <button class="term-mini-btn copy-email-btn" data-email="mdmusharaf720@gmail.com">copy</button>
+                            </div>
+                        </div>
 
-                    <!-- Milestone 1: 2026 - Present -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-card">
-                            <div class="timeline-period">2026 — PRESENT</div>
-                            <h3 class="timeline-role">Analyst · Corporate Insurance Enterprise</h3>
-                            <p class="timeline-org">Insurance Firm · Bangalore, Karnataka, India</p>
-                            <p class="timeline-text">
-                                Joined an established corporate Insurance firm in Bangalore as an <strong>Analyst</strong>. Evaluating complex enterprise data pipelines, risk evaluation metrics, business workflow automation, and analytical reporting. In parallel, maintaining open-source Linux software (<strong>mush-omarchy-cricket</strong> & <strong>everpuccin-m7sh</strong>) for the community.
-                            </p>
+                        <div class="connect-col">
+                            <span class="connect-label">GITHUB PROFILE</span>
+                            <div class="connect-val-row">
+                                <a href="https://github.com/m7sh" target="_blank" rel="noopener noreferrer" class="connect-link">github.com/m7sh ↗</a>
+                            </div>
+                        </div>
+
+                        <div class="connect-col">
+                            <span class="connect-label">LIVE PORTFOLIO</span>
+                            <div class="connect-val-row">
+                                <a href="https://m7sh.github.io/m7sh/" class="connect-link">m7sh.github.io/m7sh ↗</a>
+                            </div>
+                        </div>
+
+                        <div class="connect-col">
+                            <span class="connect-label">STATUS</span>
+                            <div class="connect-status">
+                                <span class="status-pulse"></span>
+                                <span>Open for open-source ricing &amp; Wayland tooling</span>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Milestone 2: 2024 - 2025 -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-card">
-                            <div class="timeline-period">2024 — 2025</div>
-                            <h3 class="timeline-role">Junior Planning Engineer</h3>
-                            <p class="timeline-org">Engineering & Project Operations · Saudi Arabia</p>
-                            <p class="timeline-text">
-                                Relocated internationally to Saudi Arabia and worked as a <strong>Junior Planning Engineer</strong>. Directed engineering schedule management, critical path tracking, resource allocation, and operational workflow coordination across demanding industrial and infrastructure engineering initiatives.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Milestone 3: 2019 - 2023 -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-card">
-                            <div class="timeline-period">2019 — 2023</div>
-                            <h3 class="timeline-role">Bachelor of Engineering in Electronics & Communication (ECE)</h3>
-                            <p class="timeline-org">Visveswaraya Technological University (VTU), Belagavi · Member @ IEEE</p>
-                            <p class="timeline-text">
-                                Commenced undergraduate studies in 2019 and graduated in 2023 with a rigorous foundation in Digital Signal Processing, Embedded Systems, Microcontroller Architectures, MATLAB modeling, and Communication Systems. Active member of IEEE participating in engineering symposia.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Milestone 4: 2018 - 2021 -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-card">
-                            <div class="timeline-period">2018 — 2021</div>
-                            <h3 class="timeline-role">Foundations in Software, Linux & Open Source</h3>
-                            <p class="timeline-org">Open-Source Exploration · Python & Linux Tooling</p>
-                            <p class="timeline-text">
-                                Experimented with Unix systems, shell scripting, Python desktop automation (<strong>Desktop-Voice-Assistant</strong>), and minimal web design principles that formed the technical basis for high-speed systems development.
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTACT & CONNECT SECTION -->
-        <section class="contact-section" id="contact">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-label">05 // Get In Touch</span>
-                    <h2 class="section-title scramble-hover">Initiate Transmission</h2>
-                    <p class="section-subtitle">Whether you have an interesting project, an open-source collaboration, or an engineering inquiry — feel free to connect.</p>
                 </div>
 
-                <div class="contact-grid">
-
-                    <!-- Direct Channels -->
-                    <div class="contact-channels">
-
-                        <div class="channel-card copy-email-trigger" title="Click to copy email address">
-                            <div class="channel-left">
-                                <div class="channel-icon">
-                                    <i data-lucide="mail" style="width:20px; height:20px;"></i>
-                                </div>
-                                <div>
-                                    <div class="channel-name">Direct Email</div>
-                                    <div class="channel-value">mdmusharaf720@gmail.com</div>
-                                </div>
-                            </div>
-                            <button class="nav-btn" style="padding: 6px 12px; font-size: 0.78rem;">
-                                <i data-lucide="copy" style="width:13px; height:13px;"></i> Copy
-                            </button>
-                        </div>
-
-                        <a href="https://github.com/m7sh" target="_blank" rel="noopener noreferrer" class="channel-card">
-                            <div class="channel-left">
-                                <div class="channel-icon">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-                                </div>
-                                <div>
-                                    <div class="channel-name">GitHub Profile</div>
-                                    <div class="channel-value">github.com/m7sh</div>
-                                </div>
-                            </div>
-                            <i data-lucide="arrow-up-right" style="width:18px; height:18px; color:var(--text-subtle);"></i>
-                        </a>
-
-                        <a href="https://www.linkedin.com/in/mohammed-musharaf-122523220/" target="_blank" rel="noopener noreferrer" class="channel-card">
-                            <div class="channel-left">
-                                <div class="channel-icon">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                                </div>
-                                <div>
-                                    <div class="channel-name">LinkedIn</div>
-                                    <div class="channel-value">mohammed-musharaf-122523220</div>
-                                </div>
-                            </div>
-                            <i data-lucide="arrow-up-right" style="width:18px; height:18px; color:var(--text-subtle);"></i>
-                        </a>
-
-                        <a href="https://twitter.com/i_musharaf725" target="_blank" rel="noopener noreferrer" class="channel-card">
-                            <div class="channel-left">
-                                <div class="channel-icon">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>
-                                </div>
-                                <div>
-                                    <div class="channel-name">Twitter / X</div>
-                                    <div class="channel-value">@i_musharaf725</div>
-                                </div>
-                            </div>
-                            <i data-lucide="arrow-up-right" style="width:18px; height:18px; color:var(--text-subtle);"></i>
-                        </a>
-
-                        <div class="channel-card" style="cursor: default;">
-                            <div class="channel-left">
-                                <div class="channel-icon">
-                                    <i data-lucide="map-pin" style="width:20px; height:20px;"></i>
-                                </div>
-                                <div>
-                                    <div class="channel-name">Location & Current Role</div>
-                                    <div class="channel-value">Bangalore, India · Analyst @ Insurance Firm</div>
-                                </div>
-                            </div>
-                        </div>
-
+                <!-- Authentic Vim / Neovim Statusline Footer -->
+                <div class="vim-statusline">
+                    <div class="status-left">
+                        <span class="status-mode">NORMAL</span>
+                        <span class="status-file">~/portfolio.html</span>
+                        <span class="status-sep">•</span>
+                        <span class="status-meta">utf-8[unix]</span>
+                        <span class="status-sep">•</span>
+                        <span class="status-pos">100%</span>
                     </div>
-
-                    <!-- Glassmorphic FormSubmit Contact Form -->
-                    <div class="contact-form-card">
-                        <form id="portfolio-contact-form" action="https://formsubmit.co/fbc018aa2b5ecd094234c482c568eec1" method="POST" target="_blank">
-                            <input type="hidden" name="_captcha" value="true" />
-                            <input type="hidden" name="_template" value="table" />
-                            <input type="hidden" name="_subject" value="New Portfolio Message from m7sh website!" />
-
-                            <div class="form-group">
-                                <label class="form-label" for="contact-name">Your Full Name</label>
-                                <input type="text" id="contact-name" name="name" class="form-input" placeholder="Jane Doe" required />
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="contact-email">Email Address</label>
-                                <input type="email" id="contact-email" name="email" class="form-input" placeholder="jane@domain.com" required />
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="contact-message">Message</label>
-                                <textarea id="contact-message" name="message" class="form-textarea" rows="5" placeholder="Share your project ideas, opportunities, or engineering thoughts..." required></textarea>
-                            </div>
-
-                            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-                                <i data-lucide="send" style="width:18px; height:18px;"></i>
-                                <span>Transmit Message</span>
-                            </button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="site-footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div>
-                        © 2026 <strong>Mohammed Musharaf (m7sh)</strong> · Built with fluid physics & pure performance.
-                    </div>
-                    <div class="footer-links">
-                        <a href="https://github.com/m7sh" target="_blank" rel="noopener noreferrer">GitHub</a>
-                        <a href="https://twitter.com/i_musharaf725" target="_blank" rel="noopener noreferrer">Twitter/X</a>
-                        <a href="https://www.linkedin.com/in/mohammed-musharaf-122523220/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                        <a href="#hero">Back to Top ↑</a>
+                    <div class="status-right">
+                        <span class="status-branch">git:main </span>
+                        <span class="status-sep">•</span>
+                        <span class="status-copy">© 2026 Mohammed Musharaf (@m7sh)</span>
                     </div>
                 </div>
             </div>
@@ -587,35 +701,25 @@
 
     </div>
 
-    <!-- COMMAND PALETTE MODAL (⌘K / Ctrl+K) -->
-    <div class="command-palette-backdrop" id="command-palette-backdrop">
-        <div class="command-palette-modal">
-            <div class="palette-search-bar">
-                <i data-lucide="search" style="width:18px; height:18px; color:var(--text-subtle);"></i>
-                <input type="text" id="palette-input" class="palette-input" placeholder="Type a command, section name, or theme..." />
-                <span class="kbd-shortcut">ESC</span>
+    <!-- COMMAND PALETTE MODAL (Ctrl+K / ⌘K) -->
+    <div class="palette-modal" id="palette-modal" aria-hidden="true">
+        <div class="palette-backdrop" id="palette-backdrop"></div>
+        <div class="palette-box">
+            <div class="palette-header">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="palette-input" placeholder="Type a command or jump to section..." autocomplete="off" />
+                <kbd class="palette-esc">ESC</kbd>
             </div>
-
             <div class="palette-results" id="palette-results">
-                <!-- Dynamically injected results -->
-            </div>
-
-            <div class="palette-footer">
-                <span>Navigate quickly with keyboard</span>
-                <div class="palette-keys">
-                    <span>↑↓ Navigate</span>
-                    <span>↵ Select</span>
-                    <span>ESC Close</span>
-                </div>
+                <!-- Injected dynamically by main.js -->
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification Container -->
+    <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toast-container"></div>
 
-    <!-- Core Script -->
+    <!-- Main JavaScript -->
     <script src="src/main.js"></script>
-
 </body>
 </html>

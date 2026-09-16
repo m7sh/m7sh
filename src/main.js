@@ -1,6 +1,6 @@
 /**
  * M7SH · MOHAMMED MUSHARAF PORTFOLIO
- * High-Performance Animation & Fluid Interaction Engine
+ * High-Performance Minimal Terminal Experience Engine
  */
 
 (function () {
@@ -9,10 +9,15 @@
     // --- CONFIG & STATE ---
     const CONFIG = {
         githubUser: 'm7sh',
-        cacheKey: 'm7sh_gh_data_v2',
-        cacheDuration: 1000 * 60 * 30, // 30 minutes
-        defaultTheme: 'obsidian',
-        themes: ['obsidian', 'everpuccin', 'matrix', 'cyberpunk']
+        themes: ['obsidian', 'velvet-dusk', 'gruvbox', 'matrix', 'everpuccin'],
+        themeLabels: {
+            'obsidian': 'Obsidian',
+            'velvet-dusk': 'Velvet Dusk',
+            'gruvbox': 'Gruvbox',
+            'matrix': 'Matrix',
+            'everpuccin': 'Everpuccin'
+        },
+        defaultTheme: 'obsidian'
     };
 
     const state = {
@@ -21,11 +26,10 @@
         matrixActive: false,
         commandHistory: [],
         historyIndex: -1,
-        activeRepoFilter: 'all',
-        reposData: []
+        activeFilter: 'all'
     };
 
-    // --- AUDIO SYNTHESIZER (Web Audio API) ---
+    // --- AUDIO SYNTHESIZER (Pure Web Audio API) ---
     class SoundEngine {
         constructor() {
             this.ctx = null;
@@ -74,26 +78,16 @@
             } catch (e) {}
         }
 
-        tick() {
-            this.playTone(1400, 800, 'sine', 0.025, 0.015);
-        }
-
-        blip() {
-            this.playTone(480, 960, 'triangle', 0.06, 0.04);
-        }
-
-        key() {
-            this.playTone(600 + Math.random() * 300, 200, 'triangle', 0.02, 0.012);
-        }
-
+        tick() { this.playTone(1200, 700, 'sine', 0.025, 0.015); }
+        blip() { this.playTone(480, 960, 'triangle', 0.05, 0.03); }
+        key() { this.playTone(600 + Math.random() * 200, 300, 'triangle', 0.015, 0.01); }
         theme() {
-            this.playTone(320, 640, 'sine', 0.12, 0.04);
-            setTimeout(() => this.playTone(640, 1280, 'sine', 0.15, 0.03), 60);
+            this.playTone(340, 680, 'sine', 0.08, 0.03);
+            setTimeout(() => this.playTone(680, 1360, 'sine', 0.1, 0.025), 60);
         }
-
         success() {
-            [440, 554.37, 659.25, 880].forEach((f, idx) => {
-                setTimeout(() => this.playTone(f, f * 1.05, 'sine', 0.15, 0.04), idx * 70);
+            [440, 554, 659, 880].forEach((f, i) => {
+                setTimeout(() => this.playTone(f, f * 1.05, 'sine', 0.12, 0.03), i * 65);
             });
         }
     }
@@ -102,13 +96,8 @@
 
     // --- TOAST NOTIFICATIONS ---
     function showToast(msg, icon = '✓') {
-        let container = document.getElementById('toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.id = 'toast-container';
-            container.className = 'toast-container';
-            document.body.appendChild(container);
-        }
+        const container = document.getElementById('toast-container');
+        if (!container) return;
 
         const toast = document.createElement('div');
         toast.className = 'toast';
@@ -123,1121 +112,601 @@
 
         setTimeout(() => {
             toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 350);
-        }, 3200);
+            setTimeout(() => toast.remove(), 250);
+        }, 2800);
+    }
+
+    // --- CLIPBOARD COPY HELPER ---
+    function copyToClipboard(text, label = 'Copied to clipboard') {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(label);
+                sound.success();
+            }).catch(() => fallbackCopy(text, label));
+        } else {
+            fallbackCopy(text, label);
+        }
+    }
+
+    function fallbackCopy(text, label) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+            document.execCommand('copy');
+            showToast(label);
+            sound.success();
+        } catch (err) {
+            showToast('Failed to copy', '✕');
+        }
+        document.body.removeChild(ta);
     }
 
     // --- THEME ENGINE ---
-    function setTheme(themeName) {
-        if (!CONFIG.themes.includes(themeName)) return;
+    function applyTheme(themeName) {
+        if (!CONFIG.themes.includes(themeName)) {
+            themeName = CONFIG.defaultTheme;
+        }
+
         state.theme = themeName;
         document.documentElement.setAttribute('data-theme', themeName);
         localStorage.setItem('m7sh_theme', themeName);
-        sound.theme();
 
-        const themeBtnText = document.getElementById('theme-btn-label');
-        if (themeBtnText) {
-            themeBtnText.textContent = themeName.charAt(0).toUpperCase() + themeName.slice(1);
+        const labelEl = document.getElementById('theme-btn-label');
+        if (labelEl) {
+            labelEl.textContent = CONFIG.themeLabels[themeName] || themeName;
         }
 
-        showToast(`Theme: ${themeName}`, '🎨');
+        sound.theme();
     }
 
     function cycleTheme() {
         const currentIndex = CONFIG.themes.indexOf(state.theme);
         const nextIndex = (currentIndex + 1) % CONFIG.themes.length;
-        setTheme(CONFIG.themes[nextIndex]);
+        const nextTheme = CONFIG.themes[nextIndex];
+        applyTheme(nextTheme);
+        showToast(`Theme switched to ${CONFIG.themeLabels[nextTheme] || nextTheme}`, '🎨');
     }
 
-    // --- INTERACTIVE FLUID & PARTICLE CANVAS ---
-    class FluidCanvas {
-        constructor(canvasId) {
-            this.canvas = document.getElementById(canvasId);
-            if (!this.canvas) return;
-            this.ctx = this.canvas.getContext('2d');
-            this.particles = [];
-            this.numParticles = 75;
-            this.mouse = { x: -1000, y: -1000, vx: 0, vy: 0, lastX: 0, lastY: 0, isHover: false };
-            this.width = 0;
-            this.height = 0;
+    // --- SOUND TOGGLE ---
+    function toggleSound() {
+        state.soundEnabled = !state.soundEnabled;
+        localStorage.setItem('m7sh_sound_enabled', state.soundEnabled);
 
-            this.init();
+        const indicator = document.getElementById('sound-indicator');
+        if (indicator) {
+            indicator.textContent = state.soundEnabled ? 'SFX: ON' : 'SFX: OFF';
+            indicator.className = state.soundEnabled ? 'sound-on' : 'sound-off';
         }
 
-        init() {
-            this.resize();
-            window.addEventListener('resize', () => this.resize());
-
-            // Populate particles
-            this.particles = [];
-            for (let i = 0; i < this.numParticles; i++) {
-                this.particles.push({
-                    x: Math.random() * this.width,
-                    y: Math.random() * this.height,
-                    vx: (Math.random() - 0.5) * 0.7,
-                    vy: (Math.random() - 0.5) * 0.7,
-                    radius: Math.random() * 2.2 + 0.8,
-                    baseAlpha: Math.random() * 0.5 + 0.2,
-                    alpha: 0.3,
-                    colorVariant: Math.random()
-                });
-            }
-
-            // Mouse tracking
-            window.addEventListener('mousemove', (e) => {
-                this.mouse.vx = e.clientX - this.mouse.lastX;
-                this.mouse.vy = e.clientY - this.mouse.lastY;
-                this.mouse.lastX = e.clientX;
-                this.mouse.lastY = e.clientY;
-                this.mouse.x = e.clientX;
-                this.mouse.y = e.clientY;
-                this.mouse.isHover = true;
-            });
-
-            window.addEventListener('mouseleave', () => {
-                this.mouse.isHover = false;
-                this.mouse.x = -1000;
-                this.mouse.y = -1000;
-            });
-
-            this.animate();
-        }
-
-        resize() {
-            this.width = window.innerWidth;
-            this.height = window.innerHeight;
-            this.canvas.width = this.width * window.devicePixelRatio;
-            this.canvas.height = this.height * window.devicePixelRatio;
-            this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-        }
-
-        animate() {
-            this.ctx.clearRect(0, 0, this.width, this.height);
-
-            const computedStyle = getComputedStyle(document.documentElement);
-            const primaryColor = computedStyle.getPropertyValue('--primary').trim() || '#8b5cf6';
-            const secondaryColor = computedStyle.getPropertyValue('--secondary').trim() || '#06b6d4';
-
-            // Connect nearby particles with luminous lines
-            const maxDistance = 140;
-            for (let i = 0; i < this.particles.length; i++) {
-                const p1 = this.particles[i];
-
-                for (let j = i + 1; j < this.particles.length; j++) {
-                    const p2 = this.particles[j];
-                    const dx = p1.x - p2.x;
-                    const dy = p1.y - p2.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < maxDistance) {
-                        const alpha = (1 - dist / maxDistance) * 0.18;
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(p1.x, p1.y);
-                        this.ctx.lineTo(p2.x, p2.y);
-                        this.ctx.strokeStyle = `rgba(${p1.colorVariant > 0.5 ? '139, 92, 246' : '6, 182, 212'}, ${alpha})`;
-                        this.ctx.lineWidth = 0.75;
-                        this.ctx.stroke();
-                    }
-                }
-            }
-
-            // Update & draw particles
-            for (let i = 0; i < this.particles.length; i++) {
-                const p = this.particles[i];
-
-                // Mouse influence / repulsion
-                if (this.mouse.isHover) {
-                    const dx = p.x - this.mouse.x;
-                    const dy = p.y - this.mouse.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    const minDist = 130;
-
-                    if (dist < minDist && dist > 0) {
-                        const force = (minDist - dist) / minDist;
-                        p.vx += (dx / dist) * force * 0.8;
-                        p.vy += (dy / dist) * force * 0.8;
-                        p.alpha = Math.min(0.9, p.baseAlpha + force * 0.5);
-                    }
-                }
-
-                // Dampen velocities
-                p.vx *= 0.985;
-                p.vy *= 0.985;
-
-                // Base motion
-                p.x += p.vx;
-                p.y += p.vy;
-
-                // Wrap around edges seamlessly
-                if (p.x < 0) p.x = this.width;
-                if (p.x > this.width) p.x = 0;
-                if (p.y < 0) p.y = this.height;
-                if (p.y > this.height) p.y = 0;
-
-                // Particle glow & drawing
-                this.ctx.beginPath();
-                this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                this.ctx.fillStyle = p.colorVariant > 0.5 ? primaryColor : secondaryColor;
-                this.ctx.globalAlpha = p.alpha;
-                this.ctx.fill();
-            }
-
-            this.ctx.globalAlpha = 1.0;
-            requestAnimationFrame(() => this.animate());
+        if (state.soundEnabled) {
+            sound.init();
+            sound.success();
+            showToast('Audio synthesizer enabled', '🔊');
+        } else {
+            showToast('Audio synthesizer muted', '🔇');
         }
     }
 
-    // --- OSCILLOSCOPE SIMULATION CANVAS (ECE Bento Card) ---
-    class OscilloscopeCanvas {
-        constructor(canvasId) {
-            this.canvas = document.getElementById(canvasId);
-            if (!this.canvas) return;
-            this.ctx = this.canvas.getContext('2d');
-            this.width = this.canvas.offsetWidth || 300;
-            this.height = this.canvas.offsetHeight || 120;
-            this.phase = 0;
-            this.freq = 0.04;
-            this.targetFreq = 0.04;
-            this.amp = 35;
-            this.targetAmp = 35;
+    // --- MATRIX DIGITAL RAIN SIMULATION ---
+    let matrixInterval = null;
+    function toggleMatrixRain(forceState = null) {
+        const canvas = document.getElementById('matrix-canvas');
+        if (!canvas) return;
 
-            this.init();
-        }
+        state.matrixActive = forceState !== null ? forceState : !state.matrixActive;
 
-        init() {
-            this.resize();
-            window.addEventListener('resize', () => this.resize());
-
-            this.canvas.addEventListener('mousemove', (e) => {
-                const rect = this.canvas.getBoundingClientRect();
-                const nx = (e.clientX - rect.left) / rect.width;
-                const ny = (e.clientY - rect.top) / rect.height;
-                this.targetFreq = 0.02 + nx * 0.08;
-                this.targetAmp = 15 + (1 - ny) * 35;
-            });
-
-            this.canvas.addEventListener('mouseleave', () => {
-                this.targetFreq = 0.04;
-                this.targetAmp = 32;
-            });
-
-            this.animate();
-        }
-
-        resize() {
-            if (!this.canvas) return;
-            this.width = this.canvas.offsetWidth;
-            this.height = this.canvas.offsetHeight;
-            this.canvas.width = this.width * window.devicePixelRatio;
-            this.canvas.height = this.height * window.devicePixelRatio;
-            this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-        }
-
-        animate() {
-            if (!this.canvas) return;
-            this.ctx.clearRect(0, 0, this.width, this.height);
-
-            // Interpolate toward targets
-            this.freq += (this.targetFreq - this.freq) * 0.08;
-            this.amp += (this.targetAmp - this.amp) * 0.08;
-            this.phase += 0.06;
-
-            // Draw oscilloscope grid
-            this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-            this.ctx.lineWidth = 1;
-            const step = 20;
-            for (let x = 0; x < this.width; x += step) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(x, 0);
-                this.ctx.lineTo(x, this.height);
-                this.ctx.stroke();
+        if (state.matrixActive) {
+            canvas.classList.add('active');
+            startMatrixAnimation(canvas);
+            showToast('Matrix digital rain active (type "matrix" to toggle)', '⚡');
+        } else {
+            canvas.classList.remove('active');
+            if (matrixInterval) {
+                clearInterval(matrixInterval);
+                matrixInterval = null;
             }
-            for (let y = 0; y < this.height; y += step) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(0, y);
-                this.ctx.lineTo(this.width, y);
-                this.ctx.stroke();
-            }
-
-            // Draw center baseline
-            this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-            this.ctx.beginPath();
-            this.ctx.moveTo(0, this.height / 2);
-            this.ctx.lineTo(this.width, this.height / 2);
-            this.ctx.stroke();
-
-            // Draw live sine wave
-            const computedStyle = getComputedStyle(document.documentElement);
-            const accent = computedStyle.getPropertyValue('--accent').trim() || '#10b981';
-
-            this.ctx.beginPath();
-            this.ctx.lineWidth = 2.5;
-            this.ctx.strokeStyle = accent;
-            this.ctx.shadowColor = accent;
-            this.ctx.shadowBlur = 10;
-
-            const midY = this.height / 2;
-            for (let x = 0; x < this.width; x++) {
-                const y = midY + Math.sin(x * this.freq + this.phase) * this.amp + Math.cos(x * (this.freq * 0.5) - this.phase) * (this.amp * 0.2);
-                if (x === 0) this.ctx.moveTo(x, y);
-                else this.ctx.lineTo(x, y);
-            }
-            this.ctx.stroke();
-            this.ctx.shadowBlur = 0;
-
-            requestAnimationFrame(() => this.animate());
+            showToast('Matrix simulation stopped', '⏹');
         }
     }
 
-    // --- FULLSCREEN MATRIX RAIN CANVAS ---
-    class MatrixRain {
-        constructor(canvasId) {
-            this.canvas = document.getElementById(canvasId);
-            if (!this.canvas) return;
-            this.ctx = this.canvas.getContext('2d');
-            this.columns = 0;
-            this.drops = [];
-            this.chars = 'ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ0123456789ABCDEFλπΩ≈';
-            this.fontSize = 15;
-            this.running = false;
+    function startMatrixAnimation(canvas) {
+        if (matrixInterval) clearInterval(matrixInterval);
+        const ctx = canvas.getContext('2d');
 
-            this.init();
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+        resize();
+        window.addEventListener('resize', resize);
 
-        init() {
-            this.resize();
-            window.addEventListener('resize', () => this.resize());
-        }
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>{}/*+=~$_';
+        const alphabet = katakana + latin;
 
-        resize() {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-            this.columns = Math.floor(this.canvas.width / this.fontSize);
-            this.drops = [];
-            for (let i = 0; i < this.columns; i++) {
-                this.drops[i] = Math.floor(Math.random() * -100);
-            }
-        }
+        const fontSize = 16;
+        const columns = Math.floor(canvas.width / fontSize);
+        const rainDrops = Array.from({ length: columns }).fill(1);
 
-        toggle(force) {
-            state.matrixActive = force !== undefined ? force : !state.matrixActive;
-            if (state.matrixActive) {
-                this.canvas.classList.add('active');
-                if (!this.running) {
-                    this.running = true;
-                    this.animate();
+        matrixInterval = setInterval(() => {
+            ctx.fillStyle = 'rgba(7, 9, 14, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = 'var(--primary)';
+            ctx.font = `${fontSize}px monospace`;
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
                 }
-                showToast('Matrix Rain Mode: ENGAGED 🕶️', '⚡');
-            } else {
-                this.canvas.classList.remove('active');
-                this.running = false;
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                showToast('Matrix Rain Mode: Standby', '✓');
+                rainDrops[i]++;
             }
-        }
-
-        animate() {
-            if (!this.running) return;
-
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-            const computed = getComputedStyle(document.documentElement);
-            const primary = computed.getPropertyValue('--primary').trim() || '#00ff66';
-
-            this.ctx.fillStyle = primary;
-            this.ctx.font = `${this.fontSize}px monospace`;
-
-            for (let i = 0; i < this.drops.length; i++) {
-                const char = this.chars[Math.floor(Math.random() * this.chars.length)];
-                const x = i * this.fontSize;
-                const y = this.drops[i] * this.fontSize;
-
-                this.ctx.fillText(char, x, y);
-
-                if (y > this.canvas.height && Math.random() > 0.975) {
-                    this.drops[i] = 0;
-                }
-                this.drops[i]++;
-            }
-
-            requestAnimationFrame(() => this.animate());
-        }
+        }, 36);
     }
 
-    // --- CUSTOM FLUID MORPHING CURSOR ---
-    function initCustomCursor() {
-        const dot = document.querySelector('.custom-cursor-dot');
-        const outline = document.querySelector('.custom-cursor-outline');
-        if (!dot || !outline) return;
+    // --- PROJECT FILTERING ---
+    function setupProjectFilters() {
+        const tabs = document.querySelectorAll('.filter-tab');
+        const cards = document.querySelectorAll('.project-card');
 
-        let mouseX = -100, mouseY = -100;
-        let outlineX = -100, outlineY = -100;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-        });
-
-        function renderCursor() {
-            outlineX += (mouseX - outlineX) * 0.18;
-            outlineY += (mouseY - outlineY) * 0.18;
-            outline.style.transform = `translate(${outlineX}px, ${outlineY}px)`;
-            requestAnimationFrame(renderCursor);
-        }
-        renderCursor();
-
-        const interactiveElements = 'a, button, input, textarea, .interactive-pill, .cmd-badge, .repo-card, .bento-card, .channel-card, .filter-chip, .swatch-pill';
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest(interactiveElements)) {
-                document.body.classList.add('hovering-interactive');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
                 sound.tick();
-            }
-        });
-        document.addEventListener('mouseout', (e) => {
-            if (e.target.closest(interactiveElements)) {
-                document.body.classList.remove('hovering-interactive');
-            }
-        });
-    }
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
 
-    // --- 3D TILT EFFECT FOR CARDS ---
-    function init3DTilt() {
-        const tiltCards = document.querySelectorAll('.hero-3d-card, .bento-card, .repo-card');
+                const filter = tab.getAttribute('data-filter');
+                state.activeFilter = filter;
 
-        tiltCards.forEach((card) => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                const rotateX = ((y - centerY) / centerY) * -8;
-                const rotateY = ((x - centerX) / centerX) * 8;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-                card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
-                card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+                cards.forEach(card => {
+                    const cat = card.getAttribute('data-category');
+                    if (filter === 'all' || cat === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             });
         });
+
+        // Initialize counts
+        const allCount = cards.length;
+        const pluginCount = document.querySelectorAll('.project-card[data-category="plugin"]').length;
+        const themeCount = document.querySelectorAll('.project-card[data-category="theme"]').length;
+        const toolCount = document.querySelectorAll('.project-card[data-category="tool"]').length;
+
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        setVal('count-all', allCount);
+        setVal('count-plugin', pluginCount);
+        setVal('count-theme', themeCount);
+        setVal('count-tool', toolCount);
     }
 
-    // --- INTERACTIVE TERMINAL ENGINE ---
-    function initTerminal(matrixEngine) {
-        const terminalInput = document.getElementById('terminal-cli-input');
-        const terminalHistory = document.getElementById('terminal-history-box');
-        const terminalBody = document.querySelector('.terminal-body');
-        if (!terminalInput || !terminalHistory) return;
+    // --- INTERACTIVE VIRTUAL TERMINAL CLI ---
+    const CLI_COMMANDS = {
+        help: {
+            desc: 'Display list of available commands',
+            exec: () => `
+<span class="term-cyan">M7SH Virtual Terminal Shell v2.4 (Quickshell / Omarchy)</span>
+Available commands:
+  <span class="term-green">whoami</span>        Display developer identity and brief bio
+  <span class="term-green">fastfetch</span>     Display system telemetry & ASCII architecture
+  <span class="term-green">projects</span>      Inspect all public projects and repositories
+  <span class="term-green">plugins</span>       List modular Omarchy status bar QML widgets
+  <span class="term-green">themes</span>        List custom Omarchy desktop themes
+  <span class="term-green">skills</span>        Display engineering capabilities & btop usage
+  <span class="term-green">theme [name]</span>  Switch theme: obsidian, velvet-dusk, gruvbox, matrix, everpuccin
+  <span class="term-green">matrix</span>        Toggle background matrix digital rain
+  <span class="term-green">sound</span>         Toggle audio synthesizer (SFX)
+  <span class="term-green">contact</span>       Print contact communication channels
+  <span class="term-green">clear</span>         Clear terminal screen
+  <span class="term-green">date</span>          Display current date and time
+  <span class="term-green">echo [text]</span>   Print text back to terminal`
+        },
 
-        const commands = {
-            help: () => `
-Available system commands:
-  • <span class="term-prompt">whoami</span>       : Profile overview & credentials
-  • <span class="term-prompt">neofetch</span>     : Omarchy / Arch Linux system specs
-  • <span class="term-prompt">repos</span>        : GitHub repositories & projects
-  • <span class="term-prompt">skills</span>       : Technical stack & disciplines
-  • <span class="term-prompt">contact</span>      : Reach out & contact links
-  • <span class="term-prompt">theme [name]</span>  : Switch theme (obsidian, everpuccin, matrix, cyberpunk)
-  • <span class="term-prompt">matrix</span>       : Toggle digital matrix rain simulation
-  • <span class="term-prompt">sound</span>        : Toggle sound feedback (current: ${state.soundEnabled ? 'ON' : 'OFF'})
-  • <span class="term-prompt">clear</span>        : Clear terminal output
-  • <span class="term-prompt">sudo</span>         : Execute superuser privilege
-`,
-            whoami: () => `
-<span class="term-prompt">User:</span> Mohammed Musharaf (m7sh)
-<span class="term-prompt">Current Role:</span> Analyst @ Insurance Firm (Bangalore, India · 2026—Present)
-<span class="term-prompt">Prior Role:</span> Junior Planning Engineer (Saudi Arabia · 2024—2025)
-<span class="term-prompt">Education:</span> B.E. in Electronics & Communication (VTU Belagavi · 2019—2023)
-<span class="term-prompt">Affiliation:</span> Member @ IEEE
-<span class="term-prompt">Focus:</span> Corporate analytics by day; Linux customization, Omarchy ricing & open-source tooling by night.
-`,
-            neofetch: () => `
-<div style="display:flex; gap: 20px; align-items: center; flex-wrap: wrap;">
-<pre style="color: var(--primary); font-family: monospace; font-size: 0.8rem; margin: 0;">
-       /\\         <b>musharaf</b>@<b>omarchy</b>
-      /  \\        ----------------
-     /\\   \\       <b>OS</b>: Omarchy Linux x86_64
-    /      \\      <b>Host</b>: Custom Rice Machine
-   /   ,,   \\     <b>Kernel</b>: 6.12.0-zen-arch
-  /   |  |  -\\    <b>Uptime</b>: 42 days, 13 hours
- /_-''    ''-_\\   <b>Shell</b>: zsh / bash
-                  <b>WM</b>: Hyprland (Wayland)
-                  <b>Theme</b>: everpuccin-m7sh [Catppuccin + Everforest]
-                  <b>Terminal</b>: Ghostty / Kitty
-                  <b>CPU</b>: Intel / AMD Multi-Core
-                  <b>Role</b>: Analyst @ Insurance Firm (Bangalore, India)
-                  <b>Prior</b>: Jr. Planning Engineer (Saudi Arabia)
-                  <b>Degree</b>: B.E. in ECE, VTU Belagavi (2019-2023)
-</pre>
-</div>
-`,
-            skills: () => `
-<span class="term-prompt">[Hardware & ECE]:</span> Embedded C, MATLAB, Digital Signal Processing, Circuit Design, Microcontrollers, IEEE standards.
-<span class="term-prompt">[Software & Web]:</span> Python, C, Java, JavaScript, QML, HTML5/CSS3, Bash, Git.
-<span class="term-prompt">[Linux & Systems]:</span> Omarchy, Hyprland, Wayland, Dotfile Architecture, Ricing, Systemd, Neovim.
-`,
-            repos: () => `
-Highlighted Repositories (<a href="https://github.com/m7sh" target="_blank" style="color:var(--primary); text-decoration: underline;">github.com/m7sh</a>):
-  • <a href="https://github.com/m7sh/mush-omarchy-cricket" target="_blank" style="color:var(--secondary);">mush-omarchy-cricket</a> : Live cricket scores desktop widget for Omarchy/Hyprland (QML).
-  • <a href="https://github.com/m7sh/everpuccin-m7sh" target="_blank" style="color:var(--secondary);">everpuccin-m7sh</a>       : Omarchy aesthetic theme blend of Catppuccin & Everforest.
-  • <a href="https://github.com/m7sh/Desktop-Voice-Assistant" target="_blank" style="color:var(--secondary);">Desktop-Voice-Assistant</a>: Python voice-controlled intelligent automation tool.
-  • <a href="https://github.com/m7sh/hogwarts-night" target="_blank" style="color:var(--secondary);">hogwarts-night</a>         : Dark atmospheric cyber-nocturnal CSS styling.
-  • <a href="https://github.com/m7sh/m7sh" target="_blank" style="color:var(--secondary);">m7sh</a>                   : High-performance portfolio website & engine.
-`,
-            contact: () => `
-<span class="term-prompt">Email:</span>    <a href="mailto:mdmusharaf720@gmail.com" style="color:var(--text);">mdmusharaf720@gmail.com</a>
-<span class="term-prompt">GitHub:</span>   <a href="https://github.com/m7sh" target="_blank" style="color:var(--primary);">github.com/m7sh</a>
-<span class="term-prompt">Twitter:</span>  <a href="https://twitter.com/i_musharaf725" target="_blank" style="color:var(--secondary);">twitter.com/i_musharaf725</a>
-<span class="term-prompt">LinkedIn:</span> <a href="https://www.linkedin.com/in/mohammed-musharaf-122523220/" target="_blank" style="color:var(--secondary);">mohammed-musharaf-122523220</a>
-`,
-            theme: (arg) => {
-                if (!arg) return `Usage: theme [obsidian | everpuccin | matrix | cyberpunk]\nCurrent: ${state.theme}`;
-                const chosen = arg.toLowerCase().trim();
-                if (CONFIG.themes.includes(chosen)) {
-                    setTheme(chosen);
-                    return `Theme set to: <span class="term-prompt">${chosen}</span>`;
-                }
-                return `Unknown theme '${chosen}'. Available: ${CONFIG.themes.join(', ')}`;
-            },
-            matrix: () => {
-                if (matrixEngine) {
-                    matrixEngine.toggle();
-                    return state.matrixActive ? 'Matrix code rain simulation: ACTIVE' : 'Matrix code rain simulation: INACTIVE';
-                }
-                return 'Matrix engine unavailable.';
-            },
-            sound: () => {
-                state.soundEnabled = !state.soundEnabled;
-                localStorage.setItem('m7sh_sound_enabled', state.soundEnabled);
-                const soundBtn = document.getElementById('sound-toggle-btn');
-                if (soundBtn) {
-                    soundBtn.innerHTML = state.soundEnabled ? '<i data-lucide="volume-2"></i> <span>SFX ON</span>' : '<i data-lucide="volume-x"></i> <span>SFX OFF</span>';
-                    if (window.lucide) window.lucide.createIcons();
-                }
-                if (state.soundEnabled) sound.success();
-                return `Sound effects: <span class="term-prompt">${state.soundEnabled ? 'ENABLED' : 'DISABLED'}</span>`;
-            },
-            clear: () => {
-                terminalHistory.innerHTML = '';
-                return null;
-            },
-            sudo: () => {
-                return '<span style="color:#ff5f56;">Permission denied: nice try, but you are not in the sudoers file! 🛡️</span>';
-            },
-            date: () => new Date().toUTCString(),
-            uptime: () => 'Omarchy uptime: 42 days, 13 hours, 37 minutes'
-        };
+        whoami: {
+            desc: 'Display developer profile',
+            exec: () => `
+<span class="term-green">Mohammed Musharaf</span> (m7sh / mush)
+• Role: Linux Rice Artisan & Creative Developer
+• System: Omarchy Linux 4.0 • Hyprland (Wayland) • Quickshell
+• Focus: Declarative QML status-bar architecture, Wayland desktop ricing & TUI tools
+• GitHub: <a href="https://github.com/m7sh" target="_blank" class="term-cyan">https://github.com/m7sh</a>
+• Portfolio: <a href="https://m7sh.github.io/m7sh/" target="_blank" class="term-cyan">https://m7sh.github.io/m7sh/</a>`
+        },
 
-        function appendLine(html, isCmd = false, cmdText = '') {
-            const row = document.createElement('div');
-            row.className = 'term-line';
-            if (isCmd) {
-                row.innerHTML = `<span class="term-prompt">musharaf@omarchy:~$</span> <span class="term-cmd">${escapeHtml(cmdText)}</span>`;
-            } else {
-                row.innerHTML = `<div class="term-response">${html}</div>`;
+        fastfetch: {
+            desc: 'Run fastfetch system info',
+            exec: () => `
+<span class="art-green">   __  __  ______   _____  _    _  </span>  ┌─ System Telemetry ────────────────────────┐
+<span class="art-green">  |  \\/  ||____  | /  ___|| |  | | </span>  │  User     : Mohammed Musharaf (m7sh)     │
+<span class="art-green">  | .  . |    / /  \\ '--. | |__| | </span>  │  OS       : Omarchy Linux (Arch-based)   │
+<span class="art-green">  | |\\/| |   / /    '--. \\|  __  | </span>  │  WM       : Hyprland (Wayland)           │
+<span class="art-green">  | |  | |  / /    /\\__/ /| |  | | </span>  │ 󰸌 Theme    : Velvet Dusk • Gruvbox        │
+<span class="art-green">  \\_|  |_/ /_/     \\____/ \\_|  |_/ </span>  │  Term     : Foot • Ghostty • Alacritty   │
+                                     │ 🐚 Shell    : Zsh & Fish                   │
+                                     │ 󰅩 Stack    : QML, Rust, Python, Linux IPC │
+                                     └────────────────────────────────────────────┘`
+        },
+
+        projects: {
+            desc: 'List all featured projects',
+            exec: () => `
+<span class="term-cyan">~/projects/ (12 repositories found)</span>
+  🧩 <a href="https://github.com/m7sh/mush.workspace" target="_blank" class="term-green">mush.workspace</a>        Ubuntu/GNOME dynamic pill-and-dots workspace widget (QML)
+  🎵 <a href="https://github.com/m7sh/omarchy-media" target="_blank" class="term-green">omarchy-media</a>         Minimal MPRIS playback status bar widget (QML)
+  🏎️ <a href="https://github.com/m7sh/omarchy-f1" target="_blank" class="term-green">omarchy-f1</a>            Live Formula 1 telemetry & schedule bar widget (QML)
+  🏏 <a href="https://github.com/m7sh/mush-omarchy-cricket" target="_blank" class="term-green">mush-cricket</a>          Real-time live cricket score telemetry widget (QML)
+  🍂 <a href="https://github.com/m7sh/gruvbox-aesthetic" target="_blank" class="term-yellow">gruvbox-aesthetic</a>     Autumn golden & dark charcoal Gruvbox theme (Omarchy)
+  🌆 <a href="https://github.com/m7sh/velvet-dusk-theme" target="_blank" class="term-yellow">velvet-dusk-theme</a>     Pastel lavender & dusty rose gradient theme (Omarchy)
+  ⚔️ <a href="https://github.com/m7sh/god-of-war-theme" target="_blank" class="term-yellow">god-of-war-theme</a>      Spartan Crimson & obsidian slate theme (Omarchy)
+  🌲 <a href="https://github.com/m7sh/everpuccin-m7sh" target="_blank" class="term-yellow">everpuccin-m7sh</a>       Catppuccin Mocha + Forest Green hybrid theme
+  🎬 <a href="https://github.com/m7sh/MovieBox-Tui" target="_blank" class="term-cyan">MovieBox-Tui</a>          High-speed terminal movies & series streamer (Rust)
+  🎙️ <a href="https://github.com/m7sh/Desktop-Voice-Assistant" target="_blank" class="term-cyan">voice_assistant.py</a>    Hands-free desktop automation voice assistant (Python)`
+        },
+
+        plugins: {
+            desc: 'List Omarchy Quickshell plugins',
+            exec: () => `
+<span class="term-cyan">Omarchy Status Bar Plugins (QML / Quickshell):</span>
+1. <span class="term-green">mush.workspace</span>     - Dynamic pill-and-dots workspace indicator
+   Install: <code>omarchy plugin add https://github.com/m7sh/mush.workspace.git --enable</code>
+2. <span class="term-green">omarchy-media</span>      - Minimal MPRIS playback widget
+   Install: <code>omarchy plugin add https://github.com/m7sh/omarchy-media.git --enable</code>
+3. <span class="term-green">omarchy-f1</span>         - Formula 1 live telemetry & schedule
+   Install: <code>omarchy plugin add https://github.com/m7sh/omarchy-f1.git --enable</code>
+4. <span class="term-green">mush-cricket</span>       - Real-time live cricket updates
+   Install: <code>omarchy plugin add https://github.com/m7sh/mush-omarchy-cricket.git --enable</code>`
+        },
+
+        themes: {
+            desc: 'List Omarchy desktop themes',
+            exec: () => `
+<span class="term-cyan">Omarchy Desktop Themes & Rices:</span>
+• <span class="term-yellow">velvet-dusk</span>     - Lavender & rose gradient borders (#1E1B2E, #C4B5FD, #FDA4AF)
+• <span class="term-yellow">gruvbox</span>         - Golden autumn dark palette (#282828, #D79921, #EBDBB2)
+• <span class="term-yellow">god-of-war</span>      - Spartan Crimson obsidian theme (#121214, #DC2626, #9CA3AF)
+• <span class="term-yellow">everpuccin</span>      - Catppuccin Mocha + Forest hues (#1e1e2e, #a6e3a1)
+• <span class="term-yellow">hogwarts-night</span>  - Dark arcane candlelight & parchment gold (#0f141c, #d4af37)
+• <span class="term-yellow">waffle-cat</span>      - Amber coffee & warm cream (#2b201a, #d97706)`
+        },
+
+        skills: {
+            desc: 'Show skills allocation',
+            exec: () => `
+<span class="term-cyan">Technical Arsenal & Allocation:</span>
+  QML & Qt Quick UI        [████████████████████████████░░░░] 88%
+  Linux Ricing / Hyprland  [████████████████████████████████] 98%
+  Shell Scripting (Zsh)    [████████████████████████████░░░░] 90%
+  Python & Automation      [████████████████████████░░░░░░░░] 78%
+  Rust & TUI Tooling       [████████████████████░░░░░░░░░░░░] 65%
+  Web Stack / CSS3 / JS    [██████████████████████████░░░░░░] 82%`
+        },
+
+        contact: {
+            desc: 'Display contact information',
+            exec: () => `
+<span class="term-cyan">Direct Communication Channels:</span>
+  Email    : <a href="mailto:mdmusharaf720@gmail.com" class="term-green">mdmusharaf720@gmail.com</a>
+  GitHub   : <a href="https://github.com/m7sh" target="_blank" class="term-green">https://github.com/m7sh</a>
+  Website  : <a href="https://m7sh.github.io/m7sh/" target="_blank" class="term-green">https://m7sh.github.io/m7sh/</a>
+  Status   : Open for collaboration on Linux Wayland tooling & rices`
+        },
+
+        date: {
+            desc: 'Print current system time',
+            exec: () => `<span class="term-cyan">${new Date().toLocaleString()}</span>`
+        },
+
+        matrix: {
+            desc: 'Toggle matrix rain',
+            exec: () => {
+                toggleMatrixRain();
+                return `<span class="term-green">Matrix simulation toggled: ${state.matrixActive ? 'ACTIVE' : 'OFF'}</span>`;
             }
-            terminalHistory.appendChild(row);
-            if (terminalBody) terminalBody.scrollTop = terminalBody.scrollHeight;
+        },
+
+        sound: {
+            desc: 'Toggle sound synthesizer',
+            exec: () => {
+                toggleSound();
+                return `<span class="term-green">Sound synthesizer toggled: ${state.soundEnabled ? 'ON' : 'OFF'}</span>`;
+            }
+        },
+
+        sudo: {
+            desc: 'Superuser privilege check',
+            exec: () => `<span class="term-red">mush is not in the sudoers file. This incident will be reported to Omarchy daemon.</span>`
+        }
+    };
+
+    function executeCommand(rawCmd) {
+        const trimmed = rawCmd.trim();
+        if (!trimmed) return;
+
+        state.commandHistory.push(trimmed);
+        state.historyIndex = state.commandHistory.length;
+
+        const parts = trimmed.split(' ');
+        const mainCmd = parts[0].toLowerCase();
+        const args = parts.slice(1);
+
+        const historyBox = document.getElementById('term-history-log');
+        if (!historyBox) return;
+
+        const entry = document.createElement('div');
+        entry.className = 'term-cmd-entry';
+
+        const cmdRow = document.createElement('div');
+        cmdRow.className = 'term-cmd-row';
+        cmdRow.innerHTML = `<span class="term-cmd-prompt">mush@omarchy:~$</span><span>${escapeHtml(trimmed)}</span>`;
+        entry.appendChild(cmdRow);
+
+        const resultRow = document.createElement('div');
+        resultRow.className = 'term-cmd-result';
+
+        // Execute handlers
+        if (mainCmd === 'clear') {
+            historyBox.innerHTML = '';
+            sound.tick();
+            return;
+        } else if (mainCmd === 'theme') {
+            const targetTheme = args[0] ? args[0].toLowerCase() : '';
+            if (CONFIG.themes.includes(targetTheme)) {
+                applyTheme(targetTheme);
+                resultRow.innerHTML = `<span class="term-green">Switched theme to ${CONFIG.themeLabels[targetTheme] || targetTheme}</span>`;
+            } else {
+                resultRow.innerHTML = `<span class="term-yellow">Unknown theme "${escapeHtml(targetTheme)}". Available: ${CONFIG.themes.join(', ')}</span>`;
+            }
+        } else if (mainCmd === 'echo') {
+            resultRow.textContent = args.join(' ');
+        } else if (CLI_COMMANDS[mainCmd]) {
+            sound.blip();
+            resultRow.innerHTML = CLI_COMMANDS[mainCmd].exec();
+        } else {
+            sound.tick();
+            resultRow.innerHTML = `<span class="term-red">zsh: command not found: ${escapeHtml(mainCmd)}. Type <span class="term-cyan">help</span> for commands.</span>`;
         }
 
-        function executeCommand(rawInput) {
-            const trimmed = rawInput.trim();
-            if (!trimmed) return;
+        entry.appendChild(resultRow);
+        historyBox.appendChild(entry);
 
-            appendLine('', true, trimmed);
-            state.commandHistory.push(trimmed);
-            state.historyIndex = state.commandHistory.length;
-
-            const [cmd, ...args] = trimmed.split(' ');
-            const lowerCmd = cmd.toLowerCase();
-
-            if (commands[lowerCmd]) {
-                const response = commands[lowerCmd](args.join(' '));
-                if (response !== null) {
-                    appendLine(response);
-                }
-            } else {
-                appendLine(`Command not found: <span style="color:#ff5f56;">${escapeHtml(trimmed)}</span>. Type <span class="term-prompt">help</span> for a list of commands.`);
-            }
-
-            sound.key();
+        // Auto-scroll to bottom of terminal
+        const container = document.getElementById('term-output-container');
+        if (container) {
+            container.scrollTop = container.scrollHeight;
         }
+    }
 
-        // Initial neofetch
-        appendLine(commands.neofetch());
-        appendLine('Type <span class="term-prompt">help</span> to view available interactive commands or click quick chips below.');
+    function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
-        terminalInput.addEventListener('keydown', (e) => {
+    function setupTerminalCLI() {
+        const input = document.getElementById('term-input');
+        if (!input) return;
+
+        input.addEventListener('keydown', (e) => {
             sound.key();
 
             if (e.key === 'Enter') {
-                executeCommand(terminalInput.value);
-                terminalInput.value = '';
+                const val = input.value;
+                input.value = '';
+                executeCommand(val);
             } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
                 if (state.historyIndex > 0) {
                     state.historyIndex--;
-                    terminalInput.value = state.commandHistory[state.historyIndex] || '';
+                    input.value = state.commandHistory[state.historyIndex] || '';
                 }
-                e.preventDefault();
             } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
                 if (state.historyIndex < state.commandHistory.length - 1) {
                     state.historyIndex++;
-                    terminalInput.value = state.commandHistory[state.historyIndex] || '';
+                    input.value = state.commandHistory[state.historyIndex] || '';
                 } else {
                     state.historyIndex = state.commandHistory.length;
-                    terminalInput.value = '';
+                    input.value = '';
                 }
+            } else if (e.key === 'Tab') {
                 e.preventDefault();
-            }
-        });
-
-        // Quick badges click
-        document.querySelectorAll('.cmd-badge').forEach((badge) => {
-            badge.addEventListener('click', () => {
-                const cmd = badge.getAttribute('data-cmd');
-                if (cmd) {
-                    terminalInput.value = cmd;
-                    executeCommand(cmd);
-                    terminalInput.focus();
-                }
-            });
-        });
-    }
-
-    // --- GITHUB TELEMETRY & REPOS FETCHING ---
-    const FALLBACK_REPOS = [
-        {
-            name: 'mush-omarchy-cricket',
-            html_url: 'https://github.com/m7sh/mush-omarchy-cricket',
-            description: 'Live real-time cricket score & match widget for Omarchy / Hyprland Linux desktops.',
-            language: 'QML',
-            stargazers_count: 1,
-            forks_count: 0,
-            topics: ['omarchy', 'hyprland', 'qml', 'linux-rice', 'cricket'],
-            category: 'linux'
-        },
-        {
-            name: 'everpuccin-m7sh',
-            html_url: 'https://github.com/m7sh/everpuccin-m7sh',
-            description: 'A curated Omarchy aesthetic theme based on Catppuccin + Forest color schemes.',
-            language: 'CSS',
-            stargazers_count: 1,
-            forks_count: 0,
-            topics: ['omarchy-theme', 'catppuccin', 'everforest', 'hyprland', 'rice'],
-            category: 'linux'
-        },
-        {
-            name: 'Desktop-Voice-Assistant',
-            html_url: 'https://github.com/m7sh/Desktop-Voice-Assistant',
-            description: 'Python desktop assistant for hands-free system control, voice commands & automation.',
-            language: 'Python',
-            stargazers_count: 1,
-            forks_count: 0,
-            topics: ['python', 'voice-assistant', 'automation', 'desktop-tool'],
-            category: 'python'
-        },
-        {
-            name: 'm7sh',
-            html_url: 'https://github.com/m7sh/m7sh',
-            description: 'High-speed interactive developer portfolio with fluid physics and cyber terminal aesthetics.',
-            language: 'HTML',
-            stargazers_count: 1,
-            forks_count: 0,
-            topics: ['portfolio', 'interactive', 'animations', 'canvas', 'fluid'],
-            category: 'web'
-        },
-        {
-            name: 'hogwarts-night',
-            html_url: 'https://github.com/m7sh/hogwarts-night',
-            description: 'Nocturnal deep cyber-gothic CSS color palette & styling theme.',
-            language: 'CSS',
-            stargazers_count: 1,
-            forks_count: 0,
-            topics: ['css', 'theme', 'dark-mode'],
-            category: 'linux'
-        },
-        {
-            name: 'About',
-            html_url: 'https://github.com/m7sh/About',
-            description: 'Core configuration dotfiles and profile specs for GitHub & terminal environment.',
-            language: 'Shell',
-            stargazers_count: 0,
-            forks_count: 0,
-            topics: ['config', 'dotfiles', 'github-profile'],
-            category: 'linux'
-        }
-    ];
-
-    async function loadGitHubTelemetry() {
-        const reposContainer = document.getElementById('repos-container');
-        if (!reposContainer) return;
-
-        let repos = FALLBACK_REPOS;
-        let publicReposCount = 6;
-        let totalStars = 4;
-        let lastCommitText = 'Active this week';
-
-        try {
-            const cached = localStorage.getItem(CONFIG.cacheKey);
-            if (cached) {
-                const parsed = JSON.parse(cached);
-                if (Date.now() - parsed.timestamp < CONFIG.cacheDuration) {
-                    repos = parsed.repos;
-                    publicReposCount = parsed.publicReposCount;
-                    totalStars = parsed.totalStars;
-                    lastCommitText = parsed.lastCommitText;
-                }
-            } else {
-                const [userRes, repoRes] = await Promise.all([
-                    fetch(`https://api.github.com/users/${CONFIG.githubUser}`),
-                    fetch(`https://api.github.com/users/${CONFIG.githubUser}/repos?per_page=100&sort=updated`)
-                ]);
-
-                if (userRes.ok && repoRes.ok) {
-                    const userData = await userRes.json();
-                    const reposData = await repoRes.json();
-
-                    if (Array.isArray(reposData) && reposData.length > 0) {
-                        publicReposCount = userData.public_repos || reposData.length;
-                        totalStars = reposData.reduce((acc, r) => acc + (r.stargazers_count || 0), 0);
-
-                        repos = reposData.map((r) => {
-                            let cat = 'web';
-                            const desc = (r.description || '').toLowerCase();
-                            const name = (r.name || '').toLowerCase();
-                            const lang = (r.language || '').toLowerCase();
-
-                            if (desc.includes('omarchy') || desc.includes('theme') || name.includes('omarchy') || lang === 'qml' || lang === 'shell') {
-                                cat = 'linux';
-                            } else if (lang === 'python' || desc.includes('voice') || desc.includes('ai')) {
-                                cat = 'python';
-                            }
-
-                            return {
-                                name: r.name,
-                                html_url: r.html_url,
-                                description: r.description || 'Open source engineering project maintained by m7sh.',
-                                language: r.language || 'Code',
-                                stargazers_count: r.stargazers_count || 0,
-                                forks_count: r.forks_count || 0,
-                                topics: r.topics && r.topics.length ? r.topics : [r.language || 'source'],
-                                category: cat,
-                                updated_at: r.updated_at
-                            };
-                        });
-
-                        localStorage.setItem(CONFIG.cacheKey, JSON.stringify({
-                            timestamp: Date.now(),
-                            repos,
-                            publicReposCount,
-                            totalStars,
-                            lastCommitText
-                        }));
+                const cur = input.value.trim().toLowerCase();
+                if (cur) {
+                    const matches = Object.keys(CLI_COMMANDS).concat(CONFIG.themes.map(t => `theme ${t}`)).filter(c => c.startsWith(cur));
+                    if (matches.length === 1) {
+                        input.value = matches[0];
                     }
                 }
             }
-        } catch (e) {
-            console.warn('Using curated fallback GitHub telemetry', e);
-        }
-
-        state.reposData = repos;
-
-        animateCounter('telemetry-repos-count', publicReposCount);
-        animateCounter('telemetry-stars-count', totalStars);
-        animateCounter('telemetry-languages-count', 6);
-        const commitEl = document.getElementById('telemetry-last-commit');
-        if (commitEl) commitEl.textContent = lastCommitText;
-
-        renderRepos(repos);
-    }
-
-    function animateCounter(id, targetValue) {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        let current = 0;
-        const duration = 1200;
-        const startTime = performance.now();
-
-        function step(now) {
-            const elapsed = now - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const ease = 1 - Math.pow(1 - progress, 3);
-            current = Math.floor(ease * targetValue);
-            el.textContent = current;
-
-            if (progress < 1) {
-                requestAnimationFrame(step);
-            } else {
-                el.textContent = targetValue;
-            }
-        }
-        requestAnimationFrame(step);
-    }
-
-    const LANG_COLORS = {
-        QML: '#2ecc71',
-        Python: '#3572A5',
-        CSS: '#563d7c',
-        HTML: '#e34c26',
-        JavaScript: '#f1e05a',
-        Shell: '#89e051',
-        C: '#555555',
-        Java: '#b07219',
-        Default: '#8b5cf6'
-    };
-
-    function renderRepos(repos) {
-        const container = document.getElementById('repos-container');
-        if (!container) return;
-
-        const filtered = state.activeRepoFilter === 'all'
-            ? repos
-            : repos.filter(r => r.category === state.activeRepoFilter);
-
-        container.innerHTML = '';
-
-        filtered.forEach((repo) => {
-            const card = document.createElement('a');
-            card.href = repo.html_url;
-            card.target = '_blank';
-            card.rel = 'noopener noreferrer';
-            card.className = 'repo-card';
-
-            const langColor = LANG_COLORS[repo.language] || LANG_COLORS.Default;
-            const tagsHtml = (repo.topics || []).slice(0, 3).map(t => `<span class="repo-tag">#${t}</span>`).join('');
-
-            card.innerHTML = `
-                <div class="repo-card-top">
-                    <h3 class="repo-title">
-                        <i data-lucide="folder-git-2" style="width:18px; height:18px; color:var(--primary);"></i>
-                        <span>${escapeHtml(repo.name)}</span>
-                    </h3>
-                    <i data-lucide="arrow-up-right" class="repo-external-icon" style="width:18px; height:18px;"></i>
-                </div>
-                <p class="repo-desc">${escapeHtml(repo.description || 'Open source engineering repository.')}</p>
-                <div class="repo-tags">${tagsHtml}</div>
-                <div class="repo-footer">
-                    <div class="repo-lang">
-                        <span class="lang-dot" style="background-color: ${langColor};"></span>
-                        <span>${escapeHtml(repo.language || 'Source')}</span>
-                    </div>
-                    <div class="repo-stats">
-                        <span class="repo-stat-item"><i data-lucide="star" style="width:13px; height:13px;"></i> ${repo.stargazers_count}</span>
-                        <span class="repo-stat-item"><i data-lucide="git-fork" style="width:13px; height:13px;"></i> ${repo.forks_count}</span>
-                    </div>
-                </div>
-            `;
-
-            container.appendChild(card);
         });
 
-        if (window.lucide) window.lucide.createIcons();
-        init3DTilt();
-    }
+        // Clickable mini buttons in terminal header
+        const clearBtn = document.getElementById('term-clear-btn');
+        if (clearBtn) clearBtn.addEventListener('click', () => executeCommand('clear'));
 
-    function initRepoFilters() {
-        const chips = document.querySelectorAll('.filter-chip');
-        chips.forEach((chip) => {
+        const helpBtn = document.getElementById('term-help-btn');
+        if (helpBtn) helpBtn.addEventListener('click', () => executeCommand('help'));
+
+        // Quick chip shortcuts below terminal
+        document.querySelectorAll('.term-chip').forEach(chip => {
             chip.addEventListener('click', () => {
-                chips.forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-                state.activeRepoFilter = chip.getAttribute('data-filter') || 'all';
-                sound.blip();
-                renderRepos(state.reposData);
+                const cmd = chip.getAttribute('data-cmd');
+                if (cmd) {
+                    input.value = cmd;
+                    executeCommand(cmd);
+                    input.focus();
+                }
             });
         });
     }
 
-    // --- COMMAND PALETTE (⌘K / Ctrl+K) ---
-    function initCommandPalette(matrixEngine) {
-        const backdrop = document.getElementById('command-palette-backdrop');
+    // --- COMMAND PALETTE MODAL (Ctrl+K / ⌘K) ---
+    function setupCommandPalette() {
+        const modal = document.getElementById('palette-modal');
         const input = document.getElementById('palette-input');
-        const resultsContainer = document.getElementById('palette-results');
+        const results = document.getElementById('palette-results');
         const openBtn = document.getElementById('open-palette-btn');
-        if (!backdrop || !input || !resultsContainer) return;
+        const backdrop = document.getElementById('palette-backdrop');
 
-        const paletteItems = [
-            { label: 'Jump to Hero', section: '#hero', icon: 'zap', group: 'Navigation' },
-            { label: 'Explore Bento Grid (ECE & Ricing)', section: '#bento', icon: 'cpu', group: 'Navigation' },
-            { label: 'View GitHub Repositories', section: '#repos', icon: 'git-branch', group: 'Navigation' },
-            { label: 'Launch Interactive Terminal', section: '#terminal', icon: 'terminal', group: 'Navigation' },
-            { label: 'View Engineering Roadmap', section: '#timeline', icon: 'milestone', group: 'Navigation' },
-            { label: 'Get in Touch / Contact Form', section: '#contact', icon: 'mail', group: 'Navigation' },
-            { label: 'Switch Theme: Obsidian Cyber', action: () => setTheme('obsidian'), icon: 'moon', group: 'Theme' },
-            { label: 'Switch Theme: Everpuccin', action: () => setTheme('everpuccin'), icon: 'leaf', group: 'Theme' },
-            { label: 'Switch Theme: Matrix Emerald', action: () => setTheme('matrix'), icon: 'binary', group: 'Theme' },
-            { label: 'Switch Theme: Cyberpunk Neon', action: () => setTheme('cyberpunk'), icon: 'sun', group: 'Theme' },
-            { label: 'Toggle Matrix Digital Rain', action: () => matrixEngine && matrixEngine.toggle(), icon: 'code', group: 'Fun' },
-            { label: 'Toggle Sound Effects (SFX)', action: () => {
-                state.soundEnabled = !state.soundEnabled;
-                localStorage.setItem('m7sh_sound_enabled', state.soundEnabled);
-                showToast(`Sound FX: ${state.soundEnabled ? 'ON' : 'OFF'}`);
-            }, icon: 'volume-2', group: 'Settings' },
-            { label: 'Open GitHub Profile (@m7sh)', action: () => window.open('https://github.com/m7sh', '_blank'), icon: 'external-link', group: 'Social' },
-            { label: 'Copy Email to Clipboard', action: () => copyEmail(), icon: 'copy', group: 'Quick Actions' }
+        if (!modal || !input || !results) return;
+
+        const PALETTE_ACTIONS = [
+            { icon: '01', title: 'About & Bio', action: () => { location.hash = '#hero'; } },
+            { icon: '02', title: 'Browse Projects (Plugins & Themes)', action: () => { location.hash = '#projects'; } },
+            { icon: '03', title: 'Launch Interactive Virtual Terminal', action: () => { location.hash = '#terminal'; document.getElementById('term-input')?.focus(); } },
+            { icon: '04', title: 'Inspect Technical Stack & Btop Gauge', action: () => { location.hash = '#stack'; } },
+            { icon: '05', title: 'Communication Channels & Statusline', action: () => { location.hash = '#connect'; } },
+            { icon: '🎨', title: 'Cycle Color Theme (Obsidian / Velvet / Gruvbox)', action: () => { cycleTheme(); } },
+            { icon: '🔊', title: 'Toggle Audio Synthesizer (SFX)', action: () => { toggleSound(); } },
+            { icon: '⚡', title: 'Toggle Matrix Digital Rain', action: () => { toggleMatrixRain(); } },
+            { icon: '📋', title: 'Copy Email Address', action: () => { copyToClipboard('mdmusharaf720@gmail.com', 'Email copied: mdmusharaf720@gmail.com'); } },
+            { icon: '🐙', title: 'Open GitHub Profile', action: () => { window.open('https://github.com/m7sh', '_blank'); } }
         ];
 
-        let filteredItems = [...paletteItems];
-        let selectedIndex = 0;
-
         function openPalette() {
-            backdrop.classList.add('active');
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
             input.value = '';
-            filteredItems = [...paletteItems];
-            selectedIndex = 0;
-            renderResults();
+            renderPaletteItems(PALETTE_ACTIONS);
+            input.focus();
             sound.blip();
-            setTimeout(() => input.focus(), 50);
         }
 
         function closePalette() {
-            backdrop.classList.remove('active');
-            input.blur();
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
         }
 
-        function renderResults() {
-            resultsContainer.innerHTML = '';
+        function renderPaletteItems(items) {
+            results.innerHTML = '';
+            if (items.length === 0) {
+                results.innerHTML = '<div style="padding: 12px 16px; color: var(--text-subtle); font-family: var(--font-mono); font-size: 0.84rem;">No matching commands found.</div>';
+                return;
+            }
 
-            let currentGroup = '';
-            filteredItems.forEach((item, idx) => {
-                if (item.group !== currentGroup) {
-                    currentGroup = item.group;
-                    const groupTitle = document.createElement('div');
-                    groupTitle.className = 'palette-group-title';
-                    groupTitle.textContent = currentGroup;
-                    resultsContainer.appendChild(groupTitle);
-                }
-
+            items.forEach((item, index) => {
                 const row = document.createElement('div');
-                row.className = `palette-item ${idx === selectedIndex ? 'active' : ''}`;
+                row.className = `palette-item ${index === 0 ? 'selected' : ''}`;
                 row.innerHTML = `
                     <div class="palette-item-left">
-                        <i data-lucide="${item.icon}" style="width:16px; height:16px; color:var(--primary);"></i>
-                        <span>${item.label}</span>
+                        <span class="palette-item-icon">${item.icon}</span>
+                        <span>${escapeHtml(item.title)}</span>
                     </div>
-                    <i data-lucide="corner-down-left" style="width:14px; height:14px; opacity:0.5;"></i>
-                `;
+                    <span class="palette-item-action">Jump ↵</span>`;
 
                 row.addEventListener('click', () => {
-                    executeItem(item);
+                    item.action();
+                    closePalette();
+                    sound.tick();
                 });
 
-                resultsContainer.appendChild(row);
+                results.appendChild(row);
             });
-
-            if (window.lucide) window.lucide.createIcons();
         }
 
-        function executeItem(item) {
-            closePalette();
-            if (item.action) {
-                item.action();
-            } else if (item.section) {
-                const target = document.querySelector(item.section);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        }
-
-        input.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            filteredItems = paletteItems.filter(item => item.label.toLowerCase().includes(query) || item.group.toLowerCase().includes(query));
-            selectedIndex = 0;
-            renderResults();
-        });
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown') {
-                selectedIndex = (selectedIndex + 1) % Math.max(1, filteredItems.length);
-                renderResults();
-                sound.tick();
-                e.preventDefault();
-            } else if (e.key === 'ArrowUp') {
-                selectedIndex = (selectedIndex - 1 + filteredItems.length) % Math.max(1, filteredItems.length);
-                renderResults();
-                sound.tick();
-                e.preventDefault();
-            } else if (e.key === 'Enter') {
-                if (filteredItems[selectedIndex]) {
-                    executeItem(filteredItems[selectedIndex]);
-                }
-                e.preventDefault();
-            } else if (e.key === 'Escape') {
-                closePalette();
-            }
-        });
+        if (openBtn) openBtn.addEventListener('click', openPalette);
+        if (backdrop) backdrop.addEventListener('click', closePalette);
 
         window.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
-                if (backdrop.classList.contains('active')) closePalette();
+                if (modal.classList.contains('active')) closePalette();
                 else openPalette();
-            } else if (e.key === 'Escape' && backdrop.classList.contains('active')) {
+            } else if (e.key === 'Escape' && modal.classList.contains('active')) {
                 closePalette();
             }
         });
 
-        if (openBtn) openBtn.addEventListener('click', openPalette);
-        backdrop.addEventListener('click', (e) => {
-            if (e.target === backdrop) closePalette();
+        input.addEventListener('input', () => {
+            const query = input.value.trim().toLowerCase();
+            const filtered = PALETTE_ACTIONS.filter(item => item.title.toLowerCase().includes(query));
+            renderPaletteItems(filtered);
         });
-    }
 
-    // --- QUICK COPY EMAIL ---
-    function copyEmail() {
-        const email = 'mdmusharaf720@gmail.com';
-        navigator.clipboard.writeText(email).then(() => {
-            showToast('Copied: mdmusharaf720@gmail.com', '📋');
-            triggerConfetti();
-        }).catch(() => {
-            showToast('Email: mdmusharaf720@gmail.com', '✉️');
-        });
-    }
+        input.addEventListener('keydown', (e) => {
+            const selected = results.querySelector('.palette-item.selected');
+            const all = Array.from(results.querySelectorAll('.palette-item'));
+            const idx = all.indexOf(selected);
 
-    // --- CANVASES CONFETTI TRIGGER ---
-    function triggerConfetti() {
-        if (window.confetti) {
-            window.confetti({
-                particleCount: 50,
-                spread: 70,
-                origin: { y: 0.8 },
-                colors: ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b']
-            });
-        }
-    }
-
-    // --- LENIS SMOOTH INERTIA SCROLL ---
-    function initSmoothScroll() {
-        if (typeof window.Lenis !== 'undefined') {
-            const lenis = new window.Lenis({
-                duration: 1.2,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                direction: 'vertical',
-                gestureDirection: 'vertical',
-                smooth: true,
-                mouseMultiplier: 1,
-                smoothTouch: false
-            });
-
-            function raf(time) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (idx >= 0 && idx < all.length - 1) {
+                    selected.classList.remove('selected');
+                    all[idx + 1].classList.add('selected');
+                    all[idx + 1].scrollIntoView({ block: 'nearest' });
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (idx > 0) {
+                    selected.classList.remove('selected');
+                    all[idx - 1].classList.add('selected');
+                    all[idx - 1].scrollIntoView({ block: 'nearest' });
+                }
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (selected) selected.click();
             }
-            requestAnimationFrame(raf);
-        }
-    }
-
-    // --- CONTACT FORM HANDLER ---
-    function initContactForm() {
-        const form = document.getElementById('portfolio-contact-form');
-        if (!form) return;
-
-        form.addEventListener('submit', function (e) {
-            sound.success();
-            triggerConfetti();
-            showToast('Message transmitted successfully! 🚀', '✓');
         });
     }
 
-    // --- HELPER UTILITIES ---
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-    }
-
-    // --- KINETIC TEXT SCRAMBLER ---
-    function initScrambleText() {
-        const glyphs = 'abcdefghijklmnopqrstuvwxyz0123456789_#@%';
-        const headers = document.querySelectorAll('.scramble-hover');
-
-        headers.forEach((header) => {
-            const original = header.textContent;
-            header.addEventListener('mouseenter', () => {
-                let iteration = 0;
-                const interval = setInterval(() => {
-                    header.textContent = original
-                        .split('')
-                        .map((char, index) => {
-                            if (index < iteration) return original[index];
-                            if (char === ' ') return ' ';
-                            return glyphs[Math.floor(Math.random() * glyphs.length)];
-                        })
-                        .join('');
-
-                    if (iteration >= original.length) {
-                        clearInterval(interval);
-                        header.textContent = original;
-                    }
-                    iteration += 1 / 2;
-                }, 25);
-            });
-        });
-    }
-
-    // --- BOOTSTRAP APPLICATION ---
-    document.addEventListener('DOMContentLoaded', () => {
-        setTheme(state.theme);
-
-        const fluid = new FluidCanvas('fluid-canvas');
-        const oscilloscope = new OscilloscopeCanvas('oscilloscope-canvas');
-        const matrix = new MatrixRain('matrix-canvas');
-
-        initCustomCursor();
-        init3DTilt();
-        initTerminal(matrix);
-        loadGitHubTelemetry();
-        initRepoFilters();
-        initCommandPalette(matrix);
-        initSmoothScroll();
-        initContactForm();
-        initScrambleText();
-
+    // --- SETUP GLOBAL LISTENERS ---
+    function setupGlobalActions() {
+        // Theme Cycle Button
         const themeBtn = document.getElementById('theme-toggle-btn');
         if (themeBtn) themeBtn.addEventListener('click', cycleTheme);
 
+        // Sound Toggle Button
         const soundBtn = document.getElementById('sound-toggle-btn');
-        if (soundBtn) {
-            soundBtn.addEventListener('click', () => {
-                state.soundEnabled = !state.soundEnabled;
-                localStorage.setItem('m7sh_sound_enabled', state.soundEnabled);
-                soundBtn.innerHTML = state.soundEnabled ? '<i data-lucide="volume-2"></i> <span>SFX ON</span>' : '<i data-lucide="volume-x"></i> <span>SFX OFF</span>';
-                if (window.lucide) window.lucide.createIcons();
-                if (state.soundEnabled) sound.success();
-                showToast(`Sound FX: ${state.soundEnabled ? 'ENABLED 🔊' : 'MUTED 🔇'}`);
-            });
-        }
+        if (soundBtn) soundBtn.addEventListener('click', toggleSound);
 
-        document.querySelectorAll('.swatch-pill').forEach((swatch) => {
-            swatch.addEventListener('click', () => {
-                const t = swatch.getAttribute('data-theme-choice');
-                if (t) setTheme(t);
+        // Copy Email Buttons
+        document.querySelectorAll('.copy-email-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const email = btn.getAttribute('data-email') || 'mdmusharaf720@gmail.com';
+                copyToClipboard(email, `Email copied: ${email}`);
             });
         });
 
-        document.querySelectorAll('.copy-email-trigger').forEach((btn) => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                copyEmail();
+        // Copy Command Buttons on project cards
+        document.querySelectorAll('.card-copy-cmd').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cmd = btn.getAttribute('data-copy');
+                if (cmd) {
+                    copyToClipboard(cmd, `Command copied: ${cmd}`);
+                }
             });
         });
 
-        if (window.lucide) {
-            window.lucide.createIcons();
+        // Initialize saved theme
+        applyTheme(state.theme);
+
+        // Initialize sound indicator
+        const indicator = document.getElementById('sound-indicator');
+        if (indicator && state.soundEnabled) {
+            indicator.textContent = 'SFX: ON';
+            indicator.className = 'sound-on';
         }
-    });
+    }
+
+    // --- INITIALIZE ON DOM READY ---
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    function init() {
+        setupGlobalActions();
+        setupProjectFilters();
+        setupTerminalCLI();
+        setupCommandPalette();
+    }
 
 })();
