@@ -348,6 +348,7 @@ Available commands:
   🌆 <a href="https://github.com/m7sh/velvet-dusk-theme" target="_blank" class="term-yellow">velvet-dusk-theme</a>     Pastel lavender & dusty rose gradient theme (Omarchy)
   ⚔️ <a href="https://github.com/m7sh/god-of-war-theme" target="_blank" class="term-yellow">god-of-war-theme</a>      Spartan Crimson & obsidian slate theme (Omarchy)
   🌲 <a href="https://github.com/m7sh/everpuccin-m7sh" target="_blank" class="term-yellow">everpuccin-m7sh</a>       Catppuccin Mocha + Forest Green hybrid theme
+  🌐 <a href="https://github.com/m7sh/omarchy-qutebrowser" target="_blank" class="term-cyan">omarchy-qutebrowser</a>   Dynamic theming & 0.90 Wayland transparency for Qutebrowser
   🎬 <a href="https://github.com/m7sh/MovieBox-Tui" target="_blank" class="term-cyan">MovieBox-Tui</a>          High-speed terminal movies & series streamer (Rust)
   🎙️ <a href="https://github.com/m7sh/Desktop-Voice-Assistant" target="_blank" class="term-cyan">voice_assistant.py</a>    Hands-free desktop automation voice assistant (Python)`
         },

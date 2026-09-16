@@ -170,6 +170,19 @@
       </p>
     </td>
   </tr>
+  <tr>
+    <td colspan="2" valign="top">
+      <h4><a href="https://github.com/m7sh/omarchy-qutebrowser">🌐 omarchy-qutebrowser</a></h4>
+      <p>Ultra-minimal keyboard-driven Qutebrowser rice designed for Omarchy Linux &amp; Hyprland. Features native terminal transparency (0.90), dynamic palette synchronization on <code>omarchy theme set</code> via IPC hooks, terminal startpage, and MPV streaming integration.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Browser-Qutebrowser-41cd52?style=flat-square&logo=qutebrowser" alt="Qutebrowser" />
+        <img src="https://img.shields.io/badge/WM-Hyprland_Wayland-00ff9f?style=flat-square&logo=wayland" alt="Hyprland" />
+        <img src="https://img.shields.io/badge/Language-Python-3776AB?style=flat-square&logo=python" alt="Python" />
+        <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT" />
+      </p>
+      <pre><code>curl -fsSL https://raw.githubusercontent.com/m7sh/omarchy-qutebrowser/main/install.sh | bash</code></pre>
+    </td>
+  </tr>
 </table>
 
 ---
