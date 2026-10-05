@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Stars from '../components/Stars.astro';
+import Ticks from '../components/Ticks.astro';
+import Version from '../components/Version.astro';
+import PixelThumb from '../components/PixelThumb.astro';
+import { projectById, projects, releases, within } from '../lib/ship';
+import { ogImage } from '../lib/og';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const lead = projectById['mush-workspace'];
+const omarchy = projects.filter((p) => p.group === 'omarchy' || p.group === 'themes' || p.group === 'rice');
+const list = omarchy
+  .filter((p) => p.id !== lead.id)
+  .sort((a, b) => b.stars - a.stars || (b.releasedAt ?? '').localeCompare(a.releasedAt ?? ''));
+const totalStars = omarchy.reduce((n, p) => n + p.stars, 0);
+const monthReleases = releases.filter((r) => (r.project.group === 'omarchy' || r.project.group === 'themes') && within(r.at, 30)).length;
+---
+<Base title="Omarchy ecosystem | m7sh.dev" description="Status bar widgets, Quickshell plugins and aesthetic desktop themes crafted for Omarchy Linux and Hyprland by Mohammed Musharaf." path="/omarchy" image={ogImage('/og/omarchy.png')} imageAlt="Omarchy widgets and themes by Mohammed Musharaf">
+  <section class="page-head">
+    <div class="px-band" id="pxBand" aria-hidden="true"></div>
+    <div class="wrap" style="position:relative">
+      <p class="eyebrow">Omarchy Linux & Hyprland</p>
+      <h1>Omarchy ecosystem</h1>
+      <p>Modular status bar widgets, declarative Quickshell components, and desktop themes built natively for Omarchy Linux. Press <kbd>T</kbd> to cycle themes live.</p>
+      <div class="row"><span class="meta"><Stars count={totalStars} /><span>{omarchy.length} projects & themes</span><span>{monthReleases} recent releases</span></span></div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <article class="lead glow rv" style={`--pc:${lead.accent}`}>
+      <div class="fshot">
+        <div class="win">
+          <div class="bar"><i></i><i></i><i></i><span>mush.workspace.qml</span></div>
+          <div style="padding:48px 24px;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:0 0 10px 10px;min-height:240px;gap:20px">
+            <div style="background:var(--bg3);padding:12px 28px;border-radius:99px;border:1px solid var(--line);display:flex;align-items:center;gap:12px">
+              <span style="width:32px;height:12px;border-radius:6px;background:var(--accent)"></span>
+              <span style="width:12px;height:12px;border-radius:50%;background:color-mix(in oklab,var(--accent) 55%,transparent)"></span>
+              <span style="width:12px;height:12px;border-radius:50%;background:color-mix(in oklab,var(--accent) 35%,transparent)"></span>
+              <span style="width:12px;height:12px;border-radius:50%;background:var(--line)"></span>
+            </div>
+            <span style="font-family:var(--mono);font-size:12px;color:var(--fg3)">Dynamic Pill & Dots Indicator for Quickshell</span>
+          </div>
+        </div>
+      </div>
+      <div class="fbody">
+        <span class="lead-tag" style="align-self:flex-start">Featured Widget</span>
+        <div class="row"><Icon project={lead} size="lg" /><h3>{lead.name}</h3></div>
+        <div class="meta"><Stars count={lead.stars} animate /><Version project={lead} /><span>QML • Quickshell</span></div>
+        <p>{lead.tagline} Multi-monitor display synchronization, cubic bezier transitions, and an optional hide-empty workspace mode.</p>
+        <div class="acts">
+          {lead.install && <button type="button" class="copy" data-copy={lead.install}><span class="p">$</span><code>{lead.install}</code><span class="c">copy</span></button>}
+          <a class="btn btn-ghost" href={`https://github.com/${lead.repo}`} target="_blank" rel="noreferrer">Repository ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <section class="blk" style="padding-top:56px">
+      <div class="blk-head rv"><div><h2>Plugins, Widgets & Themes</h2><p>Sorted by stars. Open any card for its full changelog, or copy the install command.</p></div></div>
+      <div class="pgrid">
+        {list.map((p) => (
+          <article class="pcard glow rv" style={`--pc:${p.accent}`}>
+            <a class="thumb" href={`${base}/p/${p.id}`} aria-label={`${p.name} details`}>
+              {p.shot ? <img src={p.shot} alt="" loading="lazy" /> : <PixelThumb project={p} />}
+            </a>
+            <div class="pb">
+              <h4><Icon project={p} size="sm" /><a href={`${base}/p/${p.id}`}>{p.name}</a><Stars count={p.stars} /></h4>
+              <p>{p.tagline}</p>
+              <div class="pf">
+                <Ticks project={p} />
+                <div class="meta"><Version project={p} /></div>
+                {p.install
+                  ? <button type="button" class="copy" data-copy={p.install}><span class="p">$</span><code>{p.install}</code><span class="c">copy</span></button>
+                  : <a class="copy" href={`https://github.com/${p.repo}`} target="_blank" rel="noreferrer"><span class="p">↗</span><code>github.com/{p.repo}</code><span class="c">open</span></a>}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  import '../scripts/pixel-band';
+</script>

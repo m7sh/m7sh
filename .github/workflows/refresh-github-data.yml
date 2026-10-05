@@ -1,0 +1,64 @@
+name: Refresh GitHub data
+
+# Rewrites src/data/github.json (stars, releases, contribution calendar).
+# A commit only happens when data changes.
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/fetch-github.mjs
+      - src/data/projects.json
+      - .github/workflows/refresh-github-data.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: refresh-github-data-${{ github.event_name }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: node scripts/fetch-github.mjs --check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  refresh:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: node scripts/fetch-github.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- src/data/github.json; then
+            echo "No changes."
+            exit 0
+          fi
+          git config user.name "Mohammed Musharaf"
+          git config user.email "mdmusharaf720@gmail.com"
+          git add src/data/github.json
+          git commit -m "chore: refresh GitHub stars, releases, and activity data"
+          git push

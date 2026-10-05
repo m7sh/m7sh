@@ -1,0 +1,19 @@
+---
+import { generatedAt } from '../lib/ship';
+import { ago } from '../lib/time';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const year = new Date().getFullYear();
+---
+<footer class="ft">
+  <div class="wrap">
+    <div>© {year} Mohammed Musharaf · GitHub activity & releases synced live, last pulled <span data-ago={generatedAt}>{ago(generatedAt)}</span></div>
+    <nav class="links" aria-label="Footer">
+      <a href={`${base}/ship`}>Ship log</a>
+      <a href={`${base}/omarchy`}>Omarchy</a>
+      <a href={`${base}/ship.xml`}>RSS</a>
+      <a href="https://github.com/m7sh" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://github.com/m7sh/m7sh" target="_blank" rel="noreferrer">Source</a>
+    </nav>
+  </div>
+</footer>

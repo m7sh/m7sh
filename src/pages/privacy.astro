@@ -1,0 +1,29 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { PRIVACY_EMAIL, SUPPORT_EMAIL, SITE_NAME } from '../lib/site';
+---
+<Legal
+  pageTitle={`Privacy Policy | ${SITE_NAME}`}
+  heading="Privacy Policy"
+  description={`How ${SITE_NAME} treats information across open-source tools and projects.`}
+  lastUpdated="October 5, 2026"
+>
+  <p>
+    I build and publish open-source software including ame, mush.workspace, omarchy-media, and the Omarchy desktop plugins and themes published on this site. This policy explains privacy principles across these tools.
+  </p>
+
+  <h2>Information We Don't Collect</h2>
+  <p>
+    Almost all software listed here runs locally on your computer in guest or client mode without tracking, telemetry, or account sign-ups. For example, <code>ame</code> streams music via YouTube Music in pure guest mode with no credentials or cookies stored.
+  </p>
+
+  <h2>Third-Party Services</h2>
+  <p>
+    Some widgets or terminal utilities connect to public APIs (e.g. GitHub public API for activity and stars, MPRIS D-Bus on your local desktop, or streaming backends). Those requests are subject to the respective service's standard privacy policies.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    If you have any questions, contact me at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+  </p>
+</Legal>

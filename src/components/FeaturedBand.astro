@@ -1,0 +1,109 @@
+---
+import { projectById } from '../lib/ship';
+import Icon from './Icon.astro';
+import Stars from './Stars.astro';
+import Version from './Version.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const ame = projectById['ame'];
+const ws = projectById['mush-workspace'];
+---
+<article class="tp rv">
+  <div class="tp-row">
+    <div class="tp-copy">
+      <p class="eyebrow">Terminal Audio · Start Here</p>
+      <div class="tp-id">
+        <Icon project={ame} size="lg" />
+        <div>
+          <b>ame (雨)</b>
+          <div class="meta" style="margin-top:6px">
+            <Stars count={ame.stars} animate />
+            <Version project={ame} />
+          </div>
+        </div>
+      </div>
+      <h3>Music in the terminal, done right.</h3>
+      <p>{ame.tagline}</p>
+      <ul class="checks">
+        <li>Guest mode: zero authentication, cookies, or API keys needed</li>
+        <li>Live Omarchy desktop theme synchronization without file rewrites</li>
+        <li>True terminal transparency with PipeWire audio spectrum visualizer</li>
+        <li>Personalized recommendations, live trending, and radio autoplay</li>
+      </ul>
+      <div class="tp-acts">
+        <a class="btn btn-primary" href={ame.site} target="_blank" rel="noreferrer">Get ame <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href={`https://github.com/${ame.repo}`} target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a class="btn btn-ghost" href={`${base}/p/ame`}>Changelog</a>
+      </div>
+    </div>
+    <div class="tp-shot">
+      <div class="win">
+        <div class="bar"><i></i><i></i><i></i><span>ame@omarchy:~$ ame</span></div>
+        <div style="padding:28px 24px;background:var(--bg2);font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--fg);border-radius:0 0 10px 10px;min-height:260px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px">
+            <span style="color:var(--accent);font-weight:700">A M E &nbsp; Y T M U S I C</span>
+            <span style="color:var(--fg3)">[t] Trending &nbsp; [r] Recs &nbsp; [s] Search &nbsp; [q] Queue</span>
+          </div>
+          <div style="margin:20px 0">
+            <div style="color:var(--accent);margin-bottom:8px">▸─ now playing ──────────────────────────────────────────</div>
+            <div style="display:flex;justify-content:space-between;color:var(--fg2)">
+              <span>▶ Midnight City — M83</span>
+              <span style="color:var(--accent2)">02:14 / 04:03</span>
+            </div>
+            <div style="color:var(--accent);letter-spacing:1px;margin:6px 0">━━━━━━━━━━━━━━━━━━━━━━●━━━━━━━━━━━━━ 55%</div>
+            <div style="color:var(--fg3);font-size:11px">VOL ██████░░ 80% &nbsp;•&nbsp; PipeWire CAVA Visualizer: ▁▂▃▄▅▆▇█▆▅▃</div>
+          </div>
+          <div style="border-top:1px solid var(--line);padding-top:10px;display:flex;gap:12px;font-size:11px;color:var(--fg3)">
+            <span>Space: Pause</span>
+            <span>n: Next</span>
+            <span>f: Favourite</span>
+            <span>v: Visualizer</span>
+            <span>?: Cheatsheet</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tp-row rev">
+    <div class="tp-copy">
+      <p class="eyebrow" style="color:var(--accent2)"><span class="new-tag">Featured</span> Wayland Status Bar</p>
+      <div class="tp-id">
+        <Icon project={ws} size="lg" />
+        <div>
+          <b>mush.workspace</b>
+          <div class="meta" style="margin-top:6px">
+            <Stars count={ws.stars} animate />
+            <span class="tag">QML • Quickshell</span>
+          </div>
+        </div>
+      </div>
+      <h3>Dynamic Pill & Dots Indicator.</h3>
+      <p>{ws.tagline}</p>
+      <ul class="checks">
+        <li>Ubuntu & GNOME-inspired pill indicator for active desktop spaces</li>
+        <li>Full multi-monitor synchronization with Hyprland Wayland IPC</li>
+        <li>Fluid cubic-bezier animation transitions with zero CPU waste</li>
+        <li>Optional auto-hide for empty workspaces</li>
+      </ul>
+      <div class="tp-acts">
+        {ws.install && <button type="button" class="copy" data-copy={ws.install}><span class="p">$</span><code>{ws.install}</code><span class="c">copy</span></button>}
+        <a class="btn btn-ghost" href={`https://github.com/${ws.repo}`} target="_blank" rel="noreferrer">Repository ↗</a>
+      </div>
+    </div>
+    <div class="tp-shot">
+      <div class="win">
+        <div class="bar"><i></i><i></i><i></i><span>mush.workspace.qml</span></div>
+        <div style="padding:48px 24px;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:0 0 10px 10px;min-height:260px;gap:24px">
+          <div style="background:var(--bg3);padding:10px 24px;border-radius:99px;border:1px solid var(--line);display:flex;align-items:center;gap:10px">
+            <span style="width:28px;height:12px;border-radius:6px;background:var(--accent)"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:color-mix(in oklab,var(--accent) 50%,transparent)"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:color-mix(in oklab,var(--accent) 30%,transparent)"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:var(--line)"></span>
+          </div>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--fg3)">Omarchy Status Bar Dynamic Pill Workspace View</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>

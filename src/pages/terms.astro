@@ -1,0 +1,29 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { SUPPORT_EMAIL, SITE_NAME } from '../lib/site';
+---
+<Legal
+  pageTitle={`Terms of Service | ${SITE_NAME}`}
+  heading="Terms of Service"
+  description={`Terms of service and software licenses for ${SITE_NAME}.`}
+  lastUpdated="October 5, 2026"
+>
+  <p>
+    The software, widgets, and themes published on this site are open-source and released primarily under the MIT license, unless otherwise specified in their individual GitHub repositories.
+  </p>
+
+  <h2>Open Source Software</h2>
+  <p>
+    The software is provided "as is", without warranty of any kind, express or implied. In no event shall the authors be liable for any claim, damages, or other liability.
+  </p>
+
+  <h2>Contributing & Issues</h2>
+  <p>
+    Bug reports, feature requests, and pull requests are welcomed directly on the corresponding GitHub repository at <a href="https://github.com/m7sh" target="_blank" rel="noreferrer">github.com/m7sh</a>.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    For any questions, reach out via <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+  </p>
+</Legal>

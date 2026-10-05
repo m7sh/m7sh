@@ -1,0 +1,95 @@
+---
+import '@fontsource-variable/inter/standard.css';
+// One variable file covers every JetBrains Mono weight the site uses.
+import monoFont from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
+import interFont from '@fontsource-variable/inter/files/inter-latin-standard-normal.woff2?url';
+import '../styles/global.css';
+import '../styles/site.css';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_URL, SITE_NAME } from '../lib/site';
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article';
+  path?: string;
+  siteName?: string;
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const props = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const orgSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${SITE_URL}/#person`,
+      name: 'Mohammed Musharaf',
+      url: SITE_URL,
+      sameAs: [
+        'https://github.com/m7sh',
+      ],
+      jobTitle: 'Linux Rice Artisan & Developer',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      author: { '@id': `${SITE_URL}/#person` },
+    },
+  ],
+}).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang="en" data-theme="velvet-dusk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <script is:inline>
+      (function () {
+        document.documentElement.classList.add('js');
+        try {
+          var t = localStorage.getItem('m7sh-theme');
+          var ok = ['velvet-dusk', 'cyber-dusk', 'gruvbox', 'everpuccin', 'blacula', 'god-of-war', 'tokyo-night', 'catppuccin', 'matte-black', 'paper'];
+          if (ok.indexOf(t) > -1) document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="preload" href={monoFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interFont} as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={`@font-face{font-family:"JetBrains Mono";font-style:normal;font-display:swap;font-weight:100 800;src:url(${monoFont}) format("woff2")}`} />
+    <meta name="theme-color" content="#100d14" />
+    <meta name="author" content="Mohammed Musharaf" />
+    <meta name="application-name" content={SITE_NAME} />
+    <link rel="icon" href={`${base}/icons/favicon.svg`} type="image/svg+xml" />
+    <link rel="icon" href={`${base}/icons/favicon-32.png`} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={`${base}/icons/favicon-180.png`} />
+    <link rel="manifest" href={`${base}/manifest.webmanifest`} />
+    <link rel="sitemap" type="application/xml" href={`${base}/sitemap-index.xml`} />
+    <link rel="alternate" type="application/rss+xml" title="m7sh.dev ship log" href={`${base}/ship.xml`} />
+
+    <Seo {...props} />
+    <script type="application/ld+json" set:html={orgSchema} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script>
+      import '../scripts/theme';
+      import '../scripts/ui';
+    </script>
+  </body>
+</html>
