@@ -1,9 +1,10 @@
 ---
-import { initials, type Project } from '../lib/ship';
+import { initials, assetUrl, type Project } from '../lib/ship';
 
 interface Props { project: Project; size?: 'sm' | 'lg' }
 const { project, size } = Astro.props;
+const iconUrl = assetUrl(project.icon);
 ---
 <span class:list={['ico', size]} style={`--pc:${project.accent}`}>
-  {project.icon ? <img src={project.icon} alt="" width="28" height="28" loading="lazy" /> : initials(project.name)}
+  {iconUrl ? <img src={iconUrl} alt="" width="28" height="28" loading="lazy" /> : initials(project.name)}
 </span>

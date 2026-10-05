@@ -52,6 +52,14 @@ const repos = github.repos as Record<string, RepoData>;
 // tags are substituted; anything else falls back to the default branch.
 const SAFE_TAG = /^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/;
 
+export function assetUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) return path;
+  const base = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${cleanPath}`;
+}
+
 export const projects: Project[] = (projectList as ProjectMeta[]).map((meta) => {
   const data = repos[meta.repo];
   const version = data?.latest ?? null;

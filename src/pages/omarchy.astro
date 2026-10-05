@@ -5,7 +5,7 @@ import Stars from '../components/Stars.astro';
 import Ticks from '../components/Ticks.astro';
 import Version from '../components/Version.astro';
 import PixelThumb from '../components/PixelThumb.astro';
-import { projectById, projects, releases, within } from '../lib/ship';
+import { projectById, projects, releases, within, assetUrl } from '../lib/ship';
 import { ogImage } from '../lib/og';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -62,7 +62,7 @@ const monthReleases = releases.filter((r) => (r.project.group === 'omarchy' || r
         {list.map((p) => (
           <article class="pcard glow rv" style={`--pc:${p.accent}`}>
             <a class="thumb" href={`${base}/p/${p.id}`} aria-label={`${p.name} details`}>
-              {p.shot ? <img src={p.shot} alt="" loading="lazy" /> : <PixelThumb project={p} />}
+              {p.shot ? <img src={assetUrl(p.shot)} alt="" loading="lazy" /> : <PixelThumb project={p} />}
             </a>
             <div class="pb">
               <h4><Icon project={p} size="sm" /><a href={`${base}/p/${p.id}`}>{p.name}</a><Stars count={p.stars} /></h4>
