@@ -150,7 +150,7 @@ if (term && termIn && dataEl) {
     whoami: () => 'Mohammed Musharaf (m7sh / mush). Linux rice artisan, Wayland widget engineer & creator of ame.',
     fastfetch: () => 'OS: Omarchy Linux • Compositor: Hyprland • Palettes: Velvet Dusk, Gruvbox • Terminal: Foot / Ghostty',
     plugins: () => 'mush.workspace  omarchy-media  omarchy-cricket  omarchy-f1',
-    themes: () => 'velvet-dusk  cyber-dusk  gruvbox-aesthetic  everpuccin  blacula  god-of-war  hogwarts-night',
+    themes: () => 'velvet-dusk  cyber-dusk  cappuccino-night  gruvbox-aesthetic  everpuccin  blacula  god-of-war  hogwarts-night',
     contact: () => 'email: mdmusharaf720@gmail.com • github: https://github.com/m7sh',
     ls: () => apps.map(([id]) => id).join('  '),
     stars: () => `${stars.toLocaleString('en-US')} stars across ${apps.length} repos. Thank you!`,

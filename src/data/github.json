@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-05T10:08:01.017Z",
+ "generatedAt": "2026-10-05T17:04:38.092Z",
  "repos": {
   "m7sh/ame": {
    "stars": 2,
@@ -141,6 +141,13 @@
   "m7sh/hogwarts-night": {
    "stars": 0,
    "pushedAt": "2026-09-12T17:25:46Z",
+   "latest": null,
+   "releaseDates": [],
+   "releases": []
+  },
+  "m7sh/cappuccino-night-theme": {
+   "stars": 0,
+   "pushedAt": "2026-10-05T17:01:53Z",
    "latest": null,
    "releaseDates": [],
    "releases": []
@@ -1637,7 +1644,7 @@
   ],
   [
    "2026-10-05",
-   2
+   5
   ]
  ]
 }

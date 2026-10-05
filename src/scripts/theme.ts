@@ -1,5 +1,5 @@
 // Omarchy themes for the whole site. T (Shift+T backwards) cycles; the menu picks.
-export const THEMES = ['velvet-dusk', 'cyber-dusk', 'gruvbox', 'everpuccin', 'blacula', 'god-of-war', 'tokyo-night', 'catppuccin', 'matte-black', 'paper'];
+export const THEMES = ['velvet-dusk', 'cyber-dusk', 'cappuccino-night', 'gruvbox', 'everpuccin', 'blacula', 'god-of-war', 'tokyo-night', 'catppuccin', 'matte-black', 'paper'];
 
 const root = document.documentElement;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
