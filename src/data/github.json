@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-24T11:12:42.396Z",
+ "generatedAt": "2026-10-24T16:02:38.477Z",
  "repos": {
   "m7sh/ame": {
    "stars": 3,
@@ -80,12 +80,30 @@
   },
   "m7sh/omarchy-qutebrowser": {
    "stars": 7,
-   "pushedAt": "2026-09-17T06:24:23Z",
-   "latest": "v1.0.0",
+   "pushedAt": "2026-10-24T12:56:43Z",
+   "latest": "v1.1.1",
    "releaseDates": [
+    "2026-10-24T12:56:43Z",
+    "2026-10-24T12:39:43Z",
     "2026-09-17T06:24:23Z"
    ],
    "releases": [
+    {
+     "tag": "v1.1.1",
+     "title": "v1.1.1 — Dedicated YouTube Ad Elimination & Opaque Window Fix",
+     "at": "2026-10-24T12:56:43Z",
+     "pre": false,
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/releases/tag/v1.1.1",
+     "body": "## 🛠️ Fixes in v1.1.1\n\n### 🎬 Complete YouTube Video Ad & Banner Elimination\n- **Player Response Interception**: Added `greasemonkey/youtube-adblock.user.js` which hooks `ytInitialPlayerResponse` at `document-start` to delete `adPlacements`, `playerAds`, and `adSlots` before video player initialization.\n- **Fast-Forward & Auto-Skip Fallback**: Mutes and accelerates in-stream ad video elements (16×) and jumps directly to completion.\n- **Cosmetic Banner Suppression**: Added comprehensive YouTube CSS to `brave_cosmetics.py` to permanently hide `ytd-ad-slot-renderer` (the sidebar ad banner in related videos), top masthead ads, and sponsor cards.\n\n### 🪟 Removed Transparency Rules\n- Set `c.window.transparent = False` in `config.py` for solid rendering.\n- Removed obsolete Hyprland 0.90 window opacity rules from `hyprland.lua` and added cleanup logic to `install.sh`."
+    },
+    {
+     "tag": "v1.1.0",
+     "title": "v1.1.0 — Brave-Grade Ad Blocking & Cosmetic Filtering",
+     "at": "2026-10-24T12:39:43Z",
+     "pre": false,
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/releases/tag/v1.1.0",
+     "body": "## 🛡️ What's New in v1.1.0\n\n### 🚀 Brave-Grade Ad Blocking Integration\nThis release reverse-engineers Brave Browser's adblocking architecture and integrates Brave's native `adblock-rust` engine into Qutebrowser:\n\n- **Brave's Core Engine (`adblock-rust`)**: Leverages Brave's high-performance Rust adblock engine (via `python-adblock`) for fast network request filtering.\n- **Curated 27-List Catalog (`brave-lists.txt`)**: Direct integration of Brave's default list catalog matching `list_catalog.json`:\n  - uBlock Origin Filters (main + yearly archives 2020–2026, general, badware, resource-abuse, unbreak, quick-fixes, uBO link shorteners).\n  - EasyList & EasyPrivacy.\n  - Brave's specialized rules: `brave-unbreak.txt`, `brave-specific.txt`, `brave-social.txt`, and `brave-sugarcoat.txt`.\n  - URLhaus malicious URL blocklist.\n  - Cookie Notice blockers: Fanboy Cookie Monster, uBO Cookie Notices, and Brave Cookie additions.\n- **Dual-Layer Defense (`content.blocking.method = \"both\"`)**: Combines the ABP/uBO engine with StevenBlack hosts as a secondary catch-all net.\n- **Dynamic Cosmetic Filtering (`brave_cosmetics.py`)**: Restores element hiding (which stock Qutebrowser lacks) by querying `url_cosmetic_resources` and `hidden_class_id_selectors` from the live engine and injecting `<style>` sheets into web pages.\n- **Pre-Compiled Adblock Cache (`build_cache.py`)**: The installer now downloads all lists and compiles `~/.local/share/qutebrowser/adblock-cache.dat` (14.6 MB) and `blocked-hosts` (2.2 MB) ahead of time for instant blocking on first run.\n- **Cleaned Dependencies**: Removed red"
+    },
     {
      "tag": "v1.0.0",
      "title": "v1.0.0 — Live-stream-safe YouTube ad skipper",
@@ -132,7 +150,7 @@
    "releases": []
   },
   "m7sh/god-of-war-theme": {
-   "stars": 0,
+   "stars": 1,
    "pushedAt": "2026-09-12T10:20:32Z",
    "latest": null,
    "releaseDates": [],
@@ -1664,7 +1682,7 @@
   ],
   [
    "2026-10-24",
-   1
+   8
   ]
  ]
 }
