@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-25T04:52:40.930Z",
+ "generatedAt": "2026-10-25T11:42:36.907Z",
  "repos": {
   "m7sh/ame": {
    "stars": 3,
@@ -80,14 +80,23 @@
   },
   "m7sh/omarchy-qutebrowser": {
    "stars": 7,
-   "pushedAt": "2026-10-24T12:56:43Z",
-   "latest": "v1.1.1",
+   "pushedAt": "2026-10-25T05:31:50Z",
+   "latest": "v1.2.0",
    "releaseDates": [
+    "2026-10-25T05:32:21Z",
     "2026-10-24T12:56:43Z",
     "2026-10-24T12:39:43Z",
     "2026-09-17T06:24:23Z"
    ],
    "releases": [
+    {
+     "tag": "v1.2.0",
+     "title": "v1.2.0 — Native Dark Themes & pacman-Only Setup",
+     "at": "2026-10-25T05:32:21Z",
+     "pre": false,
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/releases/tag/v1.2.0",
+     "body": "## 🚀 v1.2.0 — Native Dark Themes & pacman-Only Setup\n\n### 🌙 Native dark themes by default\n\n- `prefers-color-scheme` now follows the active Omarchy theme, so sites render their own dark UI.\n- Chromium's forced inversion is off by default. Its per-element colour flip was leaving switches and checkboxes half-inverted (for example, a white knob turning black while its track stayed light).\n- <kbd>t</kbd><kbd>d</kbd> still toggles the CIELAB forced-dark fallback for light-only sites, live on QtWebEngine ≥ 6.7.\n- The theme template and generated `theme.py` were updated to keep the scheme in sync without re-enabling inversion.\n\n### 📦 pacman-only installation\n\n- `qutebrowser` and `python-adblock` now come from the Arch repositories; the uv tool environment and duplicate user-site `adblock` package are gone.\n- The installer fails with a clear message if either dependency is missing.\n- Launcher icon lookup now searches standard `/usr/share/icons` and XDG paths instead of a hardcoded uv path.\n\n### 🧹 Cleanup\n\n- Removed the Greasemonkey userscript and its install/reload plumbing. YouTube is handled entirely by the Brave cosmetic injector and the in-stream skip engine.\n\n### 🛡️ Adblock verification\n\nA fresh-profile run across ten ad-heavy sites recorded **256 blocked requests** and **no visible ad creatives**:\n\n| Site | Blocked | Cosmetic rules | Visible ads |\n| :--- | ---: | ---: | :--- |\n| Forbes | 23 | 26 hide | none |\n| CNN | 34 | 22 hide + 2 style | none |\n| Daily Mail | 28 | 12 hide | none |\n| Weather.com | 38 | 11 hide | anti-adblock wall |\n| ESPN | 16 | 2 hide | none |\n| 9GAG "
+    },
     {
      "tag": "v1.1.1",
      "title": "v1.1.1 — Dedicated YouTube Ad Elimination & Opaque Window Fix",
@@ -1658,7 +1667,7 @@
   ],
   [
    "2026-10-25",
-   0
+   6
   ]
  ]
 }
