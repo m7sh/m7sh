@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-01T17:58:14.133Z",
+ "generatedAt": "2026-11-01T22:09:44.654Z",
  "repos": {
   "m7sh/ame": {
    "stars": 3,
@@ -79,7 +79,7 @@
    "releases": []
   },
   "m7sh/omarchy-qutebrowser": {
-   "stars": 8,
+   "stars": 9,
    "pushedAt": "2026-10-25T05:31:50Z",
    "latest": "v1.2.0",
    "releaseDates": [
@@ -1667,7 +1667,7 @@
   ],
   [
    "2026-11-01",
-   1
+   2
   ]
  ]
 }
