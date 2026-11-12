@@ -120,6 +120,18 @@
       <pre><code>omarchy plugin add https://github.com/m7sh/mush-omarchy-cricket.git --enable</code></pre>
     </td>
   </tr>
+  <tr>
+    <td colspan="2" valign="top">
+      <h4><a href="https://github.com/m7sh/omarchy-iptv">📺 omarchy-iptv</a></h4>
+      <p>Enhanced single-provider IPTV browser for Omarchy Linux with Live TV, VOD, XMLTV EPG, favorites with backup, and external MPV playback.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Language-QML-41cd52?style=flat-square&logo=qt" alt="QML" />
+        <img src="https://img.shields.io/badge/Media-MPV-38bdf8?style=flat-square" alt="MPV" />
+        <img src="https://img.shields.io/badge/Platform-Omarchy_Bar-8b5cf6?style=flat-square" alt="Bar" />
+      </p>
+      <pre><code>omarchy plugin add https://github.com/m7sh/omarchy-iptv.git --enable</code></pre>
+    </td>
+  </tr>
 </table>
 
 ---
@@ -130,6 +142,8 @@
 
 ```
 ~/themes/omarchy/
+├── 🎯 valorant-themes/          # 30 VALORANT agent themes with 4K art & bespoke palettes
+├── 🎨 matugen-theme/            # Dynamic Material You wallpaper-driven theming suite
 ├── 🍂 gruvbox-aesthetic/        # Dense smoky & golden autumn dark overhaul of classic Gruvbox
 ├── 🌆 velvet-dusk-theme/         # Dreamy pastel lavender & dusty rose gradient borders
 ├── ⚔️  god-of-war-theme/          # Spartan Crimson borders, obsidian slate & Vesktop theme
@@ -140,6 +154,8 @@
 
 | Theme | Aesthetic Palette | Palette Chips | Quick Link |
 | :--- | :--- | :--- | :---: |
+| [**`valorant-themes`**](https://github.com/m7sh/valorant-themes) | 30 bespoke VALORANT agent palettes & 4K art | `● #FF4655` `● #0F1923` `● #ECE8E1` | [Inspect Theme →](https://github.com/m7sh/valorant-themes) |
+| [**`matugen-theme`**](https://github.com/m7sh/matugen-theme) | Dynamic Material You wallpaper palette extraction | `● #13140C` `● #C5CC7A` `● #E5E3D6` | [Inspect Theme →](https://github.com/m7sh/matugen-theme) |
 | [**`gruvbox-aesthetic`**](https://github.com/m7sh/gruvbox-aesthetic) | Dense smoky golden autumn dark palette | `● #282828` `● #D79921` `● #EBDBB2` | [Inspect Theme →](https://github.com/m7sh/gruvbox-aesthetic) |
 | [**`velvet-dusk-theme`**](https://github.com/m7sh/velvet-dusk-theme) | Pastel lavender & dusty rose gradient borders | `● #1E1B2E` `● #C4B5FD` `● #FDA4AF` | [Inspect Theme →](https://github.com/m7sh/velvet-dusk-theme) |
 | [**`god-of-war-theme`**](https://github.com/m7sh/god-of-war-theme) | Spartan Crimson, Nordic runes & obsidian slate | `● #121214` `● #DC2626` `● #9CA3AF` | [Inspect Theme →](https://github.com/m7sh/god-of-war-theme) |
@@ -181,6 +197,18 @@
         <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT" />
       </p>
       <pre><code>curl -fsSL https://raw.githubusercontent.com/m7sh/omarchy-qutebrowser/main/install.sh | bash</code></pre>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top">
+      <h4><a href="https://umrah-journey.umrahguide.workers.dev">🕋 Umrah Journey</a></h4>
+      <p>Interactive, voice-guided walkthrough of Umrah with authentic duas in English, Arabic, and Urdu. Features interactive step-by-step guidance, audio recitations, and offline capabilities.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Platform-Web_%26_PWA-d7b06a?style=flat-square" alt="Web & PWA" />
+        <img src="https://img.shields.io/badge/Cloud-Cloudflare_Workers-f38020?style=flat-square&logo=cloudflare" alt="Cloudflare" />
+        <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT" />
+      </p>
+      <pre><code>git clone https://github.com/m7sh/umrah-journey.git && cd umrah-journey && npm install</code></pre>
     </td>
   </tr>
 </table>

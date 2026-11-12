@@ -24,6 +24,9 @@ ${section('themes')}
 ## ${GROUPS.rice}
 ${section('rice')}
 
+## ${GROUPS.apps}
+${section('apps')}
+
 ## On this site
 - [Ship log](${base}/ship): every release across every project, with release notes. RSS: ${base}/ship.xml
 - [Omarchy ecosystem](${base}/omarchy): bar plugins, widgets, and themes.

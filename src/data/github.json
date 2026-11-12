@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-12T20:04:18.835Z",
+ "generatedAt": "2026-11-12T21:13:34.807Z",
  "repos": {
   "m7sh/ame": {
    "stars": 3,
@@ -78,6 +78,13 @@
    "releaseDates": [],
    "releases": []
   },
+  "m7sh/omarchy-iptv": {
+   "stars": 0,
+   "pushedAt": "2026-10-17T08:43:57Z",
+   "latest": null,
+   "releaseDates": [],
+   "releases": []
+  },
   "m7sh/omarchy-qutebrowser": {
    "stars": 9,
    "pushedAt": "2026-10-25T05:31:50Z",
@@ -120,6 +127,31 @@
      "pre": false,
      "url": "https://github.com/m7sh/omarchy-qutebrowser/releases/tag/v1.0.0",
      "body": "First tagged release of **Omarchy Qutebrowser** — an aesthetic, keyboard-driven Qutebrowser setup with dynamic Omarchy theme synchronization and Wayland transparency.\n\n## Features\n\n- **Dynamic Omarchy theme sync** — hooks into `omarchy theme set` and updates all Qutebrowser colors live, without closing tabs.\n- **Crystal-clear 0.90 transparency** — matches `foot` / `ghostty`, with a Hyprland window rule.\n- **Local terminal startpage** — fast new-tab dashboard with clock, date, DuckDuckGo search and bookmarks.\n- **Vim keyboard controls** — single-key navigation, hints, tab cycling.\n- **1-key MPV playback** — press `M` on any video link to stream in hardware-accelerated `mpv`.\n- **Built-in YouTube ad skipping** — bundled `greasemonkey/yt-ads.js`.\n\n## Ad skipper notes\n\n`greasemonkey/yt-ads.js` (v1.2.0) is now **live-stream safe**:\n\n- Detects live streams via `ytp-live`, `.ytp-live-badge`, or a non-finite `video.duration`.\n- **Never seeks live streams**, so they no longer jump to the end when an ad appears.\n- Still fast-forwards finite ad clips to their end.\n- Uses a `MutationObserver` + polling instead of the unreliable `load` event.\n\n> Note: live streams that use server-side ad insertion cannot be skipped by seeking — the ad plays through, but the stream is no longer broken.\n\n## Install\n\n```bash\ngit clone https://github.com/m7sh/omarchy-qutebrowser.git /tmp/omarchy-qutebrowser && /tmp/omarchy-qutebrowser/install.sh && rm -rf /tmp/omarchy-qutebrowser\n```"
+    }
+   ]
+  },
+  "m7sh/valorant-themes": {
+   "stars": 0,
+   "pushedAt": "2026-11-12T19:27:16Z",
+   "latest": null,
+   "releaseDates": [],
+   "releases": []
+  },
+  "m7sh/matugen-theme": {
+   "stars": 0,
+   "pushedAt": "2026-11-05T12:25:31Z",
+   "latest": "v1.0.0",
+   "releaseDates": [
+    "2026-11-05T12:25:31Z"
+   ],
+   "releases": [
+    {
+     "tag": "v1.0.0",
+     "title": "v1.0.0 — Live wallpapers, silent by default",
+     "at": "2026-11-05T12:25:31Z",
+     "pre": false,
+     "url": "https://github.com/m7sh/matugen-theme/releases/tag/v1.0.0",
+     "body": "## Matugen Dynamic Theme v1.0.0\n\nFirst tagged release of the dynamic Material You theme for **Omarchy Linux** and **Hyprland**.\n\n### ✨ Highlights\n\n- **Live wallpaper support** — video backgrounds (`.mp4`, `.webm`, `.m4v`, `.mov`, `.mkv`, `.avi`) now drive the palette. Matugen samples a sibling poster or a representative video frame, so live and still wallpapers produce equally accurate colors.\n- **Two bundled live loops** — `samurai-over-sakura-valley-live.mp4` and `tokyo-skyline-bedroom-live.mp4`, both silent 2560×1440 H.264.\n- **Silent by default** — OWE plays a video wallpaper's audio track and has no per-wallpaper mute switch, so the theme strips audio at the file level with `-c:v copy` (video stream stays bit-for-bit identical).\n  - `matugen-silence` — remove audio in place or into a new file, no re-encode.\n  - `matugen-add-live` — install a clip into Omarchy's user background folder, muted unless `--keep-audio`, optionally apply with `--set`.\n- **Real-time watcher** — inotify-based palette regeneration on every wallpaper change, stills and videos alike.\n- **Curated collection** — 7 dark anime/cyberpunk 4K stills + 2 live loops.\n- **Full app coverage** — Hyprland, Quickshell, Cava, Alacritty, Kitty, Foot, Ghostty, Neovim, Helix, Btop and Obsidian.\n\n### 📦 Install\n\n```bash\ngit clone https://github.com/m7sh/matugen-theme.git\ncd matugen-theme\n./install.sh\n```\n\nAdd your own live wallpaper:\n\n```bash\nmatugen-add-live --set ~/Videos/loop.mp4\n```\n\n### 🛠 Notes\n\n- Repo live clips are 1440p to keep clones small. Installer drops them in `~/.config/omarchy/backgrounds/matugen/` an"
     }
    ]
   },
@@ -203,6 +235,13 @@
   "m7sh/Desktop-Voice-Assistant": {
    "stars": 0,
    "pushedAt": "2022-09-27T13:59:24Z",
+   "latest": null,
+   "releaseDates": [],
+   "releases": []
+  },
+  "m7sh/umrah-journey": {
+   "stars": 0,
+   "pushedAt": "2026-11-10T12:34:20Z",
    "latest": null,
    "releaseDates": [],
    "releases": []
@@ -1683,7 +1722,11 @@
   ],
   [
    "2026-11-12",
-   4
+   5
+  ],
+  [
+   "2026-11-13",
+   2
   ]
  ]
 }

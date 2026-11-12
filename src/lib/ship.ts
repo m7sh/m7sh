@@ -4,8 +4,14 @@
 import projectList from '../data/projects.json';
 import github from '../data/github.json';
 
-export type Group = 'omarchy' | 'terminal' | 'themes' | 'rice';
-export const GROUPS: Record<Group, string> = { omarchy: 'Omarchy', terminal: 'Terminal & CLI', themes: 'Desktop Themes', rice: 'Rices & Configs' };
+export type Group = 'omarchy' | 'terminal' | 'themes' | 'rice' | 'apps';
+export const GROUPS: Record<Group, string> = {
+  omarchy: 'Omarchy',
+  terminal: 'Terminal & CLI',
+  themes: 'Desktop Themes',
+  rice: 'Rices & Configs',
+  apps: 'Web & Apps',
+};
 
 type ProjectMeta = {
   id: string;
