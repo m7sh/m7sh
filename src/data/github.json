@@ -1,11 +1,12 @@
 {
- "generatedAt": "2026-11-25T09:00:13.310Z",
+ "generatedAt": "2026-11-25T21:48:30.247Z",
  "repos": {
   "m7sh/ame": {
    "stars": 3,
-   "pushedAt": "2026-10-11T13:00:27Z",
-   "latest": "v2.1.0",
+   "pushedAt": "2026-11-25T18:49:11Z",
+   "latest": "v2.2.0",
    "releaseDates": [
+    "2026-11-25T18:49:13Z",
     "2026-09-26T11:02:37Z",
     "2026-09-17T10:57:25Z",
     "2026-09-17T09:10:47Z",
@@ -14,6 +15,14 @@
     "2026-09-17T08:35:41Z"
    ],
    "releases": [
+    {
+     "tag": "v2.2.0",
+     "title": "v2.2.0 — Album Window, Synced Lyrics, Sidebar & Playback Engine",
+     "at": "2026-11-25T18:49:13Z",
+     "pre": false,
+     "url": "https://github.com/m7sh/ame/releases/tag/v2.2.0",
+     "body": "## ame v2.2.0\n\nA major UI/UX and audio-pipeline upgrade bringing a maximized album window, synced split-pane lyrics, collapsible sidebar navigation, Explore & Library views, personalized recommendations, and low-latency InnerTube playback reliability — all still running purely locally in guest mode with zero logins.\n\n> **Content & Source Notice:** `ame` does **not** host, store centrally, or redistribute any audio, artwork, or lyrics. It acts purely as a local client scraping publicly accessible internet sources (`ytmusicapi` / YouTube Music InnerTube, `yt-dlp`, `LRCLIB`) with bounded on-disk caching.\n\n### New Features\n\n#### Album Window (`w` / `m`) & Mini Player\n- Auto-opens a full-bleed **Now Playing Album Window** on playback with high-resolution Sixel / TGP / Halfcell cover art (`artwork.py`, `foot` + Kitty + Ghostty compatible) and minimizes cleanly to the persistent mini player bar (`m` / `w` / `esc`).\n- Live **Synced Lyrics** (`L`) via **LRCLIB** with automatic YouTube Music lyrics fallback (`lyrics.py`), open by default alongside the cover art and clickable to jump playback to any line.\n- Interactive **Up Next** split panel (`O`), **NerdStats** stream telemetry (`codec`, `kbps`, `client`, `CACHE`, `gain dB`), and optional **dynamic album-art accent tinting** (`D`).\n\n#### Sidebar, Explore, Library, Stats & Settings\n- **Collapsible Navigation Sidebar (`b`)**: Shown automatically on wide terminals (`>= 94` cols) alongside a clean top bar and 1-row bottom **Graphic Equalizer** (`v`).\n- **Home (`h` / `t`)**: *For You*, *Recently Played*, *Quick Picks*, and *Charts & Mixe"
+    },
     {
      "tag": "v2.1.0",
      "title": "v2.1.0 — self-updater, AI recs & animated TUI",
@@ -65,6 +74,18 @@
    ],
    "commits": [
     {
+     "sha": "31d8f24",
+     "message": "docs: add non-hosting / public-source scraping disclaimer to README",
+     "at": "2026-11-25T18:49:07Z",
+     "url": "https://github.com/m7sh/ame/commit/31d8f245a65f0b597a52fa52e7e41cc967084d54"
+    },
+    {
+     "sha": "499ae76",
+     "message": "feat: release v2.2.0 with revamped UI, album window, lyrics, recommen…",
+     "at": "2026-11-25T18:39:54Z",
+     "url": "https://github.com/m7sh/ame/commit/499ae7625f44c989fe3a6743dfcb325b0ba3e4c9"
+    },
+    {
      "sha": "fd1afb2",
      "message": "Merge pull request #6 from BunnyEncoder20/feat/loop-modes",
      "at": "2026-10-11T13:00:27Z",
@@ -99,18 +120,6 @@
      "message": "feat: populate queue with related songs when playing from search",
      "at": "2026-09-26T10:12:17Z",
      "url": "https://github.com/m7sh/ame/commit/34ffe31570a94ed2b7b873d6e4794305cc9d922f"
-    },
-    {
-     "sha": "5ec1dcf",
-     "message": "Merge pull request #4 from m7sh/dev",
-     "at": "2026-09-26T09:55:40Z",
-     "url": "https://github.com/m7sh/ame/commit/5ec1dcf040bc71fd935b88ac14f7d60206537462"
-    },
-    {
-     "sha": "babe073",
-     "message": "feat: add self-updater functionality and documentation",
-     "at": "2026-09-26T09:53:38Z",
-     "url": "https://github.com/m7sh/ame/commit/babe073c5ec83e1ffd1f64a5840e02a47bee1be2"
     }
    ]
   },
@@ -891,11 +900,17 @@
   },
   "m7sh/umrah-journey": {
    "stars": 0,
-   "pushedAt": "2026-11-10T12:34:20Z",
+   "pushedAt": "2026-11-25T10:01:43Z",
    "latest": null,
    "releaseDates": [],
    "releases": [],
    "commits": [
+    {
+     "sha": "0fbb780",
+     "message": "Redesign UI with clean editorial layout and architectural scenes",
+     "at": "2026-11-25T10:01:39Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/0fbb780348a9c090033b1cdbbb89a9ff55bdab94"
+    },
     {
      "sha": "b30695a",
      "message": "Mention the Hajj guide in the social captions",
@@ -937,12 +952,6 @@
      "message": "docs: add live URLs and deployment notes",
      "at": "2026-11-09T06:02:18Z",
      "url": "https://github.com/m7sh/umrah-journey/commit/f1e550a86a5cbba83d269e01a3af407828ece49f"
-    },
-    {
-     "sha": "6774e02",
-     "message": "Umrah Journey: interactive guide with Cloudflare Workers deployment",
-     "at": "2026-11-09T06:01:53Z",
-     "url": "https://github.com/m7sh/umrah-journey/commit/6774e02fa1d32687afd929ed4a19698354f64340"
     }
    ]
   }
@@ -2418,7 +2427,7 @@
   ],
   [
    "2026-11-25",
-   1
+   5
   ]
  ]
 }
