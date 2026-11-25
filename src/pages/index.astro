@@ -4,7 +4,7 @@ import AppCard from '../components/AppCard.astro';
 import ShipCard from '../components/ShipCard.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import FeaturedBand from '../components/FeaturedBand.astro';
-import { GROUPS, days, projectById, projects, releases, releasesPerWeek, stats, within, type Group } from '../lib/ship';
+import { GROUPS, days, projectById, projects, releases, releasesPerWeek, stats, type Group } from '../lib/ship';
 import { ago } from '../lib/time';
 import { gridDays } from '../lib/grid';
 
@@ -26,7 +26,15 @@ const heroData = JSON.stringify({
   // Words the grid spells when clicked, in order.
   releases30: stats.releases30,
   stars: stats.stars,
-  apps: projects.map((p) => [p.id, p.name]),
+  apps: projects.map((p) => ({
+    id: p.id,
+    name: p.name,
+    group: p.group,
+    tagline: p.tagline,
+    install: p.install ?? null,
+    version: p.version,
+    stars: p.stars,
+  })),
   shapes: ['M7SH.DEV', 'RICE IT!', 'OMARCHY', 'WAYLAND', `★ ${stats.stars}`, 'HI :)'],
 }).replace(/</g, '\\u003c');
 
@@ -35,11 +43,6 @@ const gridCols = { wide: gridDays(days, false).cols, narrow: gridDays(days, true
 
 const weeks = releasesPerWeek(12);
 const maxWeek = Math.max(1, ...weeks.map((w) => w.count));
-const busiest = projects
-  .map((p) => ({ name: p.name, count: releases.filter((r) => r.project.id === p.id && within(r.at, 30)).length }))
-  .filter((x) => x.count)
-  .sort((a, b) => b.count - a.count)
-  .slice(0, 4);
 const termLines = [
   `<span class="p">$</span> <span class="hl">mush releases --per-week --last 12w</span>`,
   '',
@@ -108,7 +111,7 @@ const termLines = [
   <section class="blk wrap" id="apps">
     <div class="blk-head rv">
       <div><p class="eyebrow">Ecosystem</p><h2>All {projects.length} creations</h2><p>Every bar plugin, CLI tool and desktop theme with latest version, stars and release activity.</p></div>
-      <div class="tabs" id="shelfTabs" role="tablist"><span class="ind"></span>{groups.map((g, i) => <button type="button" role="tab" data-shelf={g} class={i === 0 ? 'on' : ''} aria-selected={i === 0 ? 'true' : 'false'}>{GROUPS[g]}<small>{projects.filter((p) => p.group === g).length}</small></button>)}</div>
+      <div class="tabs" id="shelfTabs" role="tablist" aria-label="Filter creations by category"><span class="ind"></span><button type="button" role="tab" data-shelf="all" class="on" aria-selected="true" aria-controls="shelf">All<small>{projects.length}</small></button>{groups.map((g) => <button type="button" role="tab" data-shelf={g} aria-selected="false" aria-controls="shelf">{GROUPS[g]}<small>{projects.filter((p) => p.group === g).length}</small></button>)}</div>
     </div>
     <div class="grid3 shelf-anim" id="shelf">{byRecent.map((p) => <AppCard project={p} />)}</div>
   </section>

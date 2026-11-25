@@ -1,9 +1,21 @@
 import { createHero, type HeroData } from './hero';
 import { presenceText, startLiveFeed, type Activity } from './live';
-import { countUp, lastSeen } from './ui';
+import { copyText, countUp, lastSeen } from './ui';
 import { ago } from '../lib/time';
-import { THEMES, setTheme } from './theme';
+import { THEMES, setTheme, toastTheme } from './theme';
 
+type AppEntry = {
+  id: string;
+  name: string;
+  group: string;
+  tagline: string;
+  install: string | null;
+  version: string | null;
+  stars: number;
+};
+
+const base = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+const route = (p: string) => `${base}${p}` || '/';
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const restart = (el: Element | null, cls: string) => { if (!el) return; el.classList.remove(cls); void (el as HTMLElement).offsetWidth; el.classList.add(cls); };
 const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -13,14 +25,19 @@ const heroEl = document.getElementById('hero');
 const dataEl = document.getElementById('heroData');
 if (heroEl && dataEl) {
   let latest: { a: Activity; at: string } | null = null;
-  const data = JSON.parse(dataEl.textContent ?? '{}') as HeroData & { repos: Record<string, { name: string; version: string | null }>; releases30: number; stars: number; apps: [string, string][] };
+  const data = JSON.parse(dataEl.textContent ?? '{}') as HeroData & {
+    repos: Record<string, { name: string; version: string | null }>;
+    releases30: number;
+    stars: number;
+    apps: AppEntry[];
+  };
   // What the courier says when clicked, one line per click.
   const say = (n: number) => [
     `hey, thanks for stopping by. i carry mush's github activity here as it happens.${latest ? ` last delivery: ${latest.a.text}, ${ago(latest.at)}.` : ''}`,
-    'press T to flip through themes. there are 10 custom palettes.',
+    `press T to flip through themes. there are ${THEMES.length} custom palettes.`,
     'click the grid. it has a few words for you.',
     `${data.releases30} releases in the last 30 days. rice artisan at work.`,
-    'the terminal further down takes commands. try help.',
+    'the terminal further down takes commands. try help (or press / for quick jump).',
     'omarchy linux + hyprland = pure fluidity.',
   ][n % 6];
   const hero = createHero(heroEl, data, lastSeen(), {
@@ -91,21 +108,24 @@ const tabs = document.getElementById('shelfTabs');
 const shelf = document.getElementById('shelf');
 if (tabs && shelf) {
   const ind = tabs.querySelector<HTMLElement>('.ind');
+  const tabBtns = [...tabs.querySelectorAll<HTMLButtonElement>('button[role="tab"]')];
   const moveInd = () => {
     const on = tabs.querySelector<HTMLElement>('button.on');
     if (on && ind) { ind.style.left = `${on.offsetLeft}px`; ind.style.width = `${on.offsetWidth}px`; }
   };
-  const show = (group: string) => {
-    tabs.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+  const show = (group: string, focusTab = false) => {
+    tabBtns.forEach((b) => {
       const on = b.dataset.shelf === group;
       b.classList.toggle('on', on);
       b.setAttribute('aria-selected', String(on));
+      b.tabIndex = on ? 0 : -1;
+      if (on && focusTab) b.focus();
     });
     let i = 0;
     shelf.querySelectorAll<HTMLElement>('.acard').forEach((card) => {
-      const visible = card.dataset.group === group;
+      const visible = group === 'all' || card.dataset.group === group;
       card.hidden = !visible;
-      if (visible) { card.style.animationDelay = `${i++ * 40}ms`; restart(card, 'shelf-in'); }
+      if (visible) { card.style.animationDelay = `${Math.min(i++, 12) * 32}ms`; restart(card, 'shelf-in'); }
     });
     moveInd();
   };
@@ -113,7 +133,21 @@ if (tabs && shelf) {
     const b = (e.target as Element).closest<HTMLButtonElement>('[data-shelf]');
     if (b?.dataset.shelf) show(b.dataset.shelf);
   });
-  show(tabs.querySelector<HTMLButtonElement>('button.on')?.dataset.shelf ?? 'omarchy');
+  tabs.addEventListener('keydown', (e) => {
+    const idx = tabBtns.indexOf(document.activeElement as HTMLButtonElement);
+    if (idx === -1) return;
+    let next = -1;
+    if (e.key === 'ArrowRight') next = (idx + 1) % tabBtns.length;
+    else if (e.key === 'ArrowLeft') next = (idx - 1 + tabBtns.length) % tabBtns.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = tabBtns.length - 1;
+    if (next !== -1 && tabBtns[next]?.dataset.shelf) {
+      e.preventDefault();
+      show(tabBtns[next].dataset.shelf!, true);
+      tabBtns[next].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', inline: 'nearest', block: 'nearest' });
+    }
+  });
+  show(tabs.querySelector<HTMLButtonElement>('button.on')?.dataset.shelf ?? 'all');
   addEventListener('resize', moveInd);
 }
 
@@ -132,7 +166,7 @@ if (term && !reduced) {
 }
 const termIn = document.getElementById('termIn') as HTMLInputElement | null;
 if (term && termIn && dataEl) {
-  const { apps, stars } = JSON.parse(dataEl.textContent ?? '{}') as { apps: [string, string][]; stars: number };
+  const { apps, stars } = JSON.parse(dataEl.textContent ?? '{}') as { apps: AppEntry[]; stars: number };
   const prompt = termIn.closest('.tline')!;
   const history: string[] = [];
   let back = 0;
@@ -144,39 +178,82 @@ if (term && termIn && dataEl) {
     term.insertBefore(line, prompt);
     term.insertBefore(document.createTextNode('\n'), prompt);
   };
-  const find = (q: string) => apps.find(([id, name]) => id === q || name.toLowerCase() === q);
+  const find = (q: string) => {
+    const k = q.toLowerCase();
+    return apps.find((a) => a.id === k || a.name.toLowerCase() === k);
+  };
+  const fastfetchText = () => 'OS: Omarchy Linux • Compositor: Hyprland • Palettes: Velvet Dusk, Cyber Dusk, Gruvbox • Terminal: Foot / Ghostty';
+  const themeCmd = ([name]: string[]) => {
+    const cur = document.documentElement.dataset.theme ?? 'velvet-dusk';
+    if (!name) return THEMES.map((t) => (t === cur ? `[${t}]` : t)).join('  ');
+    if (!THEMES.includes(name)) return `no theme called ${name}. try theme.`;
+    setTheme(name, termIn);
+    toastTheme(name);
+    return `theme set to ${name}.`;
+  };
   const commands: Record<string, (args: string[]) => string | void> = {
-    help: () => 'whoami  fastfetch  plugins  themes  ls  open <app>  theme [name]  stars  ship  contact  clear',
+    help: () => 'whoami  fastfetch  plugins  themes  ls  info <app>  install <app>  open <app>  theme [name]  stars  ship  omarchy  rice  setup  contact  clear',
     whoami: () => 'Mohammed Musharaf (m7sh / mush). Linux rice artisan, Wayland widget engineer & creator of ame.',
-    fastfetch: () => 'OS: Omarchy Linux • Compositor: Hyprland • Palettes: Velvet Dusk, Gruvbox • Terminal: Foot / Ghostty',
-    plugins: () => 'mush.workspace  omarchy-media  omarchy-cricket  omarchy-f1',
-    themes: () => 'velvet-dusk  cyber-dusk  cappuccino-night  gruvbox-aesthetic  everpuccin  blacula  god-of-war  hogwarts-night',
+    fastfetch: fastfetchText,
+    neofetch: fastfetchText,
+    plugins: () => apps.filter((a) => a.group === 'omarchy').map((a) => a.id).join('  '),
+    themes: () => apps.filter((a) => a.group === 'themes').map((a) => a.id).join('  '),
     contact: () => 'email: mdmusharaf720@gmail.com • github: https://github.com/m7sh',
-    ls: () => apps.map(([id]) => id).join('  '),
+    ls: () => apps.map((a) => a.id).join('  '),
+    info: ([q = '']) => {
+      const app = find(q);
+      if (!app) return q ? `no app called ${q}. try ls.` : 'usage: info <app>';
+      return `${app.name} [${app.group}]${app.version ? ` · ${app.version}` : ''} · ★ ${app.stars}\n${app.tagline}`;
+    },
+    install: ([q = '']) => {
+      const app = find(q);
+      if (!app) return q ? `no app called ${q}. try ls.` : 'usage: install <app>';
+      if (!app.install) return `${app.name} has no install snippet; open github.com/m7sh.`;
+      copyText(app.install);
+      return `copied: ${app.install}`;
+    },
     stars: () => `${stars.toLocaleString('en-US')} stars across ${apps.length} repos. Thank you!`,
-    ship: () => { setTimeout(() => (location.href = '/ship'), 400); return 'opening the ship log...'; },
+    ship: () => { setTimeout(() => (location.href = route('/ship')), 350); return 'opening the ship log...'; },
+    omarchy: () => { setTimeout(() => (location.href = route('/omarchy')), 350); return 'opening the omarchy ecosystem...'; },
+    rice: () => { setTimeout(() => (location.href = route('/rice')), 350); return 'launching the omarchy rice lab...'; },
+    setup: () => { setTimeout(() => (location.href = route('/setup')), 350); return 'opening setup & dotfiles...'; },
     open: ([q = '']) => {
-      const app = find(q.toLowerCase());
+      const app = find(q);
       if (!app) return q ? `no app called ${q}. try ls.` : 'open what? try ls.';
-      setTimeout(() => (location.href = `/p/${app[0]}`), 400);
-      return `opening ${app[1]}...`;
+      setTimeout(() => (location.href = route(`/p/${app.id}`)), 350);
+      return `opening ${app.name}...`;
     },
-    theme: ([name]) => {
-      const cur = document.documentElement.dataset.theme ?? 'velvet-dusk';
-      if (!name) return THEMES.map((t) => (t === cur ? `[${t}]` : t)).join('  ');
-      if (!THEMES.includes(name)) return `no theme called ${name}. try theme.`;
-      setTheme(name, termIn);
-      return `theme set to ${name}.`;
-    },
+    theme: themeCmd,
+    palette: themeCmd,
     clear: () => { while (prompt.previousSibling) prompt.previousSibling.remove(); },
     sudo: () => 'nice try, rice master.',
     rm: () => 'rm -rf /? absolutely not.',
     exit: () => { termIn.blur(); return 'logout. (it was nice having you in the terminal.)'; },
     vim: () => ':q! to escape.',
   };
+
   term.addEventListener('click', () => { if (!String(getSelection()).trim()) termIn.focus({ preventScroll: true }); });
   termIn.addEventListener('input', fit);
   termIn.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const raw = termIn.value;
+      const parts = raw.trimStart().split(/\s+/);
+      if (parts.length <= 1 && !raw.endsWith(' ')) {
+        const prefix = (parts[0] ?? '').toLowerCase();
+        const matches = Object.keys(commands).filter((c) => c.startsWith(prefix));
+        if (matches.length === 1) { termIn.value = `${matches[0]} `; fit(); }
+        else if (matches.length > 1) { print(matches.join('  '), 'dim'); term.scrollTop = term.scrollHeight; }
+      } else {
+        const cmd = parts[0].toLowerCase();
+        const arg = parts.slice(1).join(' ').toLowerCase();
+        const pool = cmd === 'theme' || cmd === 'palette' ? THEMES : apps.map((a) => a.id);
+        const matches = pool.filter((x) => x.startsWith(arg));
+        if (matches.length === 1) { termIn.value = `${parts[0]} ${matches[0]}`; fit(); }
+        else if (matches.length > 1) { print(matches.join('  '), 'dim'); term.scrollTop = term.scrollHeight; }
+      }
+      return;
+    }
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
       back = Math.max(0, Math.min(history.length, back + (e.key === 'ArrowUp' ? 1 : -1)));
@@ -210,7 +287,7 @@ if (term && termIn && dataEl) {
 const word = document.getElementById('heroWord');
 const caret = document.getElementById('heroCaret');
 if (word && caret && !reduced) {
-  const words = ['desktop', 'workstation', 'status bar', 'terminal', 'Hyprland rice', 'Linux box', 'Wayland shell'];
+  const words = ['terminal', 'Wayland', 'QML', 'CLI', 'Hyprland', 'open-source'];
   let i = 0;
   let visible = true;
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(word);

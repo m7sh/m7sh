@@ -9,7 +9,7 @@ const ame = projectById['ame'];
 const ws = projectById['mush-workspace'];
 ---
 <article class="tp rv">
-  <div class="tp-row">
+  <div class="tp-row" style={`--pc:${ame.accent}`}>
     <div class="tp-copy">
       <p class="eyebrow">Terminal Audio · Start Here</p>
       <div class="tp-id">
@@ -31,8 +31,8 @@ const ws = projectById['mush-workspace'];
         <li>Personalized recommendations, live trending, and radio autoplay</li>
       </ul>
       <div class="tp-acts">
-        <a class="btn btn-primary" href={ame.site} target="_blank" rel="noreferrer">Get ame <span class="arr">→</span></a>
-        <a class="btn btn-ghost" href={`https://github.com/${ame.repo}`} target="_blank" rel="noreferrer">GitHub ↗</a>
+        {ame.install && <button type="button" class="copy" data-copy={ame.install}><span class="p">$</span><code>{ame.install}</code><span class="c">copy</span></button>}
+        <a class="btn btn-primary" href={`https://github.com/${ame.repo}`} target="_blank" rel="noreferrer">GitHub ↗</a>
         <a class="btn btn-ghost" href={`${base}/p/ame`}>Changelog</a>
       </div>
     </div>
@@ -53,7 +53,7 @@ const ws = projectById['mush-workspace'];
             <div style="color:var(--accent);letter-spacing:1px;margin:6px 0">━━━━━━━━━━━━━━━━━━━━━━●━━━━━━━━━━━━━ 55%</div>
             <div style="color:var(--fg3);font-size:11px">VOL ██████░░ 80% &nbsp;•&nbsp; PipeWire CAVA Visualizer: ▁▂▃▄▅▆▇█▆▅▃</div>
           </div>
-          <div style="border-top:1px solid var(--line);padding-top:10px;display:flex;gap:12px;font-size:11px;color:var(--fg3)">
+          <div style="border-top:1px solid var(--line);padding-top:10px;display:flex;gap:12px;font-size:11px;color:var(--fg3);flex-wrap:wrap">
             <span>Space: Pause</span>
             <span>n: Next</span>
             <span>f: Favourite</span>
@@ -65,7 +65,7 @@ const ws = projectById['mush-workspace'];
     </div>
   </div>
 
-  <div class="tp-row rev">
+  <div class="tp-row rev" style={`--pc:${ws.accent}`}>
     <div class="tp-copy">
       <p class="eyebrow" style="color:var(--accent2)"><span class="new-tag">Featured</span> Wayland Status Bar</p>
       <div class="tp-id">
@@ -74,6 +74,7 @@ const ws = projectById['mush-workspace'];
           <b>mush.workspace</b>
           <div class="meta" style="margin-top:6px">
             <Stars count={ws.stars} animate />
+            <Version project={ws} />
             <span class="tag">QML • Quickshell</span>
           </div>
         </div>
@@ -88,7 +89,8 @@ const ws = projectById['mush-workspace'];
       </ul>
       <div class="tp-acts">
         {ws.install && <button type="button" class="copy" data-copy={ws.install}><span class="p">$</span><code>{ws.install}</code><span class="c">copy</span></button>}
-        <a class="btn btn-ghost" href={`https://github.com/${ws.repo}`} target="_blank" rel="noreferrer">Repository ↗</a>
+        <a class="btn btn-primary" href={`https://github.com/${ws.repo}`} target="_blank" rel="noreferrer">Repository ↗</a>
+        <a class="btn btn-ghost" href={`${base}/p/${ws.id}`}>Details</a>
       </div>
     </div>
     <div class="tp-shot">

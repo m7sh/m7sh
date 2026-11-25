@@ -2,11 +2,13 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ReleaseEntry from '../components/ReleaseEntry.astro';
-import { GROUPS, projects, releases, within, type Group, type Release } from '../lib/ship';
+import { GROUPS, projects, recentCommits, releases, within, type Group, type Release } from '../lib/ship';
 import { ogImage } from '../lib/og';
+import { ago } from '../lib/time';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const items = releases.slice(0, 150);
+const commits = recentCommits.slice(0, 80);
 
 // Group by day in the owner's time zone; the browser relabels today and yesterday.
 const TZ = 'Asia/Kolkata';
@@ -26,17 +28,26 @@ const perProject = projects
   .sort((a, b) => b.n - a.n);
 const max = perProject[0]?.n ?? 1;
 ---
-<Base title="Ship log | m7sh.dev" description="Every release across every repository, pulled straight from GitHub." path="/ship" image={ogImage('/og/ship.png')} imageAlt="The m7sh.dev ship log with the latest releases">
+<Base title="Ship log | m7sh.dev" description="Every release and recent commit across every repository, pulled straight from GitHub." path="/ship" image={ogImage('/og/ship.png')} imageAlt="The m7sh.dev ship log with the latest releases">
   <section class="page-head">
     <div class="px-band" id="pxBand" aria-hidden="true"></div>
     <div class="wrap" style="position:relative">
       <p class="eyebrow"><span class="live"></span> Updated live from GitHub</p>
       <h1>Ship log</h1>
-      <p>Every release across every bar widget, terminal tool and theme, pulled directly from GitHub.</p>
+      <p>Every tagged release and recent commit stream across bar widgets, terminal tools, and themes.</p>
       <div class="row">
+        <div class="tabs ship-view-tabs" id="shipMode">
+          <button type="button" class="on" data-ship-mode="releases">Releases<small>{items.length}</small></button>
+          <button type="button" data-ship-mode="commits">Recent commits<small>{commits.length}</small></button>
+        </div>
+      </div>
+      <div class="row" style="margin-top:14px">
         <div class="chips" id="chips">
           <button type="button" class="chip on" data-f="all">All<small>{items.length}</small></button>
-          {groups.map((g) => <button type="button" class="chip" data-f={g}>{GROUPS[g]}<small>{items.filter((r) => r.project.group === g).length}</small></button>)}
+          {groups.map((g) => {
+            const count = items.filter((r) => r.project.group === g).length;
+            return <button type="button" class:list={['chip', { muted: count === 0 }]} data-f={g}>{GROUPS[g]}<small>{count}</small></button>;
+          })}
         </div>
       </div>
     </div>
@@ -45,13 +56,20 @@ const max = perProject[0]?.n ?? 1;
   <div class="wrap ship-layout">
     <aside class="side">
       <h5>Last 30 days</h5>
-      {perProject.map(({ p, n }) => (
+      {perProject.length ? perProject.map(({ p, n }) => (
         <button type="button" class="side-row" data-fp={p.id} style={`--pc:${p.accent}`}><Icon project={p} size="sm" /><span>{p.name}</span><span class="n">{n}</span><span></span><span class="b" style={`width:${(n / max) * 100}%`}></span></button>
-      ))}
+      )) : <p class="meta">No tagged releases in the last 30 days.</p>}
       <a class="link rss" href={`${base}/ship.xml`}>RSS feed ↗</a>
     </aside>
     <div>
       <div class="newbar" id="newbar" hidden><span class="live"></span><span id="newCount"></span><button type="button" id="markRead">Mark all as read</button></div>
+      <div class="ship-empty" id="shipEmpty" hidden>
+        <p>No tagged releases match this filter yet — switch to Recent commits above or reset filters to see all releases.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+          <button type="button" class="btn btn-primary" id="shipShowCommits">View recent commits</button>
+          <button type="button" class="btn btn-ghost" id="shipReset">Show all releases</button>
+        </div>
+      </div>
       <div id="feed">
         {days.map((day) => (
           <div class="day" data-day={day.key}>
@@ -61,6 +79,22 @@ const max = perProject[0]?.n ?? 1;
             </div>
           </div>
         ))}
+      </div>
+      <div id="commitFeed" hidden>
+        <div class="tl">
+          {commits.map((c) => (
+            <article class="entry" style={`--pc:${c.project.accent}`} data-group={c.project.group} data-project={c.project.id}>
+              <div class="hd">
+                <Icon project={c.project} size="sm" />
+                <a class="nm" href={`${base}/p/${c.project.id}`}>{c.project.name}</a>
+                <span class="ver" style={`--pc:${c.project.accent}`}>{c.sha}</span>
+                <time class="t" datetime={c.at} data-ago={c.at}>{ago(c.at)}</time>
+              </div>
+              <div class="md"><p>{c.message}</p></div>
+              <div class="ft2"><a href={c.url} target="_blank" rel="noreferrer">View commit ↗</a></div>
+            </article>
+          ))}
+        </div>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
-/* btso.dev: Omarchy-style themes (press T to cycle), mono wayfinding. */
+/* m7sh.dev: Omarchy-style themes (press T to cycle), mono wayfinding. */
 
 /* Each theme follows its Omarchy counterpart: --accent is the theme's own accent
    (darkened where a light background needs it for legible text), --accent2 a
    contrasting color from the same palette. Catppuccin uses its mauve rather than
-   Omarchy's blue, which made it look the same as tokyo-night. btso and paper are the site's own
+   Omarchy's blue, which made it look the same as tokyo-night. velvet-dusk and paper are the site's own
    dark and light looks. Light themes also soften shadows and darken project
    colors (--pc-keep) so pale ones like lime and yellow stay readable. */
 :root,
@@ -17,6 +17,8 @@
 [data-theme='everpuccin'] { --bg: #151d18; --bg2: #1b261f; --bg3: #243329; --fg: #dce7dc; --fg2: #b2c4b3; --fg3: #7d9480; --line: #2a3c2f; --accent: #a6da95; --accent2: #8bd5ca; --on-accent: #0d1610; color-scheme: dark; }
 [data-theme='blacula'] { --bg: #161311; --bg2: #1f1b17; --bg3: #2a2520; --fg: #eadfce; --fg2: #c4b59f; --fg3: #8e806d; --line: #38312a; --accent: #e5c07b; --accent2: #e06c75; --on-accent: #14100c; color-scheme: dark; }
 [data-theme='god-of-war'] { --bg: #141013; --bg2: #1c151a; --bg3: #281d25; --fg: #f2e6eb; --fg2: #c6b2bc; --fg3: #8c7380; --line: #3a2633; --accent: #e11d48; --accent2: #f59e0b; --on-accent: #ffffff; color-scheme: dark; }
+[data-theme='hogwarts-night'] { --bg: #0f1117; --bg2: #181b24; --bg3: #242a38; --fg: #e4dcd0; --fg2: #b8b2a6; --fg3: #82899c; --line: #2a3142; --accent: #e5b869; --accent2: #6b95d6; --on-accent: #0b0c10; color-scheme: dark; }
+[data-theme='matugen-theme'] { --bg: #13140c; --bg2: #1c1c14; --bg3: #2a2a22; --fg: #e5e3d6; --fg2: #c8c7b7; --fg3: #929182; --line: #36362b; --accent: #c5cc7a; --accent2: #8ad6b7; --on-accent: #0e0f08; color-scheme: dark; }
 [data-theme='tokyo-night'] { --bg: #1a1b26; --bg2: #1f2335; --bg3: #292e42; --fg: #c0caf5; --fg2: #a9b1d6; --fg3: #8189b4; --line: #2e3350; --accent: #7aa2f7; --accent2: #bb9af7; --on-accent: #11121a; color-scheme: dark; }
 [data-theme='catppuccin'] { --bg: #1e1e2e; --bg2: #25253a; --bg3: #313244; --fg: #cdd6f4; --fg2: #bac2de; --fg3: #9399b2; --line: #35364c; --accent: #cba6f7; --accent2: #fab387; --on-accent: #11111b; color-scheme: dark; }
 [data-theme='matte-black'] { --bg: #121212; --bg2: #191919; --bg3: #232323; --fg: #d6d6d6; --fg2: #b0b0b0; --fg3: #8a8a8d; --line: #2a2a2a; --accent: #e68e0d; --accent2: #d35f5f; --on-accent: #121212; color-scheme: dark; }

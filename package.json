@@ -23,6 +23,7 @@
     "typescript": "latest"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
     "@eslint/js": "latest",
     "@resvg/resvg-js": "^2.6.2",
     "eslint": "latest",

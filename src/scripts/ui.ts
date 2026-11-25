@@ -1,14 +1,20 @@
 // Small shared behaviors: scroll reveal, count-up numbers, card glow, copy
 // buttons, header border, and the "new since your last visit" badge.
 import { ago } from '../lib/time';
+import { toast } from './theme';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fmt = (n: number) => n.toLocaleString('en-US');
 
-export const SEEN_KEY = 'btso-seen';
+export const SEEN_KEY = 'm7sh-seen';
 /** Last time this visitor marked the ship log read. First visits count the last 30 hours as new. */
 export function lastSeen() {
-  try { return Number(localStorage.getItem(SEEN_KEY)) || Date.now() - 30 * 3600e3; } catch { return Date.now() - 30 * 3600e3; }
+  try {
+    const val = localStorage.getItem(SEEN_KEY) ?? localStorage.getItem('btso-seen');
+    return Number(val) || Date.now() - 30 * 3600e3;
+  } catch {
+    return Date.now() - 30 * 3600e3;
+  }
 }
 
 export function countUp(el: HTMLElement, to = Number(el.dataset.count)) {
@@ -47,10 +53,16 @@ document.addEventListener('pointermove', (e) => {
   g.style.setProperty('--my', `${e.clientY - r.top}px`);
 });
 
+export function copyText(text: string) {
+  if (!text) return;
+  navigator.clipboard?.writeText(text).catch(() => {});
+  toast('<span style="color:var(--accent)">$</span> Copied command to clipboard');
+}
+
 document.addEventListener('click', (e) => {
   const c = (e.target as Element).closest?.<HTMLElement>('[data-copy]');
   if (!c) return;
-  navigator.clipboard?.writeText(c.dataset.copy ?? '');
+  copyText(c.dataset.copy ?? '');
   const label = c.querySelector('.c');
   if (label) { label.textContent = 'copied'; setTimeout(() => (label.textContent = 'copy'), 1200); }
 });
@@ -73,8 +85,8 @@ document.addEventListener('click', (e) => {
 
 // A hello for anyone who opens the console.
 console.log(
-  '%cbtso.dev%c\npress T to flip themes. on the homepage: click the grid, click the background seven times fast, or type help in the terminal.\nsource: https://github.com/btsouth/btso.dev',
-  'font: 700 16px "JetBrains Mono", monospace; color: #e8703f', 'font: 12px "JetBrains Mono", monospace; line-height: 1.6',
+  '%cm7sh.dev%c\npress T to flip themes or Ctrl/Cmd+K for the command palette. on the homepage: click the grid, click the background seven times fast, or type help in the terminal.\nsource: https://github.com/m7sh/m7sh',
+  'font: 700 16px "JetBrains Mono", monospace; color: #c084fc', 'font: 12px "JetBrains Mono", monospace; line-height: 1.6',
 );
 
 const hdr = document.getElementById('hdr');

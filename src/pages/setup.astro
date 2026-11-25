@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import { ogImage } from '../lib/og';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const stack = [
+  { group: 'OS & Compositor', items: ['Arch Linux (Omarchy)', 'Hyprland (Wayland)', 'Quickshell', 'PipeWire Audio'] },
+  { group: 'Languages & TUI', items: ['QML / Qt Quick', 'Rust (Ratatui)', 'Python', 'TypeScript / Astro', 'Bash / Zsh'] },
+  { group: 'Terminal & Editor', items: ['Ghostty & Foot', 'Alacritty', 'Neovim', 'Qutebrowser'] },
+  { group: 'Daily Utilities', items: ['Flea (File Manager)', 'Reel (Recorder & Zoom)', 'Superwhisper / Dictation', 'btop / fastfetch'] },
+];
+
+const bindings = [
+  { cat: 'apps', keys: 'SUPER + SHIFT + F', action: 'Flea File Manager', cmd: 'launch = "flea"' },
+  { cat: 'apps', keys: 'SUPER + ALT + SHIFT + F', action: 'Flea in active terminal CWD', cmd: 'flea "$(omarchy-cmd-terminal-cwd)"' },
+  { cat: 'media', keys: 'SUPER + R', action: 'Reel screen recording toggle', cmd: 'reel toggle' },
+  { cat: 'media', keys: 'SUPER + SHIFT + R', action: 'Open Reel control panel', cmd: 'panel = "io.github.tahadx.reel"' },
+  { cat: 'media', keys: 'SUPER + ALT + O', action: 'Pause / resume recording', cmd: 'reel toggle-pause' },
+  { cat: 'zoom', keys: 'CTRL + ALT + =', action: 'Zoom in display', cmd: 'reel zoom-in' },
+  { cat: 'zoom', keys: 'CTRL + ALT + -', action: 'Zoom out display', cmd: 'reel zoom-out' },
+  { cat: 'zoom', keys: 'CTRL + ALT + 0', action: 'Reset zoom level', cmd: 'reel zoom-reset' },
+  { cat: 'voice', keys: 'SUPER + CTRL + X', action: 'Toggle voice dictation', cmd: 'omarchy-dictation toggle' },
+  { cat: 'voice', keys: 'F9 (hold)', action: 'Push-to-talk dictation', cmd: 'omarchy-dictation start / stop' },
+  { cat: 'voice', keys: 'SUPER + `', action: 'Toggle Friday AI Voice Assistant', cmd: 'friday-toggle' },
+];
+---
+<Base
+  title="Setup & Dotfiles | m7sh.dev"
+  description="Mohammed Musharaf's daily driver Omarchy Linux, Hyprland Lua configuration, keybindings, and core developer stack."
+  path="/setup"
+  image={ogImage('/og/home.png')}
+  imageAlt="Mohammed Musharaf's Omarchy Linux and Hyprland setup"
+>
+  <section class="page-head">
+    <div class="px-band" id="pxBand" aria-hidden="true"></div>
+    <div class="wrap" style="position:relative">
+      <p class="eyebrow">~/.config/hypr & ~/.config/omarchy</p>
+      <h1>Setup &amp; Dotfiles</h1>
+      <p>What runs daily on my workstation: zero-gap Hyprland tiling, Quickshell bar widgets, keyboard-first terminals, and custom Lua bindings.</p>
+      <div class="row">
+        <a class="btn btn-primary" href={`${base}/rice`}>Open Rice Lab <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="https://github.com/m7sh/.config" target="_blank" rel="noreferrer">Dotfiles Repo ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap setup-wrap">
+    <section class="setup-grid">
+      <div class="win">
+        <div class="bar"><i></i><i></i><i></i><span>~/.config/hypr/looknfeel.lua</span></div>
+        <pre class="setup-code"><code>{`-- Zero-gap crisp tiling for distraction-free terminals
+hl.config({
+  general = {
+    gaps_in = 0,
+    gaps_out = 0,
+  },
+})`}</code></pre>
+      </div>
+      <div class="win">
+        <div class="bar"><i></i><i></i><i></i><span>~/.config/hypr/monitors.lua</span></div>
+        <pre class="setup-code"><code>{`local omarchy_gdk_scale = 2
+local omarchy_monitor_scale = "auto"
+
+hl.env("GDK_SCALE", tostring(omarchy_gdk_scale))
+hl.monitor({
+  output = "",
+  mode = "preferred",
+  position = "auto",
+  scale = omarchy_monitor_scale,
+})`}</code></pre>
+      </div>
+    </section>
+
+    <section class="blk" style="padding-top:64px">
+      <div class="blk-head">
+        <div>
+          <p class="eyebrow">Keybindings · bindings.lua</p>
+          <h2>Keyboard-first workflow</h2>
+          <p>Custom overrides layered onto Omarchy defaults for file management, screen capture, zoom, and voice workflows.</p>
+        </div>
+        <div class="chips" id="bindChips">
+          <button type="button" class="chip on" data-bind-f="all">All</button>
+          <button type="button" class="chip" data-bind-f="apps">Apps</button>
+          <button type="button" class="chip" data-bind-f="media">Recording</button>
+          <button type="button" class="chip" data-bind-f="zoom">Zoom</button>
+          <button type="button" class="chip" data-bind-f="voice">Voice</button>
+        </div>
+      </div>
+
+      <div class="bind-list" id="bindList">
+        {bindings.map((b) => (
+          <div class="bind-row" data-bind-cat={b.cat}>
+            <kbd class="bind-key">{b.keys}</kbd>
+            <strong class="bind-act">{b.action}</strong>
+            <code class="bind-cmd">{b.cmd}</code>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="blk" style="padding-top:64px">
+      <div class="blk-head">
+        <div>
+          <p class="eyebrow">Stack · /etc/environment</p>
+          <h2>Core tools &amp; languages</h2>
+        </div>
+      </div>
+      <div class="stack-grid">
+        {stack.map((s) => (
+          <div class="stack-card">
+            <h3>{s.group}</h3>
+            <ul>{s.items.map((item) => <li>{item}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  import '../scripts/pixel-band';
+
+  const chips = document.getElementById('bindChips');
+  const list = document.getElementById('bindList');
+  chips?.addEventListener('click', (e) => {
+    const chip = (e.target as Element).closest<HTMLElement>('[data-bind-f]');
+    if (!chip || !list) return;
+    const f = chip.dataset.bindF ?? 'all';
+    chips.querySelectorAll('.chip').forEach((c) => c.classList.toggle('on', c === chip));
+    list.querySelectorAll<HTMLElement>('[data-bind-cat]').forEach((row) => {
+      row.hidden = f !== 'all' && row.dataset.bindCat !== f;
+    });
+  });
+</script>

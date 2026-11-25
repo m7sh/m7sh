@@ -5,7 +5,7 @@ import Stars from '../components/Stars.astro';
 import Ticks from '../components/Ticks.astro';
 import Version from '../components/Version.astro';
 import PixelThumb from '../components/PixelThumb.astro';
-import { projectById, projects, releases, within, assetUrl } from '../lib/ship';
+import { GROUPS, LIVE_THEME_MAP, projectById, projects, releases, within, assetUrl, type Group } from '../lib/ship';
 import { ogImage } from '../lib/og';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -15,7 +15,8 @@ const list = omarchy
   .filter((p) => p.id !== lead.id)
   .sort((a, b) => b.stars - a.stars || (b.releasedAt ?? '').localeCompare(a.releasedAt ?? ''));
 const totalStars = omarchy.reduce((n, p) => n + p.stars, 0);
-const monthReleases = releases.filter((r) => (r.project.group === 'omarchy' || r.project.group === 'themes') && within(r.at, 30)).length;
+const monthReleases = releases.filter((r) => (r.project.group === 'omarchy' || r.project.group === 'themes' || r.project.group === 'rice') && within(r.at, 30)).length;
+const omGroups: Group[] = ['omarchy', 'themes', 'rice'];
 ---
 <Base title="Omarchy ecosystem | m7sh.dev" description="Status bar widgets, Quickshell plugins and aesthetic desktop themes crafted for Omarchy Linux and Hyprland by Mohammed Musharaf." path="/omarchy" image={ogImage('/og/omarchy.png')} imageAlt="Omarchy widgets and themes by Mohammed Musharaf">
   <section class="page-head">
@@ -23,8 +24,18 @@ const monthReleases = releases.filter((r) => (r.project.group === 'omarchy' || r
     <div class="wrap" style="position:relative">
       <p class="eyebrow">Omarchy Linux & Hyprland</p>
       <h1>Omarchy ecosystem</h1>
-      <p>Modular status bar widgets, declarative Quickshell components, and desktop themes built natively for Omarchy Linux. Press <kbd>T</kbd> to cycle themes live.</p>
-      <div class="row"><span class="meta"><Stars count={totalStars} /><span>{omarchy.length} projects & themes</span><span>{monthReleases} recent releases</span></span></div>
+      <p>Modular status bar widgets, declarative Quickshell components, and desktop themes built natively for Omarchy Linux. Press <kbd>T</kbd> or click Preview on a theme card to try palettes live.</p>
+      <div class="row">
+        <span class="meta"><Stars count={totalStars} /><span>{omarchy.length} plugins, themes & rices</span><span>{monthReleases} recent releases</span></span>
+        <a class="btn btn-primary" style="height:36px;padding:0 14px;font-size:13px" href={`${base}/rice`}>Rice Lab &amp; Installer <span class="arr">→</span></a>
+        <a class="btn btn-ghost" style="height:36px;padding:0 14px;font-size:13px" href={`${base}/setup`}>Setup &amp; Keybindings</a>
+      </div>
+      <div class="row" style="margin-top:18px">
+        <div class="chips" id="omChips">
+          <button type="button" class="chip on" data-om-f="all">All<small>{list.length}</small></button>
+          {omGroups.map((g) => <button type="button" class="chip" data-om-f={g}>{GROUPS[g]}<small>{list.filter((p) => p.group === g).length}</small></button>)}
+        </div>
+      </div>
     </div>
   </section>
 
@@ -51,32 +62,39 @@ const monthReleases = releases.filter((r) => (r.project.group === 'omarchy' || r
         <p>{lead.tagline} Multi-monitor display synchronization, cubic bezier transitions, and an optional hide-empty workspace mode.</p>
         <div class="acts">
           {lead.install && <button type="button" class="copy" data-copy={lead.install}><span class="p">$</span><code>{lead.install}</code><span class="c">copy</span></button>}
-          <a class="btn btn-ghost" href={`https://github.com/${lead.repo}`} target="_blank" rel="noreferrer">Repository ↗</a>
+          <a class="btn btn-primary" href={`https://github.com/${lead.repo}`} target="_blank" rel="noreferrer">Repository ↗</a>
+          <a class="btn btn-ghost" href={`${base}/p/${lead.id}`}>Details</a>
         </div>
       </div>
     </article>
 
     <section class="blk" style="padding-top:56px">
-      <div class="blk-head rv"><div><h2>Plugins, Widgets & Themes</h2><p>Sorted by stars. Open any card for its full changelog, or copy the install command.</p></div></div>
-      <div class="pgrid">
-        {list.map((p) => (
-          <article class="pcard glow rv" style={`--pc:${p.accent}`}>
-            <a class="thumb" href={`${base}/p/${p.id}`} aria-label={`${p.name} details`}>
-              {p.shot ? <img src={assetUrl(p.shot)} alt="" loading="lazy" /> : <PixelThumb project={p} />}
-            </a>
-            <div class="pb">
-              <h4><Icon project={p} size="sm" /><a href={`${base}/p/${p.id}`}>{p.name}</a><Stars count={p.stars} /></h4>
-              <p>{p.tagline}</p>
-              <div class="pf">
-                <Ticks project={p} />
-                <div class="meta"><Version project={p} /></div>
-                {p.install
-                  ? <button type="button" class="copy" data-copy={p.install}><span class="p">$</span><code>{p.install}</code><span class="c">copy</span></button>
-                  : <a class="copy" href={`https://github.com/${p.repo}`} target="_blank" rel="noreferrer"><span class="p">↗</span><code>github.com/{p.repo}</code><span class="c">open</span></a>}
+      <div class="blk-head rv"><div><h2>Plugins, Widgets & Themes</h2><p>Sorted by stars. Open any card for details, preview themes live, or copy the install command.</p></div></div>
+      <div class="pgrid" id="omGrid">
+        {list.map((p) => {
+          const liveTheme = LIVE_THEME_MAP[p.id];
+          return (
+            <article class="pcard glow rv" style={`--pc:${p.accent}`} data-om-group={p.group}>
+              <a class="thumb" href={`${base}/p/${p.id}`} aria-label={`${p.name} details`}>
+                {p.shot ? <img src={assetUrl(p.shot)} alt={`${p.name} preview`} loading="lazy" /> : <PixelThumb project={p} />}
+              </a>
+              <div class="pb">
+                <h4><Icon project={p} size="sm" /><a href={`${base}/p/${p.id}`}>{p.name}</a><Stars count={p.stars} /></h4>
+                <p>{p.tagline}</p>
+                <div class="pf">
+                  <Ticks project={p} />
+                  <div class="meta">
+                    <Version project={p} />
+                    {liveTheme && <button type="button" class="preview-pill" data-theme-preview={liveTheme}>Preview palette</button>}
+                  </div>
+                  {p.install
+                    ? <button type="button" class="copy" data-copy={p.install}><span class="p">$</span><code>{p.install}</code><span class="c">copy</span></button>
+                    : <a class="copy" href={`https://github.com/${p.repo}`} target="_blank" rel="noreferrer"><span class="p">↗</span><code>github.com/{p.repo}</code><span class="c">open</span></a>}
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
     </section>
   </div>
@@ -84,4 +102,16 @@ const monthReleases = releases.filter((r) => (r.project.group === 'omarchy' || r
 
 <script>
   import '../scripts/pixel-band';
+
+  const omChips = document.getElementById('omChips');
+  const omGrid = document.getElementById('omGrid');
+  omChips?.addEventListener('click', (e) => {
+    const chip = (e.target as Element).closest<HTMLElement>('[data-om-f]');
+    if (!chip || !omGrid) return;
+    const f = chip.dataset.omF ?? 'all';
+    omChips.querySelectorAll('.chip').forEach((c) => c.classList.toggle('on', c === chip));
+    omGrid.querySelectorAll<HTMLElement>('[data-om-group]').forEach((card) => {
+      card.hidden = f !== 'all' && card.dataset.omGroup !== f;
+    });
+  });
 </script>

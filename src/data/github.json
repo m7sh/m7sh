@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-25T08:46:55.302Z",
+ "generatedAt": "2026-11-25T09:00:13.310Z",
  "repos": {
   "m7sh/ame": {
    "stars": 3,
@@ -62,6 +62,56 @@
      "url": "https://github.com/m7sh/ame/releases/tag/v1.0.0",
      "body": "## ytmusic-tui v1.0.0\n\nFirst tagged release. A ground-up redesign of the interface around a spare,\nterminal-native aesthetic.\n\n### Highlights\n- **One screen, no clutter** — sidebar, header badges and banners are gone.\n  Views switch from a single tab line or with `1`–`5`.\n- **Slim two-line player** — now-playing + time, then a full-width clickable\n  Unicode seek bar.\n- **Help on demand** — press `?` for the keybinding overlay instead of a\n  permanent cheat sheet.\n- **Live Omarchy theme sync** — the Omarchy palette is registered as a native\n  Textual theme with CSS variables, so switching your desktop theme restyles\n  the app instantly with no flicker and no stylesheet rewrites on disk.\n- **No emoji, no noisy toasts** — plain Unicode rules, block glyphs and\n  reverse-style selection.\n\n### New bindings\n- `A` queue every track in the current view\n- `P` play every track in the current view\n- `d` remove the highlighted track from the queue\n- `?` toggle the keybinding overlay\n\n### Fixes\n- `esc` in the search box now returns focus to the results instead of\n  re-focusing the input.\n\n### Requirements\n- Python 3.11+, `mpv` and `yt-dlp` on `PATH`\n- `pip install -r requirements.txt`\n\n**Full changelog:** https://github.com/m7sh/ytmusic-tui/commit/bd6d3aa"
     }
+   ],
+   "commits": [
+    {
+     "sha": "fd1afb2",
+     "message": "Merge pull request #6 from BunnyEncoder20/feat/loop-modes",
+     "at": "2026-10-11T13:00:27Z",
+     "url": "https://github.com/m7sh/ame/commit/fd1afb26e93a7824f132ac70191bd3ec6e578233"
+    },
+    {
+     "sha": "fe1fe81",
+     "message": "feat: add playback loop modes (off / loop one / stop after one)",
+     "at": "2026-10-01T04:40:16Z",
+     "url": "https://github.com/m7sh/ame/commit/fe1fe81b704ed1d042ab60ae7276abb93941be8f"
+    },
+    {
+     "sha": "55813ce",
+     "message": "Merge pull request #5 from m7sh/dev",
+     "at": "2026-09-26T10:57:14Z",
+     "url": "https://github.com/m7sh/ame/commit/55813ce81b94a25995c8165d6865073190e042a7"
+    },
+    {
+     "sha": "e009e03",
+     "message": "refactor: remove mood section and unused categories logic",
+     "at": "2026-09-26T10:54:27Z",
+     "url": "https://github.com/m7sh/ame/commit/e009e0362916f8d222464671f590ff9fe49003d0"
+    },
+    {
+     "sha": "65ba397",
+     "message": "feat: add clean animated loading and refresh state across the UI",
+     "at": "2026-09-26T10:42:13Z",
+     "url": "https://github.com/m7sh/ame/commit/65ba39777af6fdc83d5e727e85d225481995442c"
+    },
+    {
+     "sha": "34ffe31",
+     "message": "feat: populate queue with related songs when playing from search",
+     "at": "2026-09-26T10:12:17Z",
+     "url": "https://github.com/m7sh/ame/commit/34ffe31570a94ed2b7b873d6e4794305cc9d922f"
+    },
+    {
+     "sha": "5ec1dcf",
+     "message": "Merge pull request #4 from m7sh/dev",
+     "at": "2026-09-26T09:55:40Z",
+     "url": "https://github.com/m7sh/ame/commit/5ec1dcf040bc71fd935b88ac14f7d60206537462"
+    },
+    {
+     "sha": "babe073",
+     "message": "feat: add self-updater functionality and documentation",
+     "at": "2026-09-26T09:53:38Z",
+     "url": "https://github.com/m7sh/ame/commit/babe073c5ec83e1ffd1f64a5840e02a47bee1be2"
+    }
    ]
   },
   "m7sh/mush.workspace": {
@@ -69,21 +119,129 @@
    "pushedAt": "2026-10-04T17:02:27Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "0ea961f",
+     "message": "Merge pull request #2 from m7sh/fix/hide-empty-workspaces",
+     "at": "2026-09-16T09:41:47Z",
+     "url": "https://github.com/m7sh/mush.workspace/commit/0ea961f84512da50d9fc12143ce533946dfebd80"
+    },
+    {
+     "sha": "dcd7868",
+     "message": "fix(workspaces): fix hideEmptyWorkspaces reactivity and multi-monitor…",
+     "at": "2026-09-16T09:38:01Z",
+     "url": "https://github.com/m7sh/mush.workspace/commit/dcd7868620e94f431a74464507758c906bfe3729"
+    },
+    {
+     "sha": "ee8dd19",
+     "message": "Merge pull request #1 from sohanemon/main",
+     "at": "2026-09-16T06:22:46Z",
+     "url": "https://github.com/m7sh/mush.workspace/commit/ee8dd191c2eb73fe2989a754c37feb7da314cb64"
+    },
+    {
+     "sha": "259c4bc",
+     "message": "feat(workspaces): add hideEmptyWorkspaces option",
+     "at": "2026-09-16T02:26:42Z",
+     "url": "https://github.com/m7sh/mush.workspace/commit/259c4bc4cdd2720de7739227f27fd8c2b2cad93a"
+    },
+    {
+     "sha": "63cc3d9",
+     "message": "Add README, license, preview, and marketplace publishing metadata",
+     "at": "2026-09-14T10:21:27Z",
+     "url": "https://github.com/m7sh/mush.workspace/commit/63cc3d9a35afd0effc10c828763c491545ebe32f"
+    },
+    {
+     "sha": "af5eb4f",
+     "message": "Initial commit",
+     "at": "2026-09-14T10:21:20Z",
+     "url": "https://github.com/m7sh/mush.workspace/commit/af5eb4f5a28c4a6015efba677174482505813eb1"
+    },
+    {
+     "sha": "ae459ff",
+     "message": "Initial commit",
+     "at": "2026-09-09T08:00:46Z",
+     "url": "https://github.com/m7sh/mush.workspace/commit/ae459ffb6b313b6d5169b2a462061cb7479db76d"
+    }
+   ]
   },
   "m7sh/omarchy-media": {
    "stars": 0,
    "pushedAt": "2026-09-14T09:14:28Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "ae234e7",
+     "message": "Restore smooth marquee animation for lengthy titles",
+     "at": "2026-09-14T09:14:27Z",
+     "url": "https://github.com/m7sh/omarchy-media/commit/ae234e765f3332a56423b488a95eaaf579b1da84"
+    },
+    {
+     "sha": "88e0562",
+     "message": "Initial commit: minimal aesthetic media widget for Omarchy",
+     "at": "2026-09-14T08:40:55Z",
+     "url": "https://github.com/m7sh/omarchy-media/commit/88e0562a8b5d7205e0713177b98453287d97cdc1"
+    }
+   ]
   },
   "m7sh/omarchy-iptv": {
    "stars": 0,
    "pushedAt": "2026-10-17T08:43:57Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "ee8d5c1",
+     "message": "fix(bar): use BarIconButton to match slot size and optical centering …",
+     "at": "2026-10-17T08:43:56Z",
+     "url": "https://github.com/m7sh/omarchy-iptv/commit/ee8d5c14e5a58af1473b54b0dbd38d134f887153"
+    },
+    {
+     "sha": "83cb4bf",
+     "message": "style: modernize bar widget and panel icon to sleek streaming display…",
+     "at": "2026-10-17T08:34:18Z",
+     "url": "https://github.com/m7sh/omarchy-iptv/commit/83cb4bf17cb1750cf5d4fc49da16f18397470496"
+    },
+    {
+     "sha": "4f46801",
+     "message": "docs: update repository URL to m7sh/omarchy-iptv",
+     "at": "2026-10-17T08:21:03Z",
+     "url": "https://github.com/m7sh/omarchy-iptv/commit/4f46801bbdd2ae2a944da8643ea327059ce6db40"
+    },
+    {
+     "sha": "ffe8cbd",
+     "message": "feat: enhance UI/UX, favorites management, channel logos, EPG filteri…",
+     "at": "2026-10-17T08:06:48Z",
+     "url": "https://github.com/m7sh/omarchy-iptv/commit/ffe8cbd0ac56712b6e84503193419a50b683a956"
+    },
+    {
+     "sha": "7b63034",
+     "message": "Match the group name when searching, so category words find channels …",
+     "at": "2026-09-08T18:40:30Z",
+     "url": "https://github.com/m7sh/omarchy-iptv/commit/7b630342d1ea149df9628fdb1338b072c79bb607"
+    },
+    {
+     "sha": "08e3903",
+     "message": "Bound provider responses: streamed, capped fetch and XMLTV import",
+     "at": "2026-09-08T18:40:12Z",
+     "url": "https://github.com/m7sh/omarchy-iptv/commit/08e3903222ebe085931c968a71b4ce98b62654ec"
+    },
+    {
+     "sha": "8125ce8",
+     "message": "feat: match the group name when searching, so category words find cha…",
+     "at": "2026-09-08T01:12:23Z",
+     "url": "https://github.com/m7sh/omarchy-iptv/commit/8125ce84a32f3df4c2b3a582852cfa6260b58e37"
+    },
+    {
+     "sha": "0fdc6c3",
+     "message": "Prepare 1.0.0 for the Omarchy plugin marketplace",
+     "at": "2026-09-07T21:09:17Z",
+     "url": "https://github.com/m7sh/omarchy-iptv/commit/0fdc6c3a65c84ae0d40c3416cdff24317e2a2723"
+    }
+   ]
   },
   "m7sh/omarchy-qutebrowser": {
    "stars": 9,
@@ -128,6 +286,56 @@
      "url": "https://github.com/m7sh/omarchy-qutebrowser/releases/tag/v1.0.0",
      "body": "First tagged release of **Omarchy Qutebrowser** — an aesthetic, keyboard-driven Qutebrowser setup with dynamic Omarchy theme synchronization and Wayland transparency.\n\n## Features\n\n- **Dynamic Omarchy theme sync** — hooks into `omarchy theme set` and updates all Qutebrowser colors live, without closing tabs.\n- **Crystal-clear 0.90 transparency** — matches `foot` / `ghostty`, with a Hyprland window rule.\n- **Local terminal startpage** — fast new-tab dashboard with clock, date, DuckDuckGo search and bookmarks.\n- **Vim keyboard controls** — single-key navigation, hints, tab cycling.\n- **1-key MPV playback** — press `M` on any video link to stream in hardware-accelerated `mpv`.\n- **Built-in YouTube ad skipping** — bundled `greasemonkey/yt-ads.js`.\n\n## Ad skipper notes\n\n`greasemonkey/yt-ads.js` (v1.2.0) is now **live-stream safe**:\n\n- Detects live streams via `ytp-live`, `.ytp-live-badge`, or a non-finite `video.duration`.\n- **Never seeks live streams**, so they no longer jump to the end when an ad appears.\n- Still fast-forwards finite ad clips to their end.\n- Uses a `MutationObserver` + polling instead of the unreliable `load` event.\n\n> Note: live streams that use server-side ad insertion cannot be skipped by seeking — the ad plays through, but the stream is no longer broken.\n\n## Install\n\n```bash\ngit clone https://github.com/m7sh/omarchy-qutebrowser.git /tmp/omarchy-qutebrowser && /tmp/omarchy-qutebrowser/install.sh && rm -rf /tmp/omarchy-qutebrowser\n```"
     }
+   ],
+   "commits": [
+    {
+     "sha": "8c20f91",
+     "message": "docs: rewrite README for v1.2.0",
+     "at": "2026-10-25T05:30:13Z",
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/commit/8c20f915bf0edfb4efa75408d8261470ce795b8e"
+    },
+    {
+     "sha": "388b1d8",
+     "message": "fix(install): locate the launcher icon from standard paths",
+     "at": "2026-10-25T04:50:16Z",
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/commit/388b1d8d956f05bcf950b241980f26771fdb8018"
+    },
+    {
+     "sha": "6bd86be",
+     "message": "fix(darkmode): prefer native site themes over forced inversion",
+     "at": "2026-10-25T04:50:16Z",
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/commit/6bd86be8af2c95d8ec9d15afcefab86f223da6c2"
+    },
+    {
+     "sha": "b627651",
+     "message": "refactor(youtube): remove greasemonkey userscript",
+     "at": "2026-10-25T04:17:35Z",
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/commit/b627651b4239f88977fdbc30d7ec2845c5d18e85"
+    },
+    {
+     "sha": "919b2b9",
+     "message": "fix(cosmetics): restore generic hiding and make installer prompt for …",
+     "at": "2026-10-25T04:11:23Z",
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/commit/919b2b95eb1d5152bf283f506159c30c5a010e32"
+    },
+    {
+     "sha": "5dc7957",
+     "message": "fix(youtube): eliminate YouTube video ads & banners, remove transpare…",
+     "at": "2026-10-24T12:55:37Z",
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/commit/5dc79578324475d73f4916b289e02c28a1fb164a"
+    },
+    {
+     "sha": "8a02c0a",
+     "message": "docs: add Brave adblock badge and polish limitations section",
+     "at": "2026-10-24T12:38:17Z",
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/commit/8a02c0a6750899e76b6713de6795e9d5fe9a68bc"
+    },
+    {
+     "sha": "2c32c2e",
+     "message": "refactor: remove redundant Greasemonkey script in favor of Brave adbl…",
+     "at": "2026-10-24T12:33:42Z",
+     "url": "https://github.com/m7sh/omarchy-qutebrowser/commit/2c32c2ecaed14adbbef62ae33481a9f3cf2170d1"
+    }
    ]
   },
   "m7sh/valorant-themes": {
@@ -135,7 +343,33 @@
    "pushedAt": "2026-11-12T19:27:16Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "2f7664f",
+     "message": "Remove live wallpaper pack",
+     "at": "2026-11-12T19:27:14Z",
+     "url": "https://github.com/m7sh/valorant-themes/commit/2f7664fef25751f4924d2ecdbb2b014e24803f17"
+    },
+    {
+     "sha": "5c0353b",
+     "message": "Add switcher previews, shell accents, boot logos, and live wallpapers",
+     "at": "2026-11-12T19:17:43Z",
+     "url": "https://github.com/m7sh/valorant-themes/commit/5c0353ba1a6144b137583352cd406c168cb2a086"
+    },
+    {
+     "sha": "cbe3520",
+     "message": "Add 9:16 promo short and render script",
+     "at": "2026-11-12T12:08:57Z",
+     "url": "https://github.com/m7sh/valorant-themes/commit/cbe3520de32cf588a16bd2e86453b58d4feffe91"
+    },
+    {
+     "sha": "a84b37b",
+     "message": "Add 30 Valorant agent themes for Omarchy",
+     "at": "2026-11-12T11:53:39Z",
+     "url": "https://github.com/m7sh/valorant-themes/commit/a84b37bdd518d970d59b8a255e4ca04645b4075e"
+    }
+   ]
   },
   "m7sh/matugen-theme": {
    "stars": 0,
@@ -153,6 +387,50 @@
      "url": "https://github.com/m7sh/matugen-theme/releases/tag/v1.0.0",
      "body": "## Matugen Dynamic Theme v1.0.0\n\nFirst tagged release of the dynamic Material You theme for **Omarchy Linux** and **Hyprland**.\n\n### ✨ Highlights\n\n- **Live wallpaper support** — video backgrounds (`.mp4`, `.webm`, `.m4v`, `.mov`, `.mkv`, `.avi`) now drive the palette. Matugen samples a sibling poster or a representative video frame, so live and still wallpapers produce equally accurate colors.\n- **Two bundled live loops** — `samurai-over-sakura-valley-live.mp4` and `tokyo-skyline-bedroom-live.mp4`, both silent 2560×1440 H.264.\n- **Silent by default** — OWE plays a video wallpaper's audio track and has no per-wallpaper mute switch, so the theme strips audio at the file level with `-c:v copy` (video stream stays bit-for-bit identical).\n  - `matugen-silence` — remove audio in place or into a new file, no re-encode.\n  - `matugen-add-live` — install a clip into Omarchy's user background folder, muted unless `--keep-audio`, optionally apply with `--set`.\n- **Real-time watcher** — inotify-based palette regeneration on every wallpaper change, stills and videos alike.\n- **Curated collection** — 7 dark anime/cyberpunk 4K stills + 2 live loops.\n- **Full app coverage** — Hyprland, Quickshell, Cava, Alacritty, Kitty, Foot, Ghostty, Neovim, Helix, Btop and Obsidian.\n\n### 📦 Install\n\n```bash\ngit clone https://github.com/m7sh/matugen-theme.git\ncd matugen-theme\n./install.sh\n```\n\nAdd your own live wallpaper:\n\n```bash\nmatugen-add-live --set ~/Videos/loop.mp4\n```\n\n### 🛠 Notes\n\n- Repo live clips are 1440p to keep clones small. Installer drops them in `~/.config/omarchy/backgrounds/matugen/` an"
     }
+   ],
+   "commits": [
+    {
+     "sha": "47e7b8e",
+     "message": "feat: keep live wallpapers silent by default",
+     "at": "2026-11-05T12:23:38Z",
+     "url": "https://github.com/m7sh/matugen-theme/commit/47e7b8e3d10f7159eef4d4096689be5d2f77bb40"
+    },
+    {
+     "sha": "96a0642",
+     "message": "docs: note that live wallpapers ship silent",
+     "at": "2026-11-05T12:18:06Z",
+     "url": "https://github.com/m7sh/matugen-theme/commit/96a06427862d74193d5a6a356ce07d692bfb7ddc"
+    },
+    {
+     "sha": "906bdd4",
+     "message": "fix(install): install live videos into user backgrounds",
+     "at": "2026-11-05T12:14:00Z",
+     "url": "https://github.com/m7sh/matugen-theme/commit/906bdd416d4b9a4fb23b38d67d1894dd5e085394"
+    },
+    {
+     "sha": "c21eaa8",
+     "message": "feat: add two live wallpaper loops",
+     "at": "2026-11-05T12:07:46Z",
+     "url": "https://github.com/m7sh/matugen-theme/commit/c21eaa862a60c4d7aa5cba735878113332cef5c8"
+    },
+    {
+     "sha": "32921aa",
+     "message": "feat: support live video wallpapers",
+     "at": "2026-11-05T11:55:53Z",
+     "url": "https://github.com/m7sh/matugen-theme/commit/32921aad4f17c317f1a0c5e41b3fda0639e5fc15"
+    },
+    {
+     "sha": "1bda788",
+     "message": "Add automated Omarchy installer and update guide",
+     "at": "2026-10-09T15:52:43Z",
+     "url": "https://github.com/m7sh/matugen-theme/commit/1bda7889fc3b27c76270704e52f37b75d395e352"
+    },
+    {
+     "sha": "1c5df2d",
+     "message": "feat(theme): initial release of Matugen Dynamic Theme for Omarchy",
+     "at": "2026-10-09T11:50:26Z",
+     "url": "https://github.com/m7sh/matugen-theme/commit/1c5df2d136856f658061eb76c17a1f50d07d7f6a"
+    }
    ]
   },
   "m7sh/velvet-dusk-theme": {
@@ -160,91 +438,513 @@
    "pushedAt": "2026-09-12T16:35:18Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "c51b201",
+     "message": "style: set minimal 1px window gaps and disable blur",
+     "at": "2026-09-12T16:35:16Z",
+     "url": "https://github.com/m7sh/velvet-dusk-theme/commit/c51b20151d2bf588a3ade156b8d8ca2ec8f32a06"
+    },
+    {
+     "sha": "7836fc2",
+     "message": "docs(vencord): update theme description",
+     "at": "2026-09-12T10:21:01Z",
+     "url": "https://github.com/m7sh/velvet-dusk-theme/commit/7836fc27f0b70186f6a496736080bfed8c39a7ae"
+    },
+    {
+     "sha": "cedd199",
+     "message": "chore(theming): standardize theme assets for Omarchy 4 and THPM",
+     "at": "2026-09-12T10:08:56Z",
+     "url": "https://github.com/m7sh/velvet-dusk-theme/commit/cedd199319a3432daa488629d90c985e54856acf"
+    },
+    {
+     "sha": "6e24a9f",
+     "message": "feat(vencord): enhance theme with Base16 mappings, syntax highlightin…",
+     "at": "2026-09-12T09:22:37Z",
+     "url": "https://github.com/m7sh/velvet-dusk-theme/commit/6e24a9f98faf895894abdb5ad1017af2bb6dfe8d"
+    },
+    {
+     "sha": "9267ca0",
+     "message": "feat: add Vesktop/Vencord theme matching Velvet Dusk with dynamic fon…",
+     "at": "2026-09-12T08:21:21Z",
+     "url": "https://github.com/m7sh/velvet-dusk-theme/commit/9267ca07fb9fe480cf6352afda7b773370de2c32"
+    },
+    {
+     "sha": "a79eb79",
+     "message": "feat: initial commit for Velvet Dusk theme",
+     "at": "2026-09-11T07:58:07Z",
+     "url": "https://github.com/m7sh/velvet-dusk-theme/commit/a79eb79e1651f6c0a9ac82979ec976deafa159c1"
+    }
+   ]
   },
   "m7sh/cyber-dusk-theme": {
    "stars": 0,
    "pushedAt": "2026-09-26T10:48:04Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "ff2242f",
+     "message": "feat(wallpapers): update wallpapers with new curated selection",
+     "at": "2026-09-26T10:47:29Z",
+     "url": "https://github.com/m7sh/cyber-dusk-theme/commit/ff2242f9852f276b76c81a5ca2993eb8c3be8a97"
+    },
+    {
+     "sha": "7a19833",
+     "message": "fix(foot): use [colors-dark] section for Omarchy include compatibility",
+     "at": "2026-09-24T09:26:32Z",
+     "url": "https://github.com/m7sh/cyber-dusk-theme/commit/7a198339fa01a2a40426d49a925965f2e4037218"
+    },
+    {
+     "sha": "06a525a",
+     "message": "feat(theme): initial release of Cyber Dusk theme for Omarchy",
+     "at": "2026-09-24T09:14:23Z",
+     "url": "https://github.com/m7sh/cyber-dusk-theme/commit/06a525a06a30c9bcc3ad632d5617d1ad67472a29"
+    }
+   ]
   },
   "m7sh/gruvbox-aesthetic": {
    "stars": 0,
    "pushedAt": "2026-09-15T11:16:53Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "d04a0a1",
+     "message": "feat: initial release of Gruvbox Aesthetic theme for Omarchy 4",
+     "at": "2026-09-15T11:16:22Z",
+     "url": "https://github.com/m7sh/gruvbox-aesthetic/commit/d04a0a1ac11a4e4c20590fc33d91fc636c8e27a1"
+    }
+   ]
   },
   "m7sh/everpuccin-m7sh": {
    "stars": 1,
    "pushedAt": "2026-09-18T22:08:50Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "247389b",
+     "message": "style: refresh palette, round borders, and drop unused app configs",
+     "at": "2026-09-18T22:08:47Z",
+     "url": "https://github.com/m7sh/everpuccin-m7sh/commit/247389b630ed790e56061ae7765792d418bba1c9"
+    },
+    {
+     "sha": "3e9bf3f",
+     "message": "style: set minimal 1px window gaps, remove Nautilus rules, and update…",
+     "at": "2026-09-12T16:43:38Z",
+     "url": "https://github.com/m7sh/everpuccin-m7sh/commit/3e9bf3f7b1f00451aae9a1f6dc7eebeb985b0354"
+    },
+    {
+     "sha": "b30f683",
+     "message": "style: disable blur and match Nautilus opacity to terminal transparency",
+     "at": "2026-09-12T11:17:56Z",
+     "url": "https://github.com/m7sh/everpuccin-m7sh/commit/b30f683d2495b92e4715cc7ea1b6c7046432f34e"
+    },
+    {
+     "sha": "dd05cb4",
+     "message": "style: remove border rounding and add Nautilus transparency rule",
+     "at": "2026-09-12T11:07:05Z",
+     "url": "https://github.com/m7sh/everpuccin-m7sh/commit/dd05cb42153c16f6c1b21bacb3fc167070ec7c4e"
+    },
+    {
+     "sha": "f53b854",
+     "message": "feat(theme): modernize Everpuccin for Omarchy 4 and THPM",
+     "at": "2026-09-12T10:47:33Z",
+     "url": "https://github.com/m7sh/everpuccin-m7sh/commit/f53b8549fd455e6868b9306812b56a46f705e322"
+    },
+    {
+     "sha": "c1baf0e",
+     "message": "chore(theming): modernize theme assets for Omarchy 4 and THPM",
+     "at": "2026-09-12T10:10:40Z",
+     "url": "https://github.com/m7sh/everpuccin-m7sh/commit/c1baf0ea0a2fb8bfa252498f1454d6a64efd34a8"
+    },
+    {
+     "sha": "253c53c",
+     "message": "few walls",
+     "at": "2026-01-01T12:39:01Z",
+     "url": "https://github.com/m7sh/everpuccin-m7sh/commit/253c53c2ea55895a83f72574fd0939e5003dfb27"
+    },
+    {
+     "sha": "a59c9fc",
+     "message": "updated almost everything",
+     "at": "2025-12-23T14:25:32Z",
+     "url": "https://github.com/m7sh/everpuccin-m7sh/commit/a59c9fc485109e23992ee173fdbad690a11fa02a"
+    }
+   ]
   },
   "m7sh/blacula-theme": {
    "stars": 0,
    "pushedAt": "2026-09-23T11:26:06Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "0fc3ff2",
+     "message": "Refine warm amber and antique brass palette with Velvet Dusk borders …",
+     "at": "2026-09-23T11:25:37Z",
+     "url": "https://github.com/m7sh/blacula-theme/commit/0fc3ff291894b46c6a4a4f28b3d2f8125ba50142"
+    },
+    {
+     "sha": "45faa71",
+     "message": "Release Blacula theme for Omarchy",
+     "at": "2026-09-22T21:21:04Z",
+     "url": "https://github.com/m7sh/blacula-theme/commit/45faa7124a92dedbd837587c1c202a494dca2bc3"
+    },
+    {
+     "sha": "723daff",
+     "message": "Initial commit: Blacula theme for Omarchy",
+     "at": "2026-09-22T19:35:28Z",
+     "url": "https://github.com/m7sh/blacula-theme/commit/723daff45945f864036cec4c2650300105bdc8f1"
+    }
+   ]
   },
   "m7sh/god-of-war-theme": {
    "stars": 1,
    "pushedAt": "2026-09-12T10:20:32Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "408d2d2",
+     "message": "fix(vencord): remove forced font-size overrides in favor of natural D…",
+     "at": "2026-09-12T10:20:29Z",
+     "url": "https://github.com/m7sh/god-of-war-theme/commit/408d2d23641a7136d67108e4915a2907e6063d2a"
+    },
+    {
+     "sha": "fce1178",
+     "message": "chore(theming): standardize on canonical vencord.theme.css for THPM",
+     "at": "2026-09-12T10:09:34Z",
+     "url": "https://github.com/m7sh/god-of-war-theme/commit/fce1178407772f722f1e9847984eef7b58cedec3"
+    },
+    {
+     "sha": "1d809cf",
+     "message": "feat: initial commit for God of War Omarchy theme",
+     "at": "2026-09-12T08:48:27Z",
+     "url": "https://github.com/m7sh/god-of-war-theme/commit/1d809cf7361fea55554dfa6fdaec0ea6e2a27f07"
+    }
+   ]
   },
   "m7sh/hogwarts-night": {
    "stars": 0,
    "pushedAt": "2026-09-12T17:25:46Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "91dd6f5",
+     "message": "fix(foot): update [colors] section header to [colors-dark] for foot 1…",
+     "at": "2026-09-12T17:24:48Z",
+     "url": "https://github.com/m7sh/hogwarts-night/commit/91dd6f51862933580a2ebc6a14479651edbb16db"
+    },
+    {
+     "sha": "92c0063",
+     "message": "feat: aesthetic redesign, modern Omarchy 4 integration, and 4K/2K wal…",
+     "at": "2026-09-12T17:13:39Z",
+     "url": "https://github.com/m7sh/hogwarts-night/commit/92c0063a895671ae8f1835d6933af79815c1fb21"
+    },
+    {
+     "sha": "a59acea",
+     "message": "chore(theming): modernize theme assets for Omarchy 4 and THPM",
+     "at": "2026-09-12T10:11:39Z",
+     "url": "https://github.com/m7sh/hogwarts-night/commit/a59aceaced22fcd66b1b3599135316cc458e3e69"
+    },
+    {
+     "sha": "0da6c10",
+     "message": "Remove image upload placeholder from README",
+     "at": "2025-12-22T15:32:06Z",
+     "url": "https://github.com/m7sh/hogwarts-night/commit/0da6c105736bde60913e7bcadd7c8ea0e4fde29a"
+    },
+    {
+     "sha": "7422c6c",
+     "message": "Add image upload placeholder to README",
+     "at": "2025-12-22T14:26:49Z",
+     "url": "https://github.com/m7sh/hogwarts-night/commit/7422c6cb70eac6e4e1c7bf533d49137ae7448a84"
+    },
+    {
+     "sha": "25e351d",
+     "message": "preview",
+     "at": "2025-12-22T14:19:56Z",
+     "url": "https://github.com/m7sh/hogwarts-night/commit/25e351d2824f6e234bc5277f672b87f7d596ffd7"
+    },
+    {
+     "sha": "fe3bd0b",
+     "message": "walls updated",
+     "at": "2025-12-22T14:08:44Z",
+     "url": "https://github.com/m7sh/hogwarts-night/commit/fe3bd0b02c4925155c8a8b6b657eb088b1ebda69"
+    },
+    {
+     "sha": "30a7296",
+     "message": "Initial commit",
+     "at": "2025-12-22T13:53:41Z",
+     "url": "https://github.com/m7sh/hogwarts-night/commit/30a7296d792320b0744dbe871b7693d4855e97a8"
+    }
+   ]
   },
   "m7sh/cappuccino-night-theme": {
    "stars": 0,
    "pushedAt": "2026-10-05T17:11:17Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "46386d3",
+     "message": "Update README.md",
+     "at": "2026-10-05T17:11:17Z",
+     "url": "https://github.com/m7sh/cappuccino-night-theme/commit/46386d30332dcea2881fe706d80e5f690302c16b"
+    },
+    {
+     "sha": "cea09b3",
+     "message": "feat(theme): initial release of Cappuccino Night theme for Omarchy",
+     "at": "2026-10-05T17:01:29Z",
+     "url": "https://github.com/m7sh/cappuccino-night-theme/commit/cea09b35ab701d965571fb75ef8f7c4ae559ce08"
+    }
+   ]
   },
   "m7sh/mush-omarchy-cricket": {
    "stars": 0,
    "pushedAt": "2026-08-24T20:43:20Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "91031d2",
+     "message": "fix(security): sanitize upstream strings and eliminate rich-text/mark…",
+     "at": "2026-08-24T20:40:27Z",
+     "url": "https://github.com/m7sh/mush-omarchy-cricket/commit/91031d2f7764ae720332335771bc832f378ae124"
+    },
+    {
+     "sha": "75a65aa",
+     "message": "fix(security): enforce Text.PlainText across all QML Text elements",
+     "at": "2026-08-24T09:39:38Z",
+     "url": "https://github.com/m7sh/mush-omarchy-cricket/commit/75a65aa1346f24605f1b6e9a6a3a741620f60ef5"
+    },
+    {
+     "sha": "be558b7",
+     "message": "fix(security): stream-cap responses, bound records, and secure per-UI…",
+     "at": "2026-08-24T04:56:35Z",
+     "url": "https://github.com/m7sh/mush-omarchy-cricket/commit/be558b7cd4295164bfc9f79c5622c2e8260dccb4"
+    },
+    {
+     "sha": "735c79d",
+     "message": "chore: add MIT LICENSE and update manifest",
+     "at": "2026-08-23T13:50:10Z",
+     "url": "https://github.com/m7sh/mush-omarchy-cricket/commit/735c79dde60ce705dd0e448501440524a44d721f"
+    },
+    {
+     "sha": "54bfd1c",
+     "message": "Include Cricbuzz affiliation disclaimer in README",
+     "at": "2026-08-23T13:44:56Z",
+     "url": "https://github.com/m7sh/mush-omarchy-cricket/commit/54bfd1caea24c6396d5f7cfdf1e11becb612abc3"
+    },
+    {
+     "sha": "6e2d909",
+     "message": "docs: update install URL with repository path",
+     "at": "2026-08-23T13:30:38Z",
+     "url": "https://github.com/m7sh/mush-omarchy-cricket/commit/6e2d90990a00e54df9c6b8e3e5112bc501d6217b"
+    },
+    {
+     "sha": "03a39c0",
+     "message": "chore: update preview image",
+     "at": "2026-08-23T13:29:46Z",
+     "url": "https://github.com/m7sh/mush-omarchy-cricket/commit/03a39c0c906bdfc828116d37dbb1595f13b181bd"
+    },
+    {
+     "sha": "4cdbbac",
+     "message": "feat: initial release of Omarchy Crciket Live Score plugin",
+     "at": "2026-08-23T13:16:31Z",
+     "url": "https://github.com/m7sh/mush-omarchy-cricket/commit/4cdbbaccf76e8408109f955af7a0cd56b2e73af8"
+    }
+   ]
   },
   "m7sh/omarchy-f1": {
    "stars": 0,
    "pushedAt": "2026-10-06T13:28:17Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "7e01457",
+     "message": "Merge pull request #1 from gmickel/fix/bar-api-setter",
+     "at": "2026-10-06T13:28:17Z",
+     "url": "https://github.com/m7sh/omarchy-f1/commit/7e01457edf85036d5d6932a8edd2e1200bf4facf"
+    },
+    {
+     "sha": "0542fd6",
+     "message": "fix(panel): use the bar API setter for center hover suppression",
+     "at": "2026-10-06T09:18:05Z",
+     "url": "https://github.com/m7sh/omarchy-f1/commit/0542fd65edc852a8a4922c69ed02169e7e954a90"
+    },
+    {
+     "sha": "acf38cb",
+     "message": "Cropped Notify",
+     "at": "2026-09-06T06:43:30Z",
+     "url": "https://github.com/m7sh/omarchy-f1/commit/acf38cb44149038308b20ebdcfafcfa6edad65be"
+    },
+    {
+     "sha": "e4148d9",
+     "message": "style: replace full-screen screenshots with clean, cropped plugin lay…",
+     "at": "2026-09-06T06:27:20Z",
+     "url": "https://github.com/m7sh/omarchy-f1/commit/e4148d9b7dc55786ae66ac22eee7c711823b8484"
+    },
+    {
+     "sha": "6571c5c",
+     "message": "docs: add polished GitHub README with showcase, badges, and architect…",
+     "at": "2026-09-06T05:58:28Z",
+     "url": "https://github.com/m7sh/omarchy-f1/commit/6571c5c5c64f39670ecf39c196bb95f69ac31710"
+    },
+    {
+     "sha": "1b54aa4",
+     "message": "feat: initial release of Formula 1 plugin for Omarchy",
+     "at": "2026-09-06T05:53:12Z",
+     "url": "https://github.com/m7sh/omarchy-f1/commit/1b54aa4662f6a35c03a4ae6bc1aa59d9ceb989fb"
+    }
+   ]
   },
   "m7sh/MovieBox-Tui": {
    "stars": 0,
    "pushedAt": "2026-09-09T11:07:15Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "03aafe2",
+     "message": "chore(homebrew): update formula to v0.1.18",
+     "at": "2026-09-06T12:09:41Z",
+     "url": "https://github.com/m7sh/MovieBox-Tui/commit/03aafe2034aea34eeab41ecf20f676c8a49046e7"
+    },
+    {
+     "sha": "4ebb75e",
+     "message": "chore(release): bump version to 0.1.18",
+     "at": "2026-09-06T12:02:03Z",
+     "url": "https://github.com/m7sh/MovieBox-Tui/commit/4ebb75ed2446aa14f380b77f246c98b87095e502"
+    },
+    {
+     "sha": "f676c23",
+     "message": "fix(tui): eliminate modal block background overrides and halo spillage",
+     "at": "2026-09-06T11:56:53Z",
+     "url": "https://github.com/m7sh/MovieBox-Tui/commit/f676c238a69b149d2d18237a95c582ce80da1f76"
+    },
+    {
+     "sha": "bc63d4c",
+     "message": "docs: update walkthrough video attachment in readme",
+     "at": "2026-09-06T11:09:44Z",
+     "url": "https://github.com/m7sh/MovieBox-Tui/commit/bc63d4c845832f74299e5b0ba97a3c3a749ed078"
+    },
+    {
+     "sha": "e7402d7",
+     "message": "fix(docs): embed centered media preview asset without video tag",
+     "at": "2026-09-06T10:58:51Z",
+     "url": "https://github.com/m7sh/MovieBox-Tui/commit/e7402d7a401f95e42ed06237226db1d2e45676b3"
+    },
+    {
+     "sha": "d9798d8",
+     "message": "fix(docs): embed demo gif inline and stabilize ci benchmark runner to…",
+     "at": "2026-09-06T10:27:27Z",
+     "url": "https://github.com/m7sh/MovieBox-Tui/commit/d9798d868293a91934489308abf21f2d4f4d403d"
+    },
+    {
+     "sha": "1786bf4",
+     "message": "perf(core): optimize text truncation, hex hashing, M3U parsing, and d…",
+     "at": "2026-09-06T10:16:06Z",
+     "url": "https://github.com/m7sh/MovieBox-Tui/commit/1786bf43078d3ee06bec30613e9eaedc7d9bda47"
+    },
+    {
+     "sha": "ef013a7",
+     "message": "fix(tui): redesign update dialogs and isolate backdrop bleed",
+     "at": "2026-09-06T10:16:06Z",
+     "url": "https://github.com/m7sh/MovieBox-Tui/commit/ef013a7e2b293441fed6aa6e32369fd0012eb9cf"
+    }
+   ]
   },
   "m7sh/Desktop-Voice-Assistant": {
    "stars": 0,
    "pushedAt": "2022-09-27T13:59:24Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "1931f57",
+     "message": "Add files via upload",
+     "at": "2022-09-27T13:59:24Z",
+     "url": "https://github.com/m7sh/Desktop-Voice-Assistant/commit/1931f57c486d9c02e0fd3088131dcc3e6c935f31"
+    },
+    {
+     "sha": "ec0bb6f",
+     "message": "Initial commit",
+     "at": "2022-09-27T13:52:18Z",
+     "url": "https://github.com/m7sh/Desktop-Voice-Assistant/commit/ec0bb6fb0067e8658ddd6335a8642a61ec8d1f51"
+    }
+   ]
   },
   "m7sh/umrah-journey": {
    "stars": 0,
    "pushedAt": "2026-11-10T12:34:20Z",
    "latest": null,
    "releaseDates": [],
-   "releases": []
+   "releases": [],
+   "commits": [
+    {
+     "sha": "b30695a",
+     "message": "Mention the Hajj guide in the social captions",
+     "at": "2026-11-10T12:34:19Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/b30695aa46b2e877a634ceb3e8e0d7b11197805d"
+    },
+    {
+     "sha": "24acff7",
+     "message": "Add full Hajj guide alongside Umrah",
+     "at": "2026-11-10T12:32:10Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/24acff7868fef5199a900a361c34963a126a47bf"
+    },
+    {
+     "sha": "7cd57a9",
+     "message": "Add footer credit and GitHub contact link with localized visits",
+     "at": "2026-11-09T07:10:49Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/7cd57a9ec9b3fd8f89cd990e395c722c0b4e1cb6"
+    },
+    {
+     "sha": "7255c52",
+     "message": "Add social media posters with scannable QR and captions",
+     "at": "2026-11-09T06:47:21Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/7255c5287fdea98871eb573d230ef39a62ddb773"
+    },
+    {
+     "sha": "fc75b6d",
+     "message": "Move live URL to the umrahguide workers.dev subdomain",
+     "at": "2026-11-09T06:24:25Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/fc75b6dadd351abcc3645f6e8c826a26bc16b82c"
+    },
+    {
+     "sha": "6eb67c9",
+     "message": "Add exact Qur'anic word-by-word and ayah audio",
+     "at": "2026-11-09T06:16:17Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/6eb67c9fa98e278529b90c676179096c3e23f0ae"
+    },
+    {
+     "sha": "f1e550a",
+     "message": "docs: add live URLs and deployment notes",
+     "at": "2026-11-09T06:02:18Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/f1e550a86a5cbba83d269e01a3af407828ece49f"
+    },
+    {
+     "sha": "6774e02",
+     "message": "Umrah Journey: interactive guide with Cloudflare Workers deployment",
+     "at": "2026-11-09T06:01:53Z",
+     "url": "https://github.com/m7sh/umrah-journey/commit/6774e02fa1d32687afd929ed4a19698354f64340"
+    }
+   ]
   }
  },
  "days": [
@@ -1718,7 +2418,7 @@
   ],
   [
    "2026-11-25",
-   0
+   1
   ]
  ]
 }

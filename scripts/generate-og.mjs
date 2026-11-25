@@ -16,7 +16,7 @@ const fontFiles = [400, 700, 800].map((w) => new URL(`scripts/og-fonts/jetbrains
 const W = 1200, H = 630;
 const C = { bg: '#100d14', bg2: '#17131e', bg3: '#221c2c', fg: '#ede7f6', fg2: '#b8afc8', fg3: '#827796', line: '#2e263c', accent: '#c084fc', accent2: '#f472b6' };
 const FONT = 'JetBrains Mono';
-const GROUPS = { omarchy: 'Omarchy Plugins', terminal: 'Terminal & CLI', themes: 'Desktop Themes', rice: 'Rices & Configs' };
+const GROUPS = { omarchy: 'Omarchy Plugins', terminal: 'Terminal & CLI', themes: 'Desktop Themes', rice: 'Rices & Configs', apps: 'Web & Apps' };
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' })[c]);
 const hex = (h) => { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
@@ -127,20 +127,32 @@ const relDays = new Set(projects.flatMap((p) => repoOf(p).releaseDates.map((d) =
 
 /* ---------- Omarchy hub ---------- */
 {
-  const omarchy = projects.filter((p) => p.group === 'omarchy' || p.group === 'themes');
+  const omarchy = projects.filter((p) => p.group === 'omarchy' || p.group === 'themes' || p.group === 'rice');
   const omStars = omarchy.reduce((n, p) => n + repoOf(p).stars, 0);
-  let chips = '', x = 70, y = 330;
-  for (const p of omarchy) {
-    const w = p.name.length * 13.2 + 58;
-    if (x + w > 1130) { x = 70; y += 62; }
-    chips += `<rect x="${x}" y="${y - 32}" width="${w}" height="46" rx="10" fill="${mix(p.accent, C.bg, 0.16)}" stroke="${mix(p.accent, C.line, 0.45)}"/>` +
-      `<rect x="${x + 16}" y="${y - 16}" width="14" height="14" rx="3" fill="${p.accent}"/>` + text(x + 40, y - 3, p.name, { size: 22, weight: 700 });
-    x += w + 14;
+  let chips = '', x = 70, y = 316, overflow = 0;
+  for (let i = 0; i < omarchy.length; i++) {
+    const p = omarchy[i];
+    const w = p.name.length * 11.4 + 52;
+    if (x + w > 1130) {
+      if (y + 52 > 540) { overflow = omarchy.length - i; break; }
+      x = 70;
+      y += 52;
+    }
+    chips += `<rect x="${x}" y="${y - 28}" width="${w}" height="40" rx="9" fill="${mix(p.accent, C.bg, 0.16)}" stroke="${mix(p.accent, C.line, 0.45)}"/>` +
+      `<rect x="${x + 14}" y="${y - 14}" width="12" height="12" rx="3" fill="${p.accent}"/>` + text(x + 36, y - 2, p.name, { size: 19, weight: 700 });
+    x += w + 12;
+  }
+  if (overflow > 0) {
+    const label = `+${overflow} more`;
+    const w = label.length * 11.4 + 36;
+    if (x + w > 1130) { x = 70; y += 52; }
+    chips += `<rect x="${x}" y="${y - 28}" width="${w}" height="40" rx="9" fill="${C.bg2}" stroke="${C.line}"/>` +
+      text(x + 18, y - 2, label, { size: 19, weight: 700, fill: C.fg2 });
   }
   const body = logo(70, 60) +
     text(70, 200, 'Omarchy ecosystem', { size: 76, weight: 800, spacing: -2 }) +
-    text(70, 250, `${omarchy.length} plugins and themes · ${fmt(omStars)} stars · live theme sync`, { size: 22, fill: C.fg2 }) + chips;
-  render(frame(body, 37, [[40, 40, 1160, y + 40]]), 'public/og/omarchy.png');
+    text(70, 248, `${omarchy.length} plugins, themes & rices · ${fmt(omStars)} stars · live theme sync`, { size: 22, fill: C.fg2 }) + chips;
+  render(frame(body, 37, [[40, 40, 1160, Math.min(H - 30, y + 32)]]), 'public/og/omarchy.png');
 }
 
 /* ---------- One per project ---------- */

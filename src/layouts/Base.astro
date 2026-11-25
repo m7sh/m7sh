@@ -8,6 +8,7 @@ import '../styles/site.css';
 import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CommandPalette from '../components/CommandPalette.astro';
 import { SITE_URL, SITE_NAME } from '../lib/site';
 
 export interface Props {
@@ -58,7 +59,7 @@ const orgSchema = JSON.stringify({
         document.documentElement.classList.add('js');
         try {
           var t = localStorage.getItem('m7sh-theme');
-          var ok = ['velvet-dusk', 'cyber-dusk', 'cappuccino-night', 'gruvbox', 'everpuccin', 'blacula', 'god-of-war', 'tokyo-night', 'catppuccin', 'matte-black', 'paper'];
+          var ok = ['velvet-dusk', 'cyber-dusk', 'cappuccino-night', 'gruvbox', 'everpuccin', 'blacula', 'god-of-war', 'hogwarts-night', 'matugen-theme', 'tokyo-night', 'catppuccin', 'matte-black', 'paper'];
           if (ok.indexOf(t) > -1) document.documentElement.setAttribute('data-theme', t);
         } catch (e) {}
       })();
@@ -86,10 +87,12 @@ const orgSchema = JSON.stringify({
       <slot />
     </main>
     <Footer />
+    <CommandPalette />
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script>
       import '../scripts/theme';
       import '../scripts/ui';
+      import '../scripts/palette';
     </script>
   </body>
 </html>

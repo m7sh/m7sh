@@ -1,0 +1,810 @@
+{
+  "themes": {
+    "velvet-dusk": {
+      "mode": "dark",
+      "border": "linear-gradient(90deg, #BFA7DB, #C18FB1)",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#1E1E2E"
+        },
+        {
+          "name": "surface",
+          "hex": "#181825"
+        },
+        {
+          "name": "elevated",
+          "hex": "#313244"
+        },
+        {
+          "name": "foreground",
+          "hex": "#CDD6F4"
+        },
+        {
+          "name": "accent",
+          "hex": "#CBA6F7"
+        },
+        {
+          "name": "rose",
+          "hex": "#F38BA8"
+        },
+        {
+          "name": "green",
+          "hex": "#A6E3A1"
+        },
+        {
+          "name": "peach",
+          "hex": "#FAB387"
+        },
+        {
+          "name": "blue",
+          "hex": "#89B4FA"
+        },
+        {
+          "name": "cyan",
+          "hex": "#89DCEB"
+        }
+      ]
+    },
+    "cyber-dusk": {
+      "mode": "dark",
+      "border": "linear-gradient(45deg, rgba(81,253,255,0.6), rgba(231,101,207,0.35))",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#12181B"
+        },
+        {
+          "name": "surface",
+          "hex": "#0D1315"
+        },
+        {
+          "name": "elevated",
+          "hex": "#18262B"
+        },
+        {
+          "name": "foreground",
+          "hex": "#D9E4E8"
+        },
+        {
+          "name": "accent",
+          "hex": "#51FDFF"
+        },
+        {
+          "name": "magenta",
+          "hex": "#E765CF"
+        },
+        {
+          "name": "green",
+          "hex": "#2DD4BF"
+        },
+        {
+          "name": "blue",
+          "hex": "#38BDF8"
+        },
+        {
+          "name": "yellow",
+          "hex": "#FCD34D"
+        },
+        {
+          "name": "red",
+          "hex": "#F43F5E"
+        }
+      ]
+    },
+    "cappuccino-night": {
+      "mode": "dark",
+      "border": "linear-gradient(45deg, rgba(227,160,114,0.55), rgba(231,214,179,0.35))",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#1F130B"
+        },
+        {
+          "name": "surface",
+          "hex": "#170E08"
+        },
+        {
+          "name": "elevated",
+          "hex": "#302118"
+        },
+        {
+          "name": "foreground",
+          "hex": "#EFDDD3"
+        },
+        {
+          "name": "accent",
+          "hex": "#E3A072"
+        },
+        {
+          "name": "crema",
+          "hex": "#E7D6B3"
+        },
+        {
+          "name": "green",
+          "hex": "#9DBE79"
+        },
+        {
+          "name": "cyan",
+          "hex": "#63CBC7"
+        },
+        {
+          "name": "blue",
+          "hex": "#6EB4E1"
+        },
+        {
+          "name": "red",
+          "hex": "#E4877B"
+        }
+      ]
+    },
+    "gruvbox-aesthetic": {
+      "mode": "dark",
+      "border": "linear-gradient(45deg, rgba(201,154,94,0.55), rgba(216,199,168,0.28))",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#17191A"
+        },
+        {
+          "name": "surface",
+          "hex": "#121314"
+        },
+        {
+          "name": "elevated",
+          "hex": "#212325"
+        },
+        {
+          "name": "foreground",
+          "hex": "#D8C7A8"
+        },
+        {
+          "name": "accent",
+          "hex": "#C99A5E"
+        },
+        {
+          "name": "green",
+          "hex": "#9EA853"
+        },
+        {
+          "name": "cyan",
+          "hex": "#7FA37C"
+        },
+        {
+          "name": "blue",
+          "hex": "#779589"
+        },
+        {
+          "name": "orange",
+          "hex": "#CF6832"
+        },
+        {
+          "name": "red",
+          "hex": "#D4544A"
+        }
+      ]
+    },
+    "everpuccin": {
+      "mode": "dark",
+      "border": "linear-gradient(90deg, #A26839, #9A6388)",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#131515"
+        },
+        {
+          "name": "surface",
+          "hex": "#0E1010"
+        },
+        {
+          "name": "elevated",
+          "hex": "#1F2223"
+        },
+        {
+          "name": "foreground",
+          "hex": "#F1E4C2"
+        },
+        {
+          "name": "accent",
+          "hex": "#A5CAB8"
+        },
+        {
+          "name": "green",
+          "hex": "#B6C36F"
+        },
+        {
+          "name": "cyan",
+          "hex": "#8ECD84"
+        },
+        {
+          "name": "yellow",
+          "hex": "#EF944D"
+        },
+        {
+          "name": "magenta",
+          "hex": "#E9869A"
+        },
+        {
+          "name": "red",
+          "hex": "#F16E65"
+        }
+      ]
+    },
+    "blacula": {
+      "mode": "dark",
+      "border": "linear-gradient(45deg, rgba(201,154,94,0.55), rgba(138,90,68,0.35))",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#211715"
+        },
+        {
+          "name": "surface",
+          "hex": "#18100E"
+        },
+        {
+          "name": "elevated",
+          "hex": "#2E201B"
+        },
+        {
+          "name": "foreground",
+          "hex": "#DFC7AA"
+        },
+        {
+          "name": "accent",
+          "hex": "#C99A5E"
+        },
+        {
+          "name": "amber",
+          "hex": "#D8A25E"
+        },
+        {
+          "name": "green",
+          "hex": "#8F9A52"
+        },
+        {
+          "name": "cyan",
+          "hex": "#58A397"
+        },
+        {
+          "name": "orange",
+          "hex": "#C86A36"
+        },
+        {
+          "name": "red",
+          "hex": "#C75346"
+        }
+      ]
+    },
+    "god-of-war": {
+      "mode": "dark",
+      "border": "linear-gradient(90deg, #E52521, #4A90E2)",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#121013"
+        },
+        {
+          "name": "surface",
+          "hex": "#0B090C"
+        },
+        {
+          "name": "elevated",
+          "hex": "#221C22"
+        },
+        {
+          "name": "foreground",
+          "hex": "#EDE6E1"
+        },
+        {
+          "name": "accent",
+          "hex": "#E52521"
+        },
+        {
+          "name": "frost",
+          "hex": "#4A90E2"
+        },
+        {
+          "name": "cyan",
+          "hex": "#5BC0BE"
+        },
+        {
+          "name": "gold",
+          "hex": "#F59E0B"
+        },
+        {
+          "name": "green",
+          "hex": "#7CB342"
+        },
+        {
+          "name": "muted",
+          "hex": "#7E7575"
+        }
+      ]
+    },
+    "hogwarts-night": {
+      "mode": "dark",
+      "border": "linear-gradient(45deg, #E5B869, #6B95D6)",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#0F1117"
+        },
+        {
+          "name": "surface",
+          "hex": "#0B0C10"
+        },
+        {
+          "name": "elevated",
+          "hex": "#181B24"
+        },
+        {
+          "name": "foreground",
+          "hex": "#E4DCD0"
+        },
+        {
+          "name": "accent",
+          "hex": "#E5B869"
+        },
+        {
+          "name": "azure",
+          "hex": "#6B95D6"
+        },
+        {
+          "name": "crimson",
+          "hex": "#D45D68"
+        },
+        {
+          "name": "emerald",
+          "hex": "#63A87E"
+        },
+        {
+          "name": "amethyst",
+          "hex": "#B382D9"
+        },
+        {
+          "name": "patronus",
+          "hex": "#5BBBB2"
+        }
+      ]
+    },
+    "matugen-theme": {
+      "mode": "dark",
+      "border": "linear-gradient(90deg, #C5CC7A, #8AD6B7)",
+      "swatches": [
+        {
+          "name": "background",
+          "hex": "#13140C"
+        },
+        {
+          "name": "surface",
+          "hex": "#1C1C14"
+        },
+        {
+          "name": "elevated",
+          "hex": "#2A2A22"
+        },
+        {
+          "name": "foreground",
+          "hex": "#E5E3D6"
+        },
+        {
+          "name": "accent",
+          "hex": "#C5CC7A"
+        },
+        {
+          "name": "cyan",
+          "hex": "#8AD6B7"
+        },
+        {
+          "name": "green",
+          "hex": "#B1D18A"
+        },
+        {
+          "name": "blue",
+          "hex": "#99CCFA"
+        },
+        {
+          "name": "magenta",
+          "hex": "#E6B6F1"
+        },
+        {
+          "name": "orange",
+          "hex": "#FCB974"
+        }
+      ]
+    }
+  },
+  "valorantAgents": [
+    {
+      "slug": "astra",
+      "theme": "valorant-astra",
+      "name": "Astra",
+      "role": "Controller",
+      "origin": "GHANA",
+      "number": "16",
+      "signature": "Astral Form",
+      "ultimate": "Cosmic Divide",
+      "accent": "#A97BFF",
+      "accent2": "#FFD37A",
+      "background": "#0D0A1A"
+    },
+    {
+      "slug": "breach",
+      "theme": "valorant-breach",
+      "name": "Breach",
+      "role": "Initiator",
+      "origin": "SWEDEN",
+      "number": "13",
+      "signature": "Fault Line",
+      "ultimate": "Rolling Thunder",
+      "accent": "#F59E0B",
+      "accent2": "#FDE047",
+      "background": "#140F08"
+    },
+    {
+      "slug": "brimstone",
+      "theme": "valorant-brimstone",
+      "name": "Brimstone",
+      "role": "Controller",
+      "origin": "UNITED STATES",
+      "number": "01",
+      "signature": "Sky Smoke",
+      "ultimate": "Orbital Strike",
+      "accent": "#FF6B2C",
+      "accent2": "#FFC15E",
+      "background": "#130C09"
+    },
+    {
+      "slug": "chamber",
+      "theme": "valorant-chamber",
+      "name": "Chamber",
+      "role": "Sentinel",
+      "origin": "FRANCE",
+      "number": "18",
+      "signature": "Rendezvous",
+      "ultimate": "Tour De Force",
+      "accent": "#E8C46A",
+      "accent2": "#4FD1C5",
+      "background": "#0A1014"
+    },
+    {
+      "slug": "clove",
+      "theme": "valorant-clove",
+      "name": "Clove",
+      "role": "Controller",
+      "origin": "SCOTLAND",
+      "number": "25",
+      "signature": "Ruse",
+      "ultimate": "Not Dead Yet",
+      "accent": "#FF7AC6",
+      "accent2": "#8BE8C4",
+      "background": "#150E15"
+    },
+    {
+      "slug": "cypher",
+      "theme": "valorant-cypher",
+      "name": "Cypher",
+      "role": "Sentinel",
+      "origin": "MOROCCO",
+      "number": "05",
+      "signature": "Trapwire",
+      "ultimate": "Neural Theft",
+      "accent": "#2DD4E8",
+      "accent2": "#8AA4B8",
+      "background": "#081116"
+    },
+    {
+      "slug": "deadlock",
+      "theme": "valorant-deadlock",
+      "name": "Deadlock",
+      "role": "Sentinel",
+      "origin": "NORWAY",
+      "number": "23",
+      "signature": "GravNet",
+      "ultimate": "Annihilation",
+      "accent": "#8FD8E8",
+      "accent2": "#DCE8F0",
+      "background": "#0A1014"
+    },
+    {
+      "slug": "fade",
+      "theme": "valorant-fade",
+      "name": "Fade",
+      "role": "Initiator",
+      "origin": "TURKIYE",
+      "number": "20",
+      "signature": "Prowler",
+      "ultimate": "Nightfall",
+      "accent": "#E2453F",
+      "accent2": "#FF8A5C",
+      "background": "#120A0C"
+    },
+    {
+      "slug": "gekko",
+      "theme": "valorant-gekko",
+      "name": "Gekko",
+      "role": "Initiator",
+      "origin": "UNITED STATES",
+      "number": "22",
+      "signature": "Dizzy",
+      "ultimate": "Thrash",
+      "accent": "#B8F26B",
+      "accent2": "#2FD8C5",
+      "background": "#0A130B"
+    },
+    {
+      "slug": "harbor",
+      "theme": "valorant-harbor",
+      "name": "Harbor",
+      "role": "Controller",
+      "origin": "INDIA",
+      "number": "21",
+      "signature": "Cove",
+      "ultimate": "Reckoning",
+      "accent": "#2FD0C8",
+      "accent2": "#4A9FE8",
+      "background": "#061318"
+    },
+    {
+      "slug": "hush",
+      "theme": "valorant-hush",
+      "name": "Hush",
+      "role": "Duelist",
+      "origin": "CHINA",
+      "number": "31",
+      "signature": "Displacement",
+      "ultimate": "Suspension",
+      "accent": "#E85BB5",
+      "accent2": "#9D7BFF",
+      "background": "#160B16"
+    },
+    {
+      "slug": "iso",
+      "theme": "valorant-iso",
+      "name": "Iso",
+      "role": "Duelist",
+      "origin": "CHINA",
+      "number": "24",
+      "signature": "Double Tap",
+      "ultimate": "Kill Contract",
+      "accent": "#8C6BFF",
+      "accent2": "#2AE6E0",
+      "background": "#0A091A"
+    },
+    {
+      "slug": "jett",
+      "theme": "valorant-jett",
+      "name": "Jett",
+      "role": "Duelist",
+      "origin": "SOUTH KOREA",
+      "number": "10",
+      "signature": "Tailwind",
+      "ultimate": "Blade Storm",
+      "accent": "#B8F5E8",
+      "accent2": "#7FB8FF",
+      "background": "#0A1216"
+    },
+    {
+      "slug": "kayo",
+      "theme": "valorant-kayo",
+      "name": "KAY/O",
+      "role": "Initiator",
+      "origin": "ALTERNATE EARTH",
+      "number": "17",
+      "signature": "ZERO/point",
+      "ultimate": "NULL/cmd",
+      "accent": "#3FA9FF",
+      "accent2": "#FF7A3D",
+      "background": "#080F1A"
+    },
+    {
+      "slug": "killjoy",
+      "theme": "valorant-killjoy",
+      "name": "Killjoy",
+      "role": "Sentinel",
+      "origin": "GERMANY",
+      "number": "04",
+      "signature": "ALARMBOT",
+      "ultimate": "Lockdown",
+      "accent": "#FFD23F",
+      "accent2": "#9BE564",
+      "background": "#10110A"
+    },
+    {
+      "slug": "miks",
+      "theme": "valorant-miks",
+      "name": "Miks",
+      "role": "Controller",
+      "origin": "CROATIA",
+      "number": "30",
+      "signature": "M-pulse",
+      "ultimate": "Bassquake",
+      "accent": "#6FD8CE",
+      "accent2": "#A78BFA",
+      "background": "#0A1016"
+    },
+    {
+      "slug": "neon",
+      "theme": "valorant-neon",
+      "name": "Neon",
+      "role": "Duelist",
+      "origin": "PHILIPPINES",
+      "number": "19",
+      "signature": "High Gear",
+      "ultimate": "Overdrive",
+      "accent": "#22E0FF",
+      "accent2": "#FF2E97",
+      "background": "#08111C"
+    },
+    {
+      "slug": "omen",
+      "theme": "valorant-omen",
+      "name": "Omen",
+      "role": "Controller",
+      "origin": "UNKNOWN",
+      "number": "03",
+      "signature": "Dark Cover",
+      "ultimate": "From the Shadows",
+      "accent": "#9270E8",
+      "accent2": "#5E94B1",
+      "background": "#0A0912"
+    },
+    {
+      "slug": "phoenix",
+      "theme": "valorant-phoenix",
+      "name": "Phoenix",
+      "role": "Duelist",
+      "origin": "ENGLAND",
+      "number": "09",
+      "signature": "Curveball",
+      "ultimate": "Run it Back",
+      "accent": "#FF7A2F",
+      "accent2": "#FFD166",
+      "background": "#140B06"
+    },
+    {
+      "slug": "raze",
+      "theme": "valorant-raze",
+      "name": "Raze",
+      "role": "Duelist",
+      "origin": "BRAZIL",
+      "number": "12",
+      "signature": "Boom Bot",
+      "ultimate": "Showstopper",
+      "accent": "#FF8A1F",
+      "accent2": "#2BB3B8",
+      "background": "#12100A"
+    },
+    {
+      "slug": "reyna",
+      "theme": "valorant-reyna",
+      "name": "Reyna",
+      "role": "Duelist",
+      "origin": "MEXICO",
+      "number": "11",
+      "signature": "Devour",
+      "ultimate": "Empress",
+      "accent": "#C44BE0",
+      "accent2": "#8B3FD6",
+      "background": "#140A18"
+    },
+    {
+      "slug": "sage",
+      "theme": "valorant-sage",
+      "name": "Sage",
+      "role": "Sentinel",
+      "origin": "CHINA",
+      "number": "07",
+      "signature": "Healing Orb",
+      "ultimate": "Resurrection",
+      "accent": "#45D6A5",
+      "accent2": "#BFEFE6",
+      "background": "#071311"
+    },
+    {
+      "slug": "skye",
+      "theme": "valorant-skye",
+      "name": "Skye",
+      "role": "Initiator",
+      "origin": "AUSTRALIA",
+      "number": "14",
+      "signature": "Guiding Light",
+      "ultimate": "Seekers",
+      "accent": "#6FD88F",
+      "accent2": "#F2C14E",
+      "background": "#0B120C"
+    },
+    {
+      "slug": "sova",
+      "theme": "valorant-sova",
+      "name": "Sova",
+      "role": "Initiator",
+      "origin": "RUSSIA",
+      "number": "06",
+      "signature": "Recon Bolt",
+      "ultimate": "Hunter's Fury",
+      "accent": "#5AA9E6",
+      "accent2": "#9FB8D0",
+      "background": "#08101A"
+    },
+    {
+      "slug": "tejo",
+      "theme": "valorant-tejo",
+      "name": "Tejo",
+      "role": "Initiator",
+      "origin": "COLOMBIA",
+      "number": "27",
+      "signature": "Guided Salvo",
+      "ultimate": "Armageddon",
+      "accent": "#E0A84E",
+      "accent2": "#3FBFC0",
+      "background": "#12100A"
+    },
+    {
+      "slug": "veto",
+      "theme": "valorant-veto",
+      "name": "Veto",
+      "role": "Sentinel",
+      "origin": "SENEGAL",
+      "number": "29",
+      "signature": "Interceptor",
+      "ultimate": "Evolution",
+      "accent": "#C2453F",
+      "accent2": "#4FA4B2",
+      "background": "#120B0C"
+    },
+    {
+      "slug": "viper",
+      "theme": "valorant-viper",
+      "name": "Viper",
+      "role": "Controller",
+      "origin": "UNITED STATES",
+      "number": "02",
+      "signature": "Toxic Screen",
+      "ultimate": "Viper's Pit",
+      "accent": "#3FE05F",
+      "accent2": "#C8F542",
+      "background": "#07120A"
+    },
+    {
+      "slug": "vyse",
+      "theme": "valorant-vyse",
+      "name": "Vyse",
+      "role": "Sentinel",
+      "origin": "UNKNOWN",
+      "number": "26",
+      "signature": "Arc Rose",
+      "ultimate": "Steel Garden",
+      "accent": "#7A3FF2",
+      "accent2": "#C24B5A",
+      "background": "#0C0A1A"
+    },
+    {
+      "slug": "waylay",
+      "theme": "valorant-waylay",
+      "name": "Waylay",
+      "role": "Duelist",
+      "origin": "THAILAND",
+      "number": "28",
+      "signature": "Refract",
+      "ultimate": "Convergent Paths",
+      "accent": "#A78BFA",
+      "accent2": "#67E8F9",
+      "background": "#0B0C1A"
+    },
+    {
+      "slug": "yoru",
+      "theme": "valorant-yoru",
+      "name": "Yoru",
+      "role": "Duelist",
+      "origin": "JAPAN",
+      "number": "15",
+      "signature": "Gatecrash",
+      "ultimate": "Dimensional Drift",
+      "accent": "#3B5BFF",
+      "accent2": "#D94A3D",
+      "background": "#080C1A"
+    }
+  ]
+}

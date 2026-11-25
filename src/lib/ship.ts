@@ -1,8 +1,9 @@
-// Projects, releases and activity for the homepage, ship log and project pages.
+// Projects, releases, commits and activity for the homepage, ship log and project pages.
 // projects.json is the opt-in list; github.json is the snapshot written by
-// scripts/fetch-github.mjs (refreshed hourly by the refresh-github-data workflow).
+// scripts/fetch-github.mjs (refreshed by the refresh-github-data workflow).
 import projectList from '../data/projects.json';
 import github from '../data/github.json';
+import palettes from '../data/palettes.json';
 
 export type Group = 'omarchy' | 'terminal' | 'themes' | 'rice' | 'apps';
 export const GROUPS: Record<Group, string> = {
@@ -11,6 +12,19 @@ export const GROUPS: Record<Group, string> = {
   themes: 'Desktop Themes',
   rice: 'Rices & Configs',
   apps: 'Web & Apps',
+};
+
+/** Maps project IDs that correspond to a live palette in global.css/theme.ts. */
+export const LIVE_THEME_MAP: Record<string, string> = {
+  'velvet-dusk': 'velvet-dusk',
+  'cyber-dusk': 'cyber-dusk',
+  'cappuccino-night': 'cappuccino-night',
+  'gruvbox-aesthetic': 'gruvbox',
+  'everpuccin': 'everpuccin',
+  'blacula': 'blacula',
+  'god-of-war': 'god-of-war',
+  'hogwarts-night': 'hogwarts-night',
+  'matugen-theme': 'matugen-theme',
 };
 
 type ProjectMeta = {
@@ -26,12 +40,20 @@ type ProjectMeta = {
   install?: string;
 };
 
+export type Commit = {
+  sha: string;
+  message: string;
+  at: string;
+  url: string;
+};
+
 type RepoData = {
   stars: number;
   pushedAt: string;
   latest: string | null;
   releaseDates: string[];
   releases: { tag: string; title: string | null; at: string; pre: boolean; url: string; body: string }[];
+  commits?: Commit[];
 };
 
 export type Project = Omit<ProjectMeta, 'group'> & {
@@ -41,6 +63,7 @@ export type Project = Omit<ProjectMeta, 'group'> & {
   version: string | null;
   releasedAt: string | null;
   releaseDates: string[];
+  commits: Commit[];
 };
 
 export type Release = {
@@ -50,6 +73,34 @@ export type Release = {
   pre: boolean;
   url: string;
   body: string;
+};
+
+export type RepoActivity = {
+  project: Project;
+  sha: string;
+  message: string;
+  at: string;
+  url: string;
+};
+
+export type ThemePalette = {
+  mode: string;
+  border: string;
+  swatches: { name: string; hex: string }[];
+};
+
+export type ValorantAgent = {
+  slug: string;
+  theme: string;
+  name: string;
+  role: string;
+  origin: string;
+  number: string;
+  signature: string;
+  ultimate: string;
+  accent: string;
+  accent2: string;
+  background: string;
 };
 
 const repos = github.repos as Record<string, RepoData>;
@@ -78,6 +129,7 @@ export const projects: Project[] = (projectList as ProjectMeta[]).map((meta) => 
     version,
     releasedAt: data?.releaseDates[0] ?? null,
     releaseDates: data?.releaseDates ?? [],
+    commits: data?.commits ?? [],
   };
 });
 
@@ -86,6 +138,13 @@ export const projectById = Object.fromEntries(projects.map((p) => [p.id, p])) as
 export const releases: Release[] = projects
   .flatMap((project) => (repos[project.repo]?.releases ?? []).map((r) => ({ project, tag: r.tag, at: r.at, pre: r.pre, url: r.url, body: r.body })))
   .sort((a, b) => b.at.localeCompare(a.at));
+
+export const recentCommits: RepoActivity[] = projects
+  .flatMap((project) => project.commits.map((c) => ({ project, ...c })))
+  .sort((a, b) => b.at.localeCompare(a.at));
+
+export const themePalettes = palettes.themes as Record<string, ThemePalette>;
+export const valorantAgents = palettes.valorantAgents as ValorantAgent[];
 
 export const days = github.days as [string, number][];
 export const generatedAt = github.generatedAt as string;

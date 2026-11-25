@@ -1,5 +1,5 @@
 ---
-import { SITE_URL, SITE_NAME, TWITTER } from '../lib/site';
+import { SITE_URL, SITE_NAME, TWITTER, siteUrl } from '../lib/site';
 import { ogImage } from '../lib/og';
 
 const DEFAULT_IMAGE = ogImage('/og/home.png');
@@ -29,8 +29,12 @@ const {
   noindex = false,
 } = Astro.props;
 
-const canonicalPath = path ?? Astro.url.pathname;
-const url = canonicalPath === '/' ? `${SITE_URL}/` : new URL(canonicalPath, SITE_URL).href;
+const basePrefix = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+let canonicalPath = path ?? Astro.url.pathname;
+if (!path && basePrefix && canonicalPath.startsWith(basePrefix)) {
+  canonicalPath = canonicalPath.slice(basePrefix.length) || '/';
+}
+const url = siteUrl(canonicalPath);
 
 const graph = [
   {
@@ -40,12 +44,7 @@ const graph = [
     name: title,
     description,
     isPartOf: { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    publisher: {
-      '@type': 'Organization',
-      '@id': `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
+    publisher: { '@id': `${SITE_URL}/#person` },
   },
   ...schema,
 ];

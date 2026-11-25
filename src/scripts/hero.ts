@@ -42,7 +42,13 @@ const localDay = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() +
 const shortDay = (d: string) => new Date(`${d}T12:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 const rng = (seed: number) => () => ((seed = Math.imul(seed ^ (seed >>> 15), 2246822519) ^ Math.imul(seed ^ (seed >>> 13), 3266489917)) >>> 0) / 4294967296;
-const hex = (h: string) => { h = h.replace('#', ''); if (h.length === 3) h = [...h].map((c) => c + c).join(''); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+const hex = (h: string) => {
+  const raw = h.replace('#', '').trim();
+  if (!/^[0-9a-f]{3}([0-9a-f]{3})?$/i.test(raw)) return [192, 132, 252];
+  const full = raw.length === 3 ? [...raw].map((c) => c + c).join('') : raw;
+  const n = parseInt(full, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+};
 const mix = (a: string, b: string, k: number) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v * k + B[i] * (1 - k))).join(',')})`; };
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 const clamp01 = (k: number) => Math.max(0, Math.min(1, k));
@@ -124,7 +130,12 @@ export function createHero(section: HTMLElement, data: HeroData, lastSeen: numbe
     const size = Math.max(4, pitch - (pitch > 20 ? 6 : pitch > 10 ? 4 : 2));
     slot.style.height = `${7 * pitch}px`;
     const range = section.querySelector('#graphRange');
-    if (range) range.textContent = `every day since ${new Date(`${days[0][0]}T12:00:00`).toLocaleDateString('en-US', { month: 'long' })}, one square each`;
+    if (range) {
+      const startYear = days[0][0].slice(0, 4);
+      const endYear = days[days.length - 1][0].slice(0, 4);
+      const fmtDate = new Date(`${days[0][0]}T12:00:00`).toLocaleDateString('en-US', startYear !== endYear ? { month: 'short', year: 'numeric' } : { month: 'long' });
+      range.textContent = `every day since ${fmtDate}, one square each`;
+    }
     const sr = slot.getBoundingClientRect(), hr = section.getBoundingClientRect();
     gx = (W - cols * pitch) / 2; gy = sr.top - hr.top;
     const rand = rng(7);
@@ -774,7 +785,9 @@ export function createHero(section: HTMLElement, data: HeroData, lastSeen: numbe
       tip.innerHTML = `<b>${shortDay(hit.d)}</b> · ${hit.c} contribution${hit.c === 1 ? '' : 's'}` +
         (rel.length ? `<br>${rel.slice(0, 4).map((s) => `<span class="r">▲</span> ${esc(s)}`).join('<br>')}${rel.length > 4 ? `<br>+${rel.length - 4} more` : ''}` : '') +
         '<br><span class="hint">click the grid to play</span>';
-      tip.style.left = `${hit.hx + hit.s / 2}px`;
+      const halfTip = tip.offsetWidth / 2;
+      const cx = Math.max(halfTip + 8, Math.min(W - halfTip - 8, hit.hx + hit.s / 2));
+      tip.style.left = `${cx}px`;
       tip.style.top = `${hit.hy}px`;
       tip.style.opacity = '1';
     } else tip.style.opacity = '0';

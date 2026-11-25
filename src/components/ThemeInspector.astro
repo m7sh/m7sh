@@ -1,0 +1,94 @@
+---
+import { themePalettes, valorantAgents, type Project } from '../lib/ship';
+
+interface Props {
+  project: Project;
+}
+
+const { project: p } = Astro.props;
+const palette = themePalettes[p.id];
+const isValorant = p.id === 'valorant-themes';
+const roles = ['All', 'Duelist', 'Initiator', 'Controller', 'Sentinel'];
+const valData = isValorant ? JSON.stringify(valorantAgents).replace(/</g, '\\u003c') : '';
+---
+{palette && (
+  <section class="pal-box" aria-label={`${p.name} color palette`}>
+    <div class="pal-head">
+      <div>
+        <p class="eyebrow">Color Tokens · colors.toml</p>
+        <h3>{p.name} palette — click any hex to copy</h3>
+      </div>
+      <div class="pal-border" title="Hyprland active window border gradient">
+        <span>active border</span>
+        <i style={`background:${palette.border}`}></i>
+      </div>
+    </div>
+    <div class="sw-grid">
+      {palette.swatches.map((sw) => (
+        <button type="button" class="sw-card" data-copy={sw.hex} title={`Copy ${sw.hex}`}>
+          <span class="sw-chip" style={`background:${sw.hex}`}></span>
+          <span class="sw-meta">
+            <strong>{sw.name}</strong>
+            <code>{sw.hex}</code>
+          </span>
+        </button>
+      ))}
+    </div>
+  </section>
+)}
+
+{isValorant && (
+  <section class="pal-box val-box" aria-label="30 Valorant agent theme switcher">
+    <div class="pal-head">
+      <div>
+        <p class="eyebrow">30 Agent Palettes</p>
+        <h3>Interactive Valorant Agent Switcher</h3>
+      </div>
+      <div class="chips" id="valRoles">
+        {roles.map((r, i) => (
+          <button type="button" class:list={['chip', { on: i === 0 }]} data-val-role={r}>{r}</button>
+        ))}
+      </div>
+    </div>
+
+    <div class="val-stage" id="valStage">
+      <div class="val-preview" id="valPreview" style={`--va:${valorantAgents[0].accent};--va2:${valorantAgents[0].accent2};--vbg:${valorantAgents[0].background}`}>
+        <div class="val-bar">
+          <span class="val-num" id="valNum">#{valorantAgents[0].number}</span>
+          <span class="val-role" id="valRole">{valorantAgents[0].role}</span>
+          <span class="val-origin" id="valOrigin">{valorantAgents[0].origin}</span>
+        </div>
+        <h4 id="valName">{valorantAgents[0].name}</h4>
+        <p class="val-abilities" id="valAbilities">Signature: {valorantAgents[0].signature} · Ultimate: {valorantAgents[0].ultimate}</p>
+        <div class="val-swatches" id="valSwatches">
+          <button type="button" class="sw-card" data-copy={valorantAgents[0].background}><span class="sw-chip" style={`background:${valorantAgents[0].background}`}></span><span class="sw-meta"><strong>bg</strong><code>{valorantAgents[0].background}</code></span></button>
+          <button type="button" class="sw-card" data-copy={valorantAgents[0].accent}><span class="sw-chip" style={`background:${valorantAgents[0].accent}`}></span><span class="sw-meta"><strong>accent</strong><code>{valorantAgents[0].accent}</code></span></button>
+          <button type="button" class="sw-card" data-copy={valorantAgents[0].accent2}><span class="sw-chip" style={`background:${valorantAgents[0].accent2}`}></span><span class="sw-meta"><strong>accent2</strong><code>{valorantAgents[0].accent2}</code></span></button>
+        </div>
+        <button type="button" class="copy" id="valCmd" data-copy={`omarchy theme set ${valorantAgents[0].theme}`}>
+          <span class="p">$</span>
+          <code id="valCmdText">omarchy theme set {valorantAgents[0].theme}</code>
+          <span class="c">copy</span>
+        </button>
+      </div>
+
+      <div class="val-grid" id="valGrid" role="listbox" aria-label="Select Valorant agent">
+        {valorantAgents.map((a, i) => (
+          <button
+            type="button"
+            role="option"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            class:list={['val-chip', { on: i === 0 }]}
+            data-val-slug={a.slug}
+            data-val-role={a.role}
+            style={`--va:${a.accent};--va2:${a.accent2}`}
+          >
+            <i class="val-dots"><b style={`background:${a.accent}`}></b><b style={`background:${a.accent2}`}></b></i>
+            <span>{a.name}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+    <script is:inline type="application/json" id="valAgentsData" set:html={valData} />
+  </section>
+)}

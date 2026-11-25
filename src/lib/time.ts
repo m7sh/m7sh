@@ -7,5 +7,7 @@ export function ago(iso: string | number, now = Date.now()) {
   const d = Math.round(s / 86400);
   if (d === 1) return 'yesterday';
   if (d < 30) return `${d}d ago`;
-  return `${Math.round(d / 30)}mo ago`;
+  const mo = Math.round(d / 30);
+  if (mo < 12) return `${mo}mo ago`;
+  return `${Math.round(d / 365)}y ago`;
 }

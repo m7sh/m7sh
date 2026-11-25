@@ -1,7 +1,7 @@
-// Snapshot the public GitHub data the site renders: stars, releases and the
-// contribution calendar for every repo in src/data/projects.json.
+// Snapshot the public GitHub data the site renders: stars, releases, recent commits,
+// and the contribution calendar for every repo in src/data/projects.json.
 // Needs GITHUB_TOKEN (any token that can read public data). Writes
-// src/data/github.json only when the data changed, so the hourly workflow
+// src/data/github.json only when the data changed, so the scheduled workflow
 // commits nothing on quiet hours.
 //
 //   GITHUB_TOKEN=... node scripts/fetch-github.mjs [--check]
@@ -22,6 +22,18 @@ if (!token) {
 const repoFields = `nameWithOwner stargazerCount pushedAt
   releases(first: 100, orderBy: { field: CREATED_AT, direction: DESC }) {
     nodes { tagName name createdAt publishedAt isPrerelease isDraft description url }
+  }
+  refs(refPrefix: "refs/tags/", first: 5, orderBy: { field: TAG_COMMIT_DATE, direction: DESC }) {
+    nodes { name }
+  }
+  defaultBranchRef {
+    target {
+      ... on Commit {
+        history(first: 8) {
+          nodes { oid messageHeadline committedDate url }
+        }
+      }
+    }
   }`;
 const query = `query {
   ${projects.map((p, i) => {
@@ -64,14 +76,22 @@ projects.forEach((p, i) => {
     .filter((n) => !n.isDraft)
     .map((n) => ({ ...n, at: n.publishedAt ?? n.createdAt }))
     .sort((a, b) => b.at.localeCompare(a.at));
+  const latestTag = r.refs?.nodes?.[0]?.name ?? null;
+  const commits = (r.defaultBranchRef?.target?.history?.nodes ?? []).map((c) => ({
+    sha: c.oid.slice(0, 7),
+    message: c.messageHeadline,
+    at: c.committedDate,
+    url: c.url,
+  }));
   repos[p.repo] = {
     stars: r.stargazerCount,
     pushedAt: r.pushedAt,
-    latest: releases[0]?.tagName ?? null,
+    latest: releases[0]?.tagName ?? latestTag ?? null,
     releaseDates: releases.map((n) => n.at),
     releases: releases
       .filter((n) => n.at >= cutoff)
       .map((n) => ({ tag: n.tagName, title: n.name, at: n.at, pre: n.isPrerelease, url: n.url, body: cleanNotes(n.description) })),
+    commits,
   };
 });
 const days = json.data.user.contributionsCollection.contributionCalendar.weeks.flatMap((w) =>
@@ -80,7 +100,8 @@ const days = json.data.user.contributionsCollection.contributionCalendar.weeks.f
 
 const data = { repos, days };
 const releaseCount = Object.values(repos).reduce((n, r) => n + r.releases.length, 0);
-console.log(`${projects.length} repos, ${releaseCount} recent releases, ${days.length} calendar days.`);
+const commitCount = Object.values(repos).reduce((n, r) => n + r.commits.length, 0);
+console.log(`${projects.length} repos, ${releaseCount} recent releases, ${commitCount} recent commits, ${days.length} calendar days.`);
 if (check) process.exit(0);
 
 const previous = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;

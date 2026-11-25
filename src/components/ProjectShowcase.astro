@@ -1,0 +1,215 @@
+---
+import { assetUrl, type Project } from '../lib/ship';
+
+interface Props {
+  project: Project;
+}
+
+const { project: p } = Astro.props;
+const id = p.id;
+const wsBar = assetUrl('/assets/projects/workspace.webp');
+const mediaBar = assetUrl('/assets/projects/media.webp');
+---
+{id === 'ame' && (
+  <section class="demo-box" data-demo="ame" aria-label="Interactive ame terminal demo">
+    <div class="demo-head">
+      <p class="eyebrow">Interactive TUI Preview</p>
+      <div class="demo-tabs" role="tablist">
+        <button type="button" class="chip on" data-ame-tab="trending">[t] Trending</button>
+        <button type="button" class="chip" data-ame-tab="recs">[r] Recs</button>
+        <button type="button" class="chip" data-ame-tab="queue">[q] Queue</button>
+        <button type="button" class="chip" data-ame-vis="1">[v] Matrix CAVA</button>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>mush@omarchy:~$ ame --guest</span></div>
+      <div class="demo-term">
+        <div class="ame-cava" id="ameCava" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="ame-list" id="ameList"></div>
+        <div class="ame-player">
+          <div class="ame-now">
+            <button type="button" class="demo-btn" id="amePlay">⏸ Pause</button>
+            <strong id="ameTrack">Midnight City — M83</strong>
+            <button type="button" class="demo-btn" id="ameNext">Next ⏭</button>
+          </div>
+          <div class="ame-bar"><i></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+{id === 'mush-workspace' && (
+  <section class="demo-box" data-demo="workspace" aria-label="Interactive mush.workspace bar preview">
+    <div class="demo-head">
+      <p class="eyebrow">Live Quickshell Widget Demo</p>
+      <div class="demo-tabs">
+        <button type="button" class="chip" id="wsHideEmpty">Hide empty: OFF</button>
+        <button type="button" class="chip" id="wsNumbers">Numbers: OFF</button>
+      </div>
+    </div>
+    {wsBar && (
+      <div class="bar-capture">
+        <span>Real Omarchy bar capture</span>
+        <img src={wsBar} alt="mush.workspace running on Omarchy status bar" width="1280" height="34" loading="lazy" />
+      </div>
+    )}
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>mush.workspace.qml — click or wheel workspaces</span></div>
+      <div class="ws-stage">
+        <div class="ws-bar">
+          <div class="ws-pillbar" id="wsBar">
+            {[1, 2, 3, 4, 5].map((n) => (
+              <button
+                type="button"
+                class:list={['ws-dot', { on: n === 2 }]}
+                data-ws={n}
+                data-windows={n === 1 ? 2 : n === 2 ? 3 : n === 4 ? 1 : 0}
+                title={`Workspace ${n}`}
+              >
+                <span>{n}</span>
+              </button>
+            ))}
+          </div>
+          <span class="ws-info" id="wsInfo">Workspace 2 · 3 windows (Hyprland IPC)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+{id === 'omarchy-media' && (
+  <section class="demo-box" data-demo="media" aria-label="Interactive omarchy-media MPRIS preview">
+    <div class="demo-head">
+      <p class="eyebrow">Interactive MPRIS D-Bus Demo</p>
+      <div class="demo-tabs">
+        <button type="button" class="chip on" data-mpris-src="Spotify">Spotify</button>
+        <button type="button" class="chip" data-mpris-src="ame (mpv)">ame (mpv)</button>
+        <button type="button" class="chip" data-mpris-src="Qutebrowser">Qutebrowser</button>
+      </div>
+    </div>
+    {mediaBar && (
+      <div class="bar-capture">
+        <span>Real Omarchy bar capture</span>
+        <img src={mediaBar} alt="omarchy-media running on Omarchy status bar" width="1280" height="46" loading="lazy" />
+      </div>
+    )}
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>mush.media.qml — MPRIS live sync</span></div>
+      <div class="mpris-stage">
+        <div class="mpris-pill" id="mprisPill">
+          <span class="eq" id="mprisEq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="mpris-dot"></span>
+          <span class="mpris-txt" id="mprisTxt">Spotify · After Hours — The Weeknd</span>
+          <button type="button" class="demo-btn" id="mprisToggle">⏸</button>
+          <button type="button" class="demo-btn" id="mprisNext">⏭</button>
+        </div>
+        <span class="ws-info" id="mprisMeta">Auto-hides after 8s pause · zero idle polling</span>
+      </div>
+    </div>
+  </section>
+)}
+
+{id === 'omarchy-iptv' && (
+  <section class="demo-box" data-demo="iptv" aria-label="Interactive omarchy-iptv preview">
+    <div class="demo-head">
+      <p class="eyebrow">Interactive Panel Preview</p>
+      <div class="demo-tabs">
+        <button type="button" class="chip on" data-iptv-tab="live">Live TV</button>
+        <button type="button" class="chip" data-iptv-tab="favs">★ Favorites</button>
+        <button type="button" class="chip" data-iptv-tab="epg">EPG Guide</button>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>omarchy-iptv · m3u / Xtream + MPV</span></div>
+      <div class="iptv-stage" id="iptvStage"></div>
+    </div>
+  </section>
+)}
+
+{id === 'omarchy-f1' && (
+  <section class="demo-box" data-demo="f1" aria-label="Interactive F1 telemetry preview">
+    <div class="demo-head">
+      <p class="eyebrow">Interactive Widget Tabs</p>
+      <div class="demo-tabs">
+        <button type="button" class="chip on" data-f1-tab="schedule">Schedule</button>
+        <button type="button" class="chip" data-f1-tab="drivers">Drivers</button>
+        <button type="button" class="chip" data-f1-tab="constructors">Constructors</button>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>omarchy-f1 · Jolpica Ergast API</span></div>
+      <div class="f1-stage" id="f1Stage"></div>
+    </div>
+  </section>
+)}
+
+{id === 'mush-cricket' && (
+  <section class="demo-box" data-demo="cricket" aria-label="Interactive Cricket scorecard preview">
+    <div class="demo-head">
+      <p class="eyebrow">Interactive Scorecard Preview</p>
+      <div class="demo-tabs">
+        <button type="button" class="chip on" data-cr-tab="live">Live</button>
+        <button type="button" class="chip" data-cr-tab="scorecard">Scorecard</button>
+        <button type="button" class="chip" data-cr-tab="upcoming">Upcoming</button>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>omarchy-cricket · Live Ticker</span></div>
+      <div class="f1-stage" id="crStage"></div>
+    </div>
+  </section>
+)}
+
+{id === 'moviebox-tui' && (
+  <section class="demo-box" data-demo="moviebox" aria-label="Interactive MovieBox-TUI preview">
+    <div class="demo-head">
+      <p class="eyebrow">Interactive Ratatui TUI Preview</p>
+      <div class="demo-tabs">
+        <button type="button" class="chip on" data-mb-mode="stream">Streaming</button>
+        <button type="button" class="chip" data-mb-mode="tv">[Ctrl+T] Live TV</button>
+        <button type="button" class="chip" data-mb-mode="addon">[Ctrl+A] Addons</button>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>moviebox-tui · mpv --hwdec=auto</span></div>
+      <div class="demo-term" id="mbStage"></div>
+    </div>
+  </section>
+)}
+
+{id === 'desktop-voice-assistant' && (
+  <section class="demo-box" data-demo="voice" aria-label="Interactive Voice Assistant preview">
+    <div class="demo-head">
+      <p class="eyebrow">Voice Command Simulator</p>
+      <div class="demo-tabs">
+        <button type="button" class="chip on" data-voice-cmd="terminal">"Open terminal"</button>
+        <button type="button" class="chip" data-voice-cmd="stats">"System stats"</button>
+        <button type="button" class="chip" data-voice-cmd="music">"Play music"</button>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>assistant.py — Python speech pipeline</span></div>
+      <div class="demo-term" id="voiceStage"></div>
+    </div>
+  </section>
+)}
+
+{id === 'umrah-journey' && (
+  <section class="demo-box" data-demo="umrah" aria-label="Interactive Umrah Journey walkthrough preview">
+    <div class="demo-head">
+      <p class="eyebrow">Multilingual Walkthrough Preview</p>
+      <div class="demo-tabs">
+        <button type="button" class="chip on" data-umrah-lang="en">English</button>
+        <button type="button" class="chip" data-umrah-lang="ar">العربية</button>
+        <button type="button" class="chip" data-umrah-lang="ur">اردو</button>
+      </div>
+    </div>
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span>umrah-journey.umrahguide.workers.dev</span></div>
+      <div class="umrah-stage" id="umrahStage"></div>
+    </div>
+  </section>
+)}

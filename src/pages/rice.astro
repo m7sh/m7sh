@@ -1,0 +1,173 @@
+---
+import Base from '../layouts/Base.astro';
+import { LIVE_THEME_MAP, projects, themePalettes } from '../lib/ship';
+import { ogImage } from '../lib/og';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const themeProjects = projects.filter((p) => p.group === 'themes' && p.install);
+const pluginProjects = projects.filter((p) => p.group === 'omarchy' && p.install);
+const toolProjects = projects.filter((p) => (p.group === 'rice' || p.group === 'terminal') && p.install);
+
+const paletteKeys = Object.keys(LIVE_THEME_MAP).map((id) => ({
+  id,
+  name: projects.find((p) => p.id === id)?.name ?? id,
+  theme: LIVE_THEME_MAP[id],
+  accent: projects.find((p) => p.id === id)?.accent ?? '#c084fc',
+  palette: themePalettes[id] ?? null,
+}));
+const riceData = JSON.stringify({ paletteKeys }).replace(/</g, '\\u003c');
+---
+<Base
+  title="Rice Lab & Installer | m7sh.dev"
+  description="Interactive Hyprland + Quickshell desktop simulator and one-line Omarchy rice installer generator."
+  path="/rice"
+  image={ogImage('/og/omarchy.png')}
+  imageAlt="Omarchy Linux interactive desktop simulator and rice installer"
+>
+  <section class="page-head">
+    <div class="px-band" id="pxBand" aria-hidden="true"></div>
+    <div class="wrap" style="position:relative">
+      <p class="eyebrow">Interactive Hyprland + Quickshell</p>
+      <h1>Omarchy Rice Lab</h1>
+      <p>Preview workspaces, MPRIS media, F1/cricket bar tickers, and Qutebrowser reacting live to any theme, then bundle your own one-line install script.</p>
+      <div class="row">
+        <a class="btn btn-ghost" href={`${base}/omarchy`}>← Omarchy hub</a>
+        <a class="btn btn-ghost" href={`${base}/setup`}>Hyprland setup & binds →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap rice-wrap">
+    <section class="rice-sim-sec" aria-label="Interactive Omarchy desktop simulator">
+      <div class="rice-toolbar">
+        <div class="chips" id="riceThemes">
+          {paletteKeys.map((t, i) => (
+            <button type="button" class:list={['chip', { on: i === 0 }]} data-rice-theme={t.theme} data-rice-id={t.id}>
+              <i class="rice-dot" style={`background:${t.accent}`}></i>{t.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="rice-desk" id="riceDesk">
+        <div class="rice-bar">
+          <div class="rice-bar-l">
+            <span class="rice-omarchy">⌘</span>
+            <div class="ws-pillbar sm" id="riceWs">
+              {[1, 2, 3, 4].map((n) => (
+                <button type="button" class:list={['ws-dot', { on: n === 1 }]} data-rws={n} aria-label={`Workspace ${n}`}>
+                  <span>{n}</span>
+                </button>
+              ))}
+            </div>
+            <button type="button" class="rice-media" id="riceMedia">
+              <span class="eq sm" id="riceEq" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span id="riceTrack">ame · Midnight City — M83</span>
+            </button>
+          </div>
+          <div class="rice-bar-r">
+            <button type="button" class="rice-ticker" id="riceTicker">🏎️ Monza GP · 6h 39m</button>
+            <span class="rice-clock" id="riceClock">14:25</span>
+          </div>
+        </div>
+
+        <div class="rice-tiles">
+          <div class="rice-win active" data-rwin="term">
+            <div class="bar"><i></i><i></i><i></i><span>ghostty — ame / fastfetch</span></div>
+            <div class="rice-term-body">
+              <div class="rice-term-tabs">
+                <button type="button" class="chip on" data-rterm="ame">ame</button>
+                <button type="button" class="chip" data-rterm="fetch">fastfetch</button>
+              </div>
+              <pre id="riceTermPre"><code></code></pre>
+            </div>
+          </div>
+
+          <div class="rice-col">
+            <div class="rice-win" data-rwin="qute">
+              <div class="bar"><i></i><i></i><i></i><span>omarchy-qutebrowser</span></div>
+              <div class="rice-qute-body">
+                <div class="qute-url"><span>[NORMAL]</span> https://m7sh.github.io/m7sh</div>
+                <div class="qute-hints">
+                  <kbd>o</kbd> open &nbsp; <kbd>f</kbd> hints &nbsp; <kbd>J/K</kbd> tabs &nbsp; <kbd>T</kbd> theme sync
+                </div>
+                <div class="qute-pal" id="riceBorderPreview"></div>
+              </div>
+            </div>
+
+            <div class="rice-win" data-rwin="tokens">
+              <div class="bar"><i></i><i></i><i></i><span>colors.toml · live tokens</span></div>
+              <div class="rice-tokens" id="riceTokens"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rice-builder" aria-label="One-line Rice installer generator">
+      <div class="blk-head" style="margin-bottom:20px">
+        <div>
+          <p class="eyebrow">Bundle Builder</p>
+          <h2>One-line Rice Installer</h2>
+          <p>Pick a desktop theme, status-bar plugins, and terminal tools to generate a ready-to-run install command.</p>
+        </div>
+      </div>
+
+      <div class="rice-grid">
+        <div class="rice-col-box">
+          <h3>1. Theme <small>(optional, single)</small></h3>
+          <div class="rice-checks" id="instTheme">
+            <label class="rcheck"><input type="radio" name="rice-theme" value="" checked /><span>Keep current Omarchy theme</span></label>
+            {themeProjects.map((t) => (
+              <label class="rcheck">
+                <input type="radio" name="rice-theme" value={t.install} data-label={t.name} />
+                <i class="rice-dot" style={`background:${t.accent}`}></i>
+                <span>{t.name}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="rice-col-box">
+          <h3>2. Bar Plugins <small>(Quickshell)</small></h3>
+          <div class="rice-checks" id="instPlugins">
+            {pluginProjects.map((p, i) => (
+              <label class="rcheck">
+                <input type="checkbox" value={p.install} checked={i < 2} data-label={p.name} />
+                <i class="rice-dot" style={`background:${p.accent}`}></i>
+                <span>{p.name}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="rice-col-box">
+          <h3>3. Rices & CLI Tools</h3>
+          <div class="rice-checks" id="instTools">
+            {toolProjects.map((p, i) => (
+              <label class="rcheck">
+                <input type="checkbox" value={p.install} checked={i === 0} data-label={p.name} />
+                <i class="rice-dot" style={`background:${p.accent}`}></i>
+                <span>{p.name}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="rice-output">
+        <div class="rice-out-head">
+          <span id="instCount">3 items selected</span>
+          <button type="button" class="btn btn-primary" id="instCopyBtn" style="height:36px;padding:0 14px;font-size:12.5px">Copy install command</button>
+        </div>
+        <pre><code id="instOutput"></code></pre>
+      </div>
+    </section>
+  </div>
+  <script is:inline type="application/json" id="riceData" set:html={riceData} />
+</Base>
+
+<script>
+  import '../scripts/pixel-band';
+  import '../scripts/rice';
+</script>

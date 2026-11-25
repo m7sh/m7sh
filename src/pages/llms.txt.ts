@@ -28,9 +28,11 @@ ${section('rice')}
 ${section('apps')}
 
 ## On this site
-- [Ship log](${base}/ship): every release across every project, with release notes. RSS: ${base}/ship.xml
+- [Ship log](${base}/ship): every release and commit across every project, with release notes. RSS: ${base}/ship.xml
 - [Omarchy ecosystem](${base}/omarchy): bar plugins, widgets, and themes.
-- One page per project with changelog: ${base}/p/<project>, e.g. ${base}/p/ame, ${base}/p/mush-workspace
+- [Rice Lab & Installer](${base}/rice): interactive Hyprland + Quickshell desktop simulator and one-line installer generator.
+- [Setup & Dotfiles](${base}/setup): Hyprland Lua config, keybindings cheat sheet, and developer stack.
+- One page per project with changelog and interactive demos: ${base}/p/<project>, e.g. ${base}/p/ame, ${base}/p/mush-workspace, ${base}/p/valorant-themes
 
 ## About
 - Mohammed Musharaf, Electronics & Communication Engineering (VTU). Linux daily driver (Omarchy + Hyprland).

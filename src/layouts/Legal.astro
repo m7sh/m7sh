@@ -1,13 +1,14 @@
 ---
 import Base from './Base.astro';
-export interface Props { pageTitle: string; heading: string; description: string; lastUpdated?: string; }
-const { pageTitle, heading, description, lastUpdated = 'June 4, 2026' } = Astro.props;
+import { SUPPORT_EMAIL, withBase } from '../lib/site';
+export interface Props { pageTitle: string; heading: string; description: string; lastUpdated?: string; path?: string; }
+const { pageTitle, heading, description, lastUpdated = 'October 5, 2026', path } = Astro.props;
 ---
-<Base title={pageTitle} description={description}>
+<Base title={pageTitle} description={description} path={path}>
   <article class="legal shell">
-    <header><p class="section-number">Legal / btso.dev</p><h1>{heading}</h1><div><p>{description}</p><time>Last updated {lastUpdated}</time></div></header>
+    <header><p class="section-number">Legal / m7sh.dev</p><h1>{heading}</h1><div><p>{description}</p><time>Last updated {lastUpdated}</time></div></header>
     <div class="legal-grid">
-      <aside><span>Document</span><strong>{heading}</strong><a href="/#about">Questions? Contact ↗</a></aside>
+      <aside><span>Document</span><strong>{heading}</strong><a href={`mailto:${SUPPORT_EMAIL}`}>Questions? Contact ↗</a><a href={withBase('/')}>← Back home</a></aside>
       <div class="legal-copy"><slot /></div>
     </div>
   </article>
