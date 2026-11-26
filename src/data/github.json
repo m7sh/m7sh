@@ -1,11 +1,13 @@
 {
- "generatedAt": "2026-11-26T08:33:07.133Z",
+ "generatedAt": "2026-11-26T21:41:42.841Z",
  "repos": {
   "m7sh/ame": {
    "stars": 3,
-   "pushedAt": "2026-11-25T18:49:11Z",
-   "latest": "v2.2.0",
+   "pushedAt": "2026-11-26T13:35:36Z",
+   "latest": "v2.3.1",
    "releaseDates": [
+    "2026-11-26T13:35:39Z",
+    "2026-11-26T13:12:05Z",
     "2026-11-25T18:49:13Z",
     "2026-09-26T11:02:37Z",
     "2026-09-17T10:57:25Z",
@@ -15,6 +17,22 @@
     "2026-09-17T08:35:41Z"
    ],
    "releases": [
+    {
+     "tag": "v2.3.1",
+     "title": "v2.3.1 — High-Res Album Artwork & Crisp Terminal Rendering",
+     "at": "2026-11-26T13:35:39Z",
+     "pre": false,
+     "url": "https://github.com/m7sh/ame/releases/tag/v2.3.1",
+     "body": "## What's New in v2.3.1\n\n### High-Resolution Album Artwork (ported from BitChord)\n- **1200px Now Playing artwork**: Upgraded artwork resolution ladder (`PLAYER_ART_PX = 1200`, `HEADER_ART_PX = 720`, `NOTIFICATION_ART_PX = 544`, `CARD_ART_PX = 480`, `ROW_ART_PX = 160`) aligned with YouTube Music's cached `SQUARE_SIZES`.\n- **Flag-preserving Google CDN URLs**: Rewrites `wN-hN` / `=sN` on `googleusercontent.com` / `ggpht.com` while preserving CDN flags.\n- **YouTube `maxresdefault` / `sddefault` upgrade & 404 fallback**: Upgrades `i.ytimg.com` / `img.youtube.com` thumbnails, strips signed `?sqp=...` query params, and falls back to `sddefault` / `hqdefault` on 404 (with per-process 404 caching).\n- **Letterbox bar trimming & largest-thumbnail selection**: Strips 4:3 YouTube black bars before square center-cropping, saves cached JPEGs at `quality=95, subsampling=0`, and selects the highest-pixel-area thumbnail from API responses.\n\n### Crisp Terminal Rendering\n- **Lanczos resampling** across Sixel, TGP (Kitty/Ghostty), and Halfcell renderers.\n- **HiDPI-aware TGP sizing** so Kitty/Ghostty receive full-resolution artwork instead of 10x20 fallback cell sizes.\n- **Adaptive Floyd-Steinberg Sixel quantization** and expanded Now Playing art stage bounds (`36x88` cells).\n\n### Verification\n- All 83 tests passing (`pytest -q`)."
+    },
+    {
+     "tag": "v2.3.0",
+     "title": "v2.3.0 — EQ, Word-Synced Lyrics, Smart Queue & UI Polish",
+     "at": "2026-11-26T13:12:05Z",
+     "pre": false,
+     "url": "https://github.com/m7sh/ame/releases/tag/v2.3.0",
+     "body": "## ame v2.3.0\n\nA major audio, discovery, lyrics, and UI polish release building on `v2.2.0` — still 100% guest-mode, terminal-native, and transparently synced to your Omarchy palette.\n\n> **Content & Source Notice:** `ame` does not host, store centrally, or redistribute any audio, artwork, or lyrics. It runs locally as an unauthenticated client fetching publicly available internet sources (`ytmusicapi` / YouTube Music InnerTube, `yt-dlp`, `LRCLIB`, etc.) with bounded on-disk caching.\n\n### New Features\n\n#### 7-Band Equalizer & Skip Silence (`equalizer.py`)\n- **16 EQ Presets (`E`)**: Built-in 7-band parametric presets with automatic headroom preamp attenuation to prevent clipping alongside YouTube `loudnessDb` normalization (`N`).\n- **Skip Silence (`M`)**: Real-time `mpv` `silenceremove` filter chain support, toggleable live during playback and persisted across sessions (`settings.py`).\n\n#### Word-Synced Lyrics, Offset & Break Markers (`lyrics.py`)\n- **Multi-Provider Race**: Queries SimpMusic, BetterLyrics, LyricsPlus, lrc.red, LRCLIB, and YouTube Music, preferring rich word/syllable-synced Enhanced LRC / TTML lines with disk caching (`v2` cache format).\n- **Live Timing Offset (`<` / `>`)**: Fine-tune lyrics sync per track and persist offsets on disk (`LyricsOffsetStore`).\n- **Instrumental Interludes**: Animated break indicators (`◉ ○ ○`) and depth-of-field lyric fade across surrounding lines.\n\n#### Personalized History Recommendations & Category Queue (`recommendations.py`, `api.py`)\n- **Skip-Aware History Ranking**: Scores recommendations using listening history recency, com"
+    },
     {
      "tag": "v2.2.0",
      "title": "v2.2.0 — Album Window, Synced Lyrics, Sidebar & Playback Engine",
@@ -74,6 +92,18 @@
    ],
    "commits": [
     {
+     "sha": "2292c61",
+     "message": "feat: release v2.3.1 with high-res album artwork and crisp terminal r…",
+     "at": "2026-11-26T13:35:35Z",
+     "url": "https://github.com/m7sh/ame/commit/2292c61c7fd6602c44cb95c97db01f77835c6142"
+    },
+    {
+     "sha": "f8a627a",
+     "message": "feat: release v2.3.0 with EQ, synced lyrics, history recs, category q…",
+     "at": "2026-11-26T13:11:58Z",
+     "url": "https://github.com/m7sh/ame/commit/f8a627ae07c1c9ff8b2532f7b037d61315ed07d6"
+    },
+    {
      "sha": "31d8f24",
      "message": "docs: add non-hosting / public-source scraping disclaimer to README",
      "at": "2026-11-25T18:49:07Z",
@@ -108,18 +138,6 @@
      "message": "refactor: remove mood section and unused categories logic",
      "at": "2026-09-26T10:54:27Z",
      "url": "https://github.com/m7sh/ame/commit/e009e0362916f8d222464671f590ff9fe49003d0"
-    },
-    {
-     "sha": "65ba397",
-     "message": "feat: add clean animated loading and refresh state across the UI",
-     "at": "2026-09-26T10:42:13Z",
-     "url": "https://github.com/m7sh/ame/commit/65ba39777af6fdc83d5e727e85d225481995442c"
-    },
-    {
-     "sha": "34ffe31",
-     "message": "feat: populate queue with related songs when playing from search",
-     "at": "2026-09-26T10:12:17Z",
-     "url": "https://github.com/m7sh/ame/commit/34ffe31570a94ed2b7b873d6e4794305cc9d922f"
     }
    ]
   },
@@ -2431,7 +2449,7 @@
   ],
   [
    "2026-11-26",
-   2
+   5
   ]
  ]
 }
